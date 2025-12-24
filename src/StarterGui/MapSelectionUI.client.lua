@@ -1,5 +1,7 @@
 local Players = game:GetService("Players")
+local Lighting = game:GetService("Lighting")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local SoundService = game:GetService("SoundService")
 local TweenService = game:GetService("TweenService")
 
 local player = Players.LocalPlayer
@@ -29,6 +31,38 @@ local function getUiBus()
 end
 
 local uiBus = getUiBus()
+
+local function playClick()
+	local sound = SoundService:FindFirstChild("UIClick")
+	if sound then
+		sound:Play()
+	end
+end
+
+local function getBlur()
+	local blur = Lighting:FindFirstChild("MenuBlur")
+	if not blur then
+		blur = Instance.new("BlurEffect")
+		blur.Name = "MenuBlur"
+		blur.Size = 0
+		blur.Parent = Lighting
+	end
+	return blur
+end
+
+local function getDepth()
+	local depth = Lighting:FindFirstChild("MenuDepth")
+	if not depth then
+		depth = Instance.new("DepthOfFieldEffect")
+		depth.Name = "MenuDepth"
+		depth.FarIntensity = 0
+		depth.NearIntensity = 0
+		depth.InFocusRadius = 30
+		depth.FocusDistance = 10
+		depth.Parent = Lighting
+	end
+	return depth
+end
 
 local gui = Instance.new("ScreenGui")
 gui.Name = "MapSelectionUI"
@@ -143,6 +177,7 @@ backButton.MouseLeave:Connect(function()
 	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(16, 40, 52) }):Play()
 end)
 backButton.MouseButton1Click:Connect(function()
+	playClick()
 	uiBus:Fire("CloseAll")
 	uiBus:Fire("OpenPanel", "MainMenu")
 end)
@@ -207,6 +242,7 @@ local function addMapButton(map)
 	end)
 
 	button.MouseButton1Click:Connect(function()
+		playClick()
 		selectEvent:FireServer(map.id)
 	end)
 end
@@ -231,6 +267,13 @@ local function openPanel()
 	TweenService:Create(frame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
 		Position = defaultPos,
 	}):Play()
+	TweenService:Create(getBlur(), TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		Size = 12,
+	}):Play()
+	TweenService:Create(getDepth(), TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		FarIntensity = 0.25,
+		NearIntensity = 0.15,
+	}):Play()
 end
 
 local function closePanel()
@@ -242,6 +285,13 @@ local function closePanel()
 	}):Play()
 	TweenService:Create(frame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
 		Position = defaultPos + UDim2.new(0, 0, 0, 12),
+	}):Play()
+	TweenService:Create(getBlur(), TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+		Size = 0,
+	}):Play()
+	TweenService:Create(getDepth(), TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+		FarIntensity = 0,
+		NearIntensity = 0,
 	}):Play()
 	task.delay(0.22, function()
 		gui.Enabled = false
