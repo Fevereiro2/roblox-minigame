@@ -218,6 +218,7 @@ MarketplaceService.ProcessReceipt = function(receiptInfo)
 
 	if product.category == "Coins" then
 		data.Coins = data.Coins + (product.amount or 0)
+		data.PurchasedCoins = (data.PurchasedCoins or 0) + (product.amount or 0)
 		State.SetAttributes(player, data)
 		buyEvent:FireClient(player, { ok = true, itemType = "Coins", itemId = product.id, coins = data.Coins })
 	elseif product.category == "Boost" then
