@@ -1,4 +1,5 @@
 local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
 local ContextActionService = game:GetService("ContextActionService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local SoundService = game:GetService("SoundService")
@@ -29,6 +30,8 @@ local function getUiBus()
 end
 
 local uiBus = getUiBus()
+local camera = Workspace.CurrentCamera
+local menuCameraCFrame = CFrame.new(0, 12, 32) * CFrame.Angles(0, math.rad(180), 0)
 
 local function ensureSound(name, soundId, volume, looped)
 	local sound = SoundService:FindFirstChild(name)
@@ -115,8 +118,15 @@ uiBus.Event:Connect(function(action)
 		requestFish()
 	elseif action == "OpenPanel" then
 		lockControls()
+		if camera then
+			camera.CameraType = Enum.CameraType.Scriptable
+			camera.CFrame = menuCameraCFrame
+		end
 	elseif action == "CloseAll" then
 		unlockControls()
+		if camera then
+			camera.CameraType = Enum.CameraType.Custom
+		end
 	end
 end)
 
