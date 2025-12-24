@@ -6,6 +6,7 @@ local State = require(ServerScriptService:WaitForChild("State"))
 State.GetRemote("FishRequest")
 State.GetRemote("BuyItem")
 State.GetRemote("SelectMap")
+State.GetRemote("EquipRod")
 local getProfile = State.GetRemoteFunction("GetProfile")
 
 getProfile.OnServerInvoke = function(player)
