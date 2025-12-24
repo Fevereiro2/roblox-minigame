@@ -109,20 +109,6 @@ local function buildBackground(parent)
 	gradient.Rotation = 120
 	gradient.Parent = background
 
-	local water = Instance.new("Frame")
-	water.Size = UDim2.new(1, 0, 0, 220)
-	water.Position = UDim2.new(0, 0, 1, -220)
-	water.BackgroundColor3 = Color3.fromRGB(6, 96, 120)
-	water.BorderSizePixel = 0
-	water.Parent = background
-	local waterGradient = Instance.new("UIGradient")
-	waterGradient.Color = ColorSequence.new({
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(6, 110, 135)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(4, 46, 68)),
-	})
-	waterGradient.Rotation = 90
-	waterGradient.Parent = water
-
 	return background
 end
 
@@ -327,7 +313,6 @@ selectEvent.OnClientEvent:Connect(function(payload)
 	if payload.ok then
 		statusLabel.Text = "Mapa selecionado"
 		uiBus:Fire("CloseAll")
-		uiBus:Fire("OpenPanel", "MainMenu")
 	else
 		statusLabel.Text = "Mapa bloqueado"
 	end
