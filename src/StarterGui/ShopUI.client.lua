@@ -9,6 +9,7 @@ local buyEvent = getBuyItem()
 
 local RodDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("RodDatabase"))
 local MapDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("MapDatabase"))
+local ProductDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("ProductDatabase"))
 
 local function getUiBus()
 	local folder = playerGui:FindFirstChild("UIEvents")
@@ -79,6 +80,19 @@ local function addItem(label, priceText, onClick)
 	row.MouseButton1Click:Connect(onClick)
 end
 
+local function addHeader(text)
+	local row = Instance.new("TextLabel")
+	row.Size = UDim2.new(1, 0, 0, 24)
+	row.BackgroundTransparency = 1
+	row.TextColor3 = Color3.fromRGB(200, 200, 200)
+	row.Font = Enum.Font.GothamBold
+	row.TextSize = 14
+	row.TextXAlignment = Enum.TextXAlignment.Left
+	row.Text = text
+	row.Parent = list
+end
+
+addHeader("Canas")
 for _, rod in ipairs(RodDatabase.Rods) do
 	local priceText = string.format("%d %s", rod.price, rod.currency)
 	addItem("Cana: " .. rod.name, priceText, function()
@@ -86,11 +100,32 @@ for _, rod in ipairs(RodDatabase.Rods) do
 	end)
 end
 
+addHeader("Mapas")
 for _, map in ipairs(MapDatabase.Maps) do
 	local priceText = string.format("%d %s", map.price, map.currency)
 	addItem("Mapa: " .. map.name, priceText, function()
 		buyEvent:FireServer({ itemType = "Map", itemId = map.id })
 	end)
+end
+
+addHeader("Moedas")
+for _, product in ipairs(ProductDatabase.Products) do
+	if product.category == "Coins" then
+		local priceText = product.displayPrice or "Robux"
+		addItem(product.name, priceText, function()
+			buyEvent:FireServer({ itemType = "Coins", itemId = product.id })
+		end)
+	end
+end
+
+addHeader("Boosts")
+for _, product in ipairs(ProductDatabase.Products) do
+	if product.category == "Boost" then
+		local priceText = product.displayPrice or "Robux"
+		addItem(product.name, priceText, function()
+			buyEvent:FireServer({ itemType = "Boost", itemId = product.id })
+		end)
+	end
 end
 
 layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
