@@ -30,6 +30,7 @@ RodDatabase.Rods = {
 		name = "Cana Lendaria",
 		price = 299,
 		currency = "Robux",
+		gamePassId = 0,
 		rarityBonus = 6,
 		speed = 1.5,
 	},
@@ -38,6 +39,15 @@ RodDatabase.Rods = {
 function RodDatabase.GetById(rodId)
 	for _, rod in ipairs(RodDatabase.Rods) do
 		if rod.id == rodId then
+			return rod
+		end
+	end
+	return nil
+end
+
+function RodDatabase.GetByGamePassId(gamePassId)
+	for _, rod in ipairs(RodDatabase.Rods) do
+		if rod.gamePassId == gamePassId then
 			return rod
 		end
 	end
