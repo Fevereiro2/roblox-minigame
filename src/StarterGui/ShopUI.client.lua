@@ -302,9 +302,22 @@ buyButton.MouseLeave:Connect(function()
 	TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(18, 150, 170) }):Play()
 end)
 
+local tabs = Instance.new("Frame")
+tabs.Size = UDim2.new(1, 0, 0, 36)
+tabs.Position = UDim2.new(0, 0, 0, 0)
+tabs.BackgroundTransparency = 1
+tabs.ZIndex = 6
+tabs.Parent = leftPanel
+
+local tabLayout = Instance.new("UIListLayout")
+tabLayout.FillDirection = Enum.FillDirection.Horizontal
+tabLayout.Padding = UDim.new(0, 8)
+tabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+tabLayout.Parent = tabs
+
 local list = Instance.new("ScrollingFrame")
-list.Size = UDim2.new(1, 0, 1, 0)
-list.Position = UDim2.new(0, 0, 0, 0)
+list.Size = UDim2.new(1, 0, 1, -44)
+list.Position = UDim2.new(0, 0, 0, 44)
 list.BackgroundTransparency = 1
 list.BorderSizePixel = 0
 list.CanvasSize = UDim2.new(0, 0, 0, 0)
@@ -319,6 +332,8 @@ grid.SortOrder = Enum.SortOrder.LayoutOrder
 grid.Parent = list
 
 local selected
+local currentTab = "All"
+local cards = {}
 
 local function setSelection(data)
 	selected = data
@@ -337,6 +352,52 @@ buyButton.MouseButton1Click:Connect(function()
 	buyEvent:FireServer({ itemType = selected.itemType, itemId = selected.itemId })
 end)
 
+local function makeTab(label, key)
+	local tab = Instance.new("TextButton")
+	tab.Size = UDim2.new(0, 110, 1, 0)
+	tab.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
+	tab.TextColor3 = Color3.fromRGB(230, 240, 245)
+	tab.Font = Enum.Font.GothamSemibold
+	tab.TextSize = 13
+	tab.Text = label
+	tab.AutoButtonColor = false
+	tab.ZIndex = 6
+	tab.Parent = tabs
+
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 10)
+	corner.Parent = tab
+
+	local stroke = Instance.new("UIStroke")
+	stroke.Color = Color3.fromRGB(70, 120, 140)
+	stroke.Thickness = 1
+	stroke.Parent = tab
+
+	tab.MouseEnter:Connect(function()
+		TweenService:Create(tab, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(20, 52, 66) }):Play()
+	end)
+	tab.MouseLeave:Connect(function()
+		local base = key == currentTab and Color3.fromRGB(18, 150, 170) or Color3.fromRGB(16, 40, 52)
+		TweenService:Create(tab, TweenInfo.new(0.12), { BackgroundColor3 = base }):Play()
+	end)
+
+	tab.MouseButton1Click:Connect(function()
+		playClick()
+		currentTab = key
+		for _, child in ipairs(tabs:GetChildren()) do
+			if child:IsA("TextButton") then
+				child.BackgroundColor3 = (child.Name == key) and Color3.fromRGB(18, 150, 170) or Color3.fromRGB(16, 40, 52)
+			end
+		end
+		for _, card in ipairs(cards) do
+			card.Visible = (key == "All") or (card:GetAttribute("Category") == key)
+		end
+	end)
+
+	tab.Name = key
+	return tab
+end
+
 local function makeCard(data)
 	local card = Instance.new("TextButton")
 	card.Size = UDim2.new(0, 0, 0, 72)
@@ -349,6 +410,8 @@ local function makeCard(data)
 	card.AutoButtonColor = false
 	card.ZIndex = 6
 	card.Parent = list
+	card:SetAttribute("Category", data.category)
+	card.LayoutOrder = data.order
 
 	local padding = Instance.new("UIPadding")
 	padding.PaddingLeft = UDim.new(0, 12)
@@ -387,6 +450,8 @@ local function makeCard(data)
 		playClick()
 		setSelection(data)
 	end)
+
+	return card
 end
 
 local items = {}
@@ -400,6 +465,8 @@ for _, rod in ipairs(RodDatabase.Rods) do
 		typeLabel = "Cana",
 		description = string.format("Aumenta raridade em +%d e reduz tempo para %0.1fs.", rod.rarityBonus, rod.speed),
 		actionText = "Comprar cana",
+		category = "Rods",
+		order = 10,
 	})
 end
 
@@ -412,6 +479,8 @@ for _, map in ipairs(MapDatabase.Maps) do
 		typeLabel = "Mapa",
 		description = string.format("Mapa com bonus de raridade +%d. Nivel minimo %d.", map.rarityBonus, map.minLevel),
 		actionText = "Comprar mapa",
+		category = "Maps",
+		order = 20,
 	})
 end
 
@@ -425,6 +494,8 @@ for _, product in ipairs(ProductDatabase.Products) do
 			typeLabel = "Moedas",
 			description = string.format("Recebe %d moedas instantaneamente.", product.amount or 0),
 			actionText = "Comprar moedas",
+			category = "Coins",
+			order = 30,
 		})
 	elseif product.category == "Boost" then
 		table.insert(items, {
@@ -435,23 +506,78 @@ for _, product in ipairs(ProductDatabase.Products) do
 			typeLabel = "Boost",
 			description = string.format("Multiplicador x%d por %d minutos.", product.multiplier or 1, math.floor((product.durationSeconds or 0) / 60)),
 			actionText = "Ativar boost",
+			category = "Boosts",
+			order = 40,
 		})
 	end
 end
 
+makeTab("Todos", "All")
+makeTab("Canas", "Rods")
+makeTab("Mapas", "Maps")
+makeTab("Moedas", "Coins")
+makeTab("Boosts", "Boosts")
+
 for _, data in ipairs(items) do
-	makeCard(data)
+	local card = makeCard(data)
+	table.insert(cards, card)
 end
 
 local function updateCanvas()
-	local rows = math.ceil(#items / 4)
+	local visibleCount = 0
+	for _, card in ipairs(cards) do
+		if card.Visible then
+			visibleCount = visibleCount + 1
+		end
+	end
+	local rows = math.ceil(visibleCount / 4)
 	local cellHeight = 72
 	local padding = 10
 	local total = rows * cellHeight + math.max(0, rows - 1) * padding + 12
 	list.CanvasSize = UDim2.new(0, 0, 0, total)
 end
 
+for _, card in ipairs(cards) do
+	card.Visible = true
+end
+
+for _, child in ipairs(tabs:GetChildren()) do
+	if child:IsA("TextButton") then
+		child.BackgroundColor3 = child.Name == "All" and Color3.fromRGB(18, 150, 170) or Color3.fromRGB(16, 40, 52)
+	end
+end
+
 updateCanvas()
+
+local function applyTabFilter()
+	for _, card in ipairs(cards) do
+		card.Visible = (currentTab == "All") or (card:GetAttribute("Category") == currentTab)
+	end
+	updateCanvas()
+end
+
+applyTabFilter()
+
+local function layoutPanels()
+	local width = frame.AbsoluteSize.X
+	if width < 800 then
+		leftPanel.Size = UDim2.new(1, 0, 0.6, -70)
+		leftPanel.Position = UDim2.new(0, 20, 0, 88)
+		rightPanel.Size = UDim2.new(1, 0, 0.4, -40)
+		rightPanel.Position = UDim2.new(0, 20, 0.6, 60)
+		grid.CellSize = UDim2.new(0.48, 0, 0, 72)
+	else
+		leftPanel.Size = UDim2.new(0.62, 0, 1, -100)
+		leftPanel.Position = UDim2.new(0, 20, 0, 88)
+		rightPanel.Size = UDim2.new(0.34, 0, 1, -100)
+		rightPanel.Position = UDim2.new(0.66, 0, 0, 88)
+		grid.CellSize = UDim2.new(0.24, 0, 0, 72)
+	end
+	updateCanvas()
+end
+
+frame:GetPropertyChangedSignal("AbsoluteSize"):Connect(layoutPanels)
+layoutPanels()
 
 local defaultPos = frame.Position
 
