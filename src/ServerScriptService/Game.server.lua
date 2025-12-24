@@ -6,6 +6,27 @@ local State = require(ServerScriptService:WaitForChild("State"))
 State.GetRemote("FishRequest")
 State.GetRemote("BuyItem")
 State.GetRemote("SelectMap")
+local getProfile = State.GetRemoteFunction("GetProfile")
+
+getProfile.OnServerInvoke = function(player)
+	local data = State.GetData(player)
+	if not data then
+		return nil
+	end
+
+	local unlockedRods = {}
+	for key, value in pairs(data.UnlockedRods or {}) do
+		unlockedRods[key] = value
+	end
+
+	return {
+		Coins = data.Coins,
+		PurchasedCoins = data.PurchasedCoins or 0,
+		UnlockedRods = unlockedRods,
+		EquippedRod = data.EquippedRod,
+		Level = data.Level,
+	}
+end
 
 local function onPlayerAdded(player)
 	local data = State.LoadPlayer(player)
