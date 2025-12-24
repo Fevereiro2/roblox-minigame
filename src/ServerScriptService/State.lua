@@ -21,6 +21,7 @@ State.Store = DataStoreService:GetDataStore("FishingGameData_v1")
 function State.DefaultData()
 	return {
 		Coins = 0,
+		PurchasedCoins = 0,
 		Level = 1,
 		DiscoveredFish = {},
 		UnlockedMaps = { lago_inicial = true },
@@ -160,6 +161,7 @@ end
 
 function State.SetAttributes(player, data)
 	player:SetAttribute("Coins", data.Coins)
+	player:SetAttribute("PurchasedCoins", data.PurchasedCoins or 0)
 	player:SetAttribute("Level", data.Level)
 	player:SetAttribute("SelectedMap", data.SelectedMap or "")
 	player:SetAttribute("EquippedRod", data.EquippedRod or "")
@@ -176,6 +178,24 @@ function State.GetRemote(name)
 	local remote = folder:FindFirstChild(name)
 	if not remote then
 		remote = Instance.new("RemoteEvent")
+		remote.Name = name
+		remote.Parent = folder
+	end
+
+	return remote
+end
+
+function State.GetRemoteFunction(name)
+	local folder = ReplicatedStorage:FindFirstChild("RemoteFunctions")
+	if not folder then
+		folder = Instance.new("Folder")
+		folder.Name = "RemoteFunctions"
+		folder.Parent = ReplicatedStorage
+	end
+
+	local remote = folder:FindFirstChild(name)
+	if not remote then
+		remote = Instance.new("RemoteFunction")
 		remote.Name = name
 		remote.Parent = folder
 	end
