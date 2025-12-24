@@ -30,26 +30,38 @@ gui.ResetOnSpawn = false
 gui.IgnoreGuiInset = true
 gui.Parent = playerGui
 
+local function addFade(parent)
+	local fade = Instance.new("Frame")
+	fade.Name = "Fade"
+	fade.Size = UDim2.fromScale(1, 1)
+	fade.BackgroundColor3 = Color3.fromRGB(4, 12, 16)
+	fade.BackgroundTransparency = 1
+	fade.BorderSizePixel = 0
+	fade.ZIndex = 20
+	fade.Parent = parent
+	return fade
+end
+
 local function buildBackground(parent)
 	local background = Instance.new("Frame")
 	background.Size = UDim2.fromScale(1, 1)
-	background.BackgroundColor3 = Color3.fromRGB(10, 18, 24)
+	background.BackgroundColor3 = Color3.fromRGB(8, 30, 38)
 	background.BorderSizePixel = 0
 	background.Parent = parent
 
 	local gradient = Instance.new("UIGradient")
 	gradient.Color = ColorSequence.new({
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 22, 28)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(7, 44, 58)),
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 40, 54)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(4, 92, 114)),
 	})
 	gradient.Rotation = 120
 	gradient.Parent = background
 
 	local sun = Instance.new("Frame")
-	sun.Size = UDim2.new(0, 320, 0, 320)
-	sun.Position = UDim2.new(0, -120, 0, -120)
-	sun.BackgroundColor3 = Color3.fromRGB(255, 210, 120)
-	sun.BackgroundTransparency = 0.4
+	sun.Size = UDim2.new(0, 340, 0, 340)
+	sun.Position = UDim2.new(0, -140, 0, -140)
+	sun.BackgroundColor3 = Color3.fromRGB(255, 210, 140)
+	sun.BackgroundTransparency = 0.35
 	sun.BorderSizePixel = 0
 	sun.Parent = background
 	local sunCorner = Instance.new("UICorner")
@@ -58,7 +70,7 @@ local function buildBackground(parent)
 
 	local sunGlow = Instance.new("UIGradient")
 	sunGlow.Color = ColorSequence.new({
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 230, 170)),
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 230, 180)),
 		ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 180, 90)),
 	})
 	sunGlow.Rotation = 90
@@ -67,13 +79,13 @@ local function buildBackground(parent)
 	local water = Instance.new("Frame")
 	water.Size = UDim2.new(1, 0, 0, 240)
 	water.Position = UDim2.new(0, 0, 1, -240)
-	water.BackgroundColor3 = Color3.fromRGB(12, 64, 86)
+	water.BackgroundColor3 = Color3.fromRGB(6, 96, 120)
 	water.BorderSizePixel = 0
 	water.Parent = background
 	local waterGradient = Instance.new("UIGradient")
 	waterGradient.Color = ColorSequence.new({
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 80, 110)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(6, 34, 52)),
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(6, 110, 135)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(4, 46, 68)),
 	})
 	waterGradient.Rotation = 90
 	waterGradient.Parent = water
@@ -81,8 +93,8 @@ local function buildBackground(parent)
 	local waveA = Instance.new("Frame")
 	waveA.Size = UDim2.new(1.2, 0, 0, 80)
 	waveA.Position = UDim2.new(-0.1, 0, 1, -160)
-	waveA.BackgroundColor3 = Color3.fromRGB(18, 120, 150)
-	waveA.BackgroundTransparency = 0.65
+	waveA.BackgroundColor3 = Color3.fromRGB(24, 150, 180)
+	waveA.BackgroundTransparency = 0.6
 	waveA.BorderSizePixel = 0
 	waveA.Parent = background
 	local waveCorner = Instance.new("UICorner")
@@ -91,8 +103,8 @@ local function buildBackground(parent)
 
 	local waveB = waveA:Clone()
 	waveB.Position = UDim2.new(-0.2, 0, 1, -120)
-	waveB.BackgroundColor3 = Color3.fromRGB(24, 140, 170)
-	waveB.BackgroundTransparency = 0.7
+	waveB.BackgroundColor3 = Color3.fromRGB(32, 170, 190)
+	waveB.BackgroundTransparency = 0.65
 	waveB.Parent = background
 
 	TweenService:Create(waveA, TweenInfo.new(9, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {
@@ -106,8 +118,8 @@ local function buildBackground(parent)
 		local bubble = Instance.new("Frame")
 		bubble.Size = size
 		bubble.Position = position
-		bubble.BackgroundColor3 = Color3.fromRGB(180, 230, 245)
-		bubble.BackgroundTransparency = 0.6
+		bubble.BackgroundColor3 = Color3.fromRGB(200, 235, 245)
+		bubble.BackgroundTransparency = 0.55
 		bubble.BorderSizePixel = 0
 		bubble.Parent = background
 		local corner = Instance.new("UICorner")
@@ -128,14 +140,16 @@ local function buildBackground(parent)
 end
 
 local background = buildBackground(gui)
+local fade = addFade(background)
 
 local content = Instance.new("Frame")
 content.AnchorPoint = Vector2.new(0.5, 0.5)
 content.Position = UDim2.new(0.5, 0, 0.5, 0)
 content.Size = UDim2.new(0.62, 0, 0.7, 0)
-content.BackgroundColor3 = Color3.fromRGB(12, 22, 30)
-content.BackgroundTransparency = 0.2
+content.BackgroundColor3 = Color3.fromRGB(10, 26, 34)
+content.BackgroundTransparency = 0.15
 content.BorderSizePixel = 0
+content.ZIndex = 5
 content.Parent = background
 
 local contentCorner = Instance.new("UICorner")
@@ -143,7 +157,7 @@ contentCorner.CornerRadius = UDim.new(0, 18)
 contentCorner.Parent = content
 
 local contentStroke = Instance.new("UIStroke")
-contentStroke.Color = Color3.fromRGB(70, 110, 125)
+contentStroke.Color = Color3.fromRGB(90, 150, 170)
 contentStroke.Thickness = 1
 contentStroke.Parent = content
 
@@ -161,6 +175,7 @@ title.TextSize = 36
 title.TextColor3 = Color3.fromRGB(245, 250, 255)
 title.Text = "Fishing Game"
 title.TextXAlignment = Enum.TextXAlignment.Left
+title.ZIndex = 6
 title.Parent = content
 
 local subtitle = Instance.new("TextLabel")
@@ -169,15 +184,17 @@ subtitle.Position = UDim2.new(0, 20, 0, 78)
 subtitle.BackgroundTransparency = 1
 subtitle.Font = Enum.Font.Gotham
 subtitle.TextSize = 15
-subtitle.TextColor3 = Color3.fromRGB(190, 220, 235)
+subtitle.TextColor3 = Color3.fromRGB(190, 230, 235)
 subtitle.Text = "Escolha um mapa e comece sua pescaria"
 subtitle.TextXAlignment = Enum.TextXAlignment.Left
+subtitle.ZIndex = 6
 subtitle.Parent = content
 
 local buttons = Instance.new("Frame")
 buttons.Size = UDim2.new(1, -40, 1, -140)
 buttons.Position = UDim2.new(0, 20, 0, 120)
 buttons.BackgroundTransparency = 1
+buttons.ZIndex = 6
 buttons.Parent = content
 
 local list = Instance.new("UIListLayout")
@@ -200,7 +217,8 @@ local function styleButton(button, isPrimary)
 	button.TextSize = 18
 	button.TextXAlignment = Enum.TextXAlignment.Left
 	button.Size = UDim2.new(1, 0, 0, isPrimary and 54 or 44)
-	button.BackgroundColor3 = isPrimary and Color3.fromRGB(18, 130, 160) or Color3.fromRGB(16, 34, 46)
+	button.BackgroundColor3 = isPrimary and Color3.fromRGB(18, 150, 170) or Color3.fromRGB(16, 40, 52)
+	button.ZIndex = 6
 
 	local padding = Instance.new("UIPadding")
 	padding.PaddingLeft = UDim.new(0, 18)
@@ -211,11 +229,11 @@ local function styleButton(button, isPrimary)
 	corner.Parent = button
 
 	local stroke = Instance.new("UIStroke")
-	stroke.Color = isPrimary and Color3.fromRGB(120, 220, 235) or Color3.fromRGB(60, 95, 110)
+	stroke.Color = isPrimary and Color3.fromRGB(140, 230, 245) or Color3.fromRGB(70, 120, 140)
 	stroke.Thickness = 1
 	stroke.Parent = button
 
-	local hoverColor = isPrimary and Color3.fromRGB(26, 150, 180) or Color3.fromRGB(20, 44, 58)
+	local hoverColor = isPrimary and Color3.fromRGB(26, 170, 190) or Color3.fromRGB(20, 52, 66)
 	applyHover(button, button.BackgroundColor3, hoverColor)
 end
 
@@ -270,19 +288,53 @@ footer.Position = UDim2.new(0, 20, 1, -28)
 footer.BackgroundTransparency = 1
 footer.Font = Enum.Font.Gotham
 footer.TextSize = 12
-footer.TextColor3 = Color3.fromRGB(170, 200, 210)
+footer.TextColor3 = Color3.fromRGB(170, 210, 220)
 footer.Text = "Colecione peixes raros e explore aguas novas"
 footer.TextXAlignment = Enum.TextXAlignment.Left
+footer.ZIndex = 6
 footer.Parent = content
 
 TweenService:Create(title, TweenInfo.new(3, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {
 	Position = UDim2.new(0, 20, 0, 14),
 }):Play()
 
+local defaultPos = content.Position
+
+local function openPanel()
+	gui.Enabled = true
+	fade.BackgroundTransparency = 0
+	content.Position = defaultPos + UDim2.new(0, 0, 0, 12)
+	TweenService:Create(fade, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		BackgroundTransparency = 1,
+	}):Play()
+	TweenService:Create(content, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		Position = defaultPos,
+	}):Play()
+end
+
+local function closePanel()
+	if not gui.Enabled then
+		return
+	end
+	TweenService:Create(fade, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+		BackgroundTransparency = 0,
+	}):Play()
+	TweenService:Create(content, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+		Position = defaultPos + UDim2.new(0, 0, 0, 12),
+	}):Play()
+	task.delay(0.22, function()
+		gui.Enabled = false
+		content.Position = defaultPos
+		fade.BackgroundTransparency = 1
+	end)
+end
+
 uiBus.Event:Connect(function(action, panel)
 	if action == "OpenPanel" and (panel == "MainMenu" or panel == nil) then
-		gui.Enabled = true
+		openPanel()
 	elseif action == "CloseAll" then
-		gui.Enabled = false
+		closePanel()
 	end
 end)
+
+openPanel()
