@@ -5,6 +5,20 @@ local MapDatabase = State.Databases.Maps
 
 local selectEvent = State.GetRemote("SelectMap")
 
+local function ensureCharacter(player)
+	if not player.Character or not player.Character.Parent then
+		player:LoadCharacter()
+	end
+
+	local character = player.Character or player.CharacterAdded:Wait()
+	local root = character:FindFirstChild("HumanoidRootPart") or character:WaitForChild("HumanoidRootPart", 5)
+	if root and not character.PrimaryPart then
+		character.PrimaryPart = root
+	end
+
+	return character
+end
+
 local function teleportToMap(player, mapId)
 	local spawnFolder = workspace:FindFirstChild("MapSpawns")
 	if not spawnFolder then
@@ -16,7 +30,7 @@ local function teleportToMap(player, mapId)
 		return
 	end
 
-	local character = player.Character
+	local character = ensureCharacter(player)
 	if not character or not character.PrimaryPart then
 		return
 	end
