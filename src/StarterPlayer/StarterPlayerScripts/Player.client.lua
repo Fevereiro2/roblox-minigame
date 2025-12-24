@@ -1,5 +1,6 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local SoundService = game:GetService("SoundService")
 local UserInputService = game:GetService("UserInputService")
 
 local player = Players.LocalPlayer
@@ -27,6 +28,26 @@ local function getUiBus()
 end
 
 local uiBus = getUiBus()
+
+local function ensureSound(name, soundId, volume, looped)
+	local sound = SoundService:FindFirstChild(name)
+	if not sound then
+		sound = Instance.new("Sound")
+		sound.Name = name
+		sound.SoundId = soundId
+		sound.Volume = volume
+		sound.Looped = looped
+		sound.Parent = SoundService
+	end
+	return sound
+end
+
+local ambient = ensureSound("AmbientWaves", "rbxassetid://0", 0.3, true)
+if not ambient.IsPlaying then
+	ambient:Play()
+end
+
+ensureSound("UIClick", "rbxassetid://0", 0.6, false)
 
 local hud = Instance.new("ScreenGui")
 hud.Name = "FishingHud"
