@@ -14,6 +14,8 @@ local RodDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChi
 local MapDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("MapDatabase"))
 local ProductDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("ProductDatabase"))
 
+local BACKGROUND_IMAGE = "rbxassetid://88755976907991"
+
 local function getUiBus()
 	local folder = playerGui:FindFirstChild("UIEvents")
 	if not folder then
@@ -98,6 +100,15 @@ local function buildBackground(parent)
 	background.BackgroundColor3 = Color3.fromRGB(8, 30, 38)
 	background.BorderSizePixel = 0
 	background.Parent = parent
+
+	local wallpaper = Instance.new("ImageLabel")
+	wallpaper.Name = "Wallpaper"
+	wallpaper.Size = UDim2.fromScale(1, 1)
+	wallpaper.BackgroundTransparency = 1
+	wallpaper.Image = BACKGROUND_IMAGE
+	wallpaper.ScaleType = Enum.ScaleType.Crop
+	wallpaper.ImageTransparency = 0.2
+	wallpaper.Parent = background
 
 	local gradient = Instance.new("UIGradient")
 	gradient.Color = ColorSequence.new({
