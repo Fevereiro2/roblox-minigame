@@ -30,6 +30,7 @@ MapDatabase.Maps = {
 		name = "Caribe",
 		price = 149,
 		currency = "Robux",
+		gamePassId = 0,
 		minLevel = 8,
 		rarityBonus = 5,
 	},
