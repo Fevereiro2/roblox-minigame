@@ -95,6 +95,8 @@ fishEvent.OnServerEvent:Connect(function(player)
 	local rarityDef = FishDatabase.Rarities[rarity]
 	local rewardMultiplier = rarityDef and rarityDef.rewardMultiplier or 1
 	local coinsEarned = math.floor((fish.baseReward or 1) * rewardMultiplier)
+	local boostMultiplier = State.GetActiveBoostMultiplier(data, "Coins")
+	coinsEarned = math.floor(coinsEarned * boostMultiplier)
 
 	data.Coins = data.Coins + coinsEarned
 	data.DiscoveredFish[fish.id] = true
