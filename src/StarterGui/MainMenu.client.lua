@@ -6,6 +6,9 @@ local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
+local LOGO_IMAGE = "rbxassetid://82425580179801"
+local BACKGROUND_IMAGE = "rbxassetid://88755976907991"
+
 local function getUiBus()
 	local folder = playerGui:FindFirstChild("UIEvents")
 	if not folder then
@@ -82,6 +85,15 @@ local function buildBackground(parent)
 	background.BackgroundColor3 = Color3.fromRGB(8, 30, 38)
 	background.BorderSizePixel = 0
 	background.Parent = parent
+
+	local wallpaper = Instance.new("ImageLabel")
+	wallpaper.Name = "Wallpaper"
+	wallpaper.Size = UDim2.fromScale(1, 1)
+	wallpaper.BackgroundTransparency = 1
+	wallpaper.Image = BACKGROUND_IMAGE
+	wallpaper.ScaleType = Enum.ScaleType.Crop
+	wallpaper.ImageTransparency = 0.2
+	wallpaper.Parent = background
 
 	local gradient = Instance.new("UIGradient")
 	gradient.Color = ColorSequence.new({
@@ -212,9 +224,19 @@ title.TextXAlignment = Enum.TextXAlignment.Left
 title.ZIndex = 6
 title.Parent = content
 
+local logo = Instance.new("ImageLabel")
+logo.Name = "Logo"
+logo.Size = UDim2.new(0, 220, 0, 80)
+logo.Position = UDim2.new(0.5, -110, 0, 10)
+logo.BackgroundTransparency = 1
+logo.Image = LOGO_IMAGE
+logo.ScaleType = Enum.ScaleType.Fit
+logo.ZIndex = 7
+logo.Parent = content
+
 local subtitle = Instance.new("TextLabel")
 subtitle.Size = UDim2.new(1, -40, 0, 32)
-subtitle.Position = UDim2.new(0, 20, 0, 78)
+subtitle.Position = UDim2.new(0, 20, 0, 100)
 subtitle.BackgroundTransparency = 1
 subtitle.Font = Enum.Font.Gotham
 subtitle.TextSize = 15
@@ -226,7 +248,7 @@ subtitle.Parent = content
 
 local buttons = Instance.new("Frame")
 buttons.Size = UDim2.new(1, -40, 1, -140)
-buttons.Position = UDim2.new(0, 20, 0, 120)
+buttons.Position = UDim2.new(0, 20, 0, 140)
 buttons.BackgroundTransparency = 1
 buttons.ZIndex = 6
 buttons.Parent = content
