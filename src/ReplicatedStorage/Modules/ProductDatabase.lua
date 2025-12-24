@@ -5,7 +5,7 @@ ProductDatabase.Products = {
 		id = "coins_small",
 		name = "Pacote de Moedas S",
 		category = "Coins",
-		productId = 0,
+		productId = 3487933993,
 		amount = 500,
 		displayPrice = "49 Robux",
 	},
