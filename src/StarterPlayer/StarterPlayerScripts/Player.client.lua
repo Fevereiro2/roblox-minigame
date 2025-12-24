@@ -32,6 +32,7 @@ end
 local uiBus = getUiBus()
 local camera = Workspace.CurrentCamera or Workspace:WaitForChild("Camera")
 local menuCameraCFrame = CFrame.new(0, 12, 32) * CFrame.Angles(0, math.rad(180), 0)
+local menuOpen = false
 
 local function setMenuCamera()
 	if camera then
@@ -120,6 +121,12 @@ UserInputService.InputBegan:Connect(function(input, processed)
 
 	if input.UserInputType == Enum.UserInputType.MouseButton1 then
 		requestFish()
+	elseif input.KeyCode == Enum.KeyCode.M then
+		if menuOpen then
+			uiBus:Fire("CloseAll")
+		else
+			uiBus:Fire("OpenPanel", "MainMenu")
+		end
 	end
 end)
 
@@ -129,11 +136,13 @@ uiBus.Event:Connect(function(action)
 	elseif action == "OpenPanel" then
 		lockControls()
 		setMenuCamera()
+		menuOpen = true
 	elseif action == "CloseAll" then
 		unlockControls()
 		if camera then
 			camera.CameraType = Enum.CameraType.Custom
 		end
+		menuOpen = false
 	end
 end)
 
