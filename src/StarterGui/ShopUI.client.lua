@@ -16,6 +16,13 @@ local ProductDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitFo
 
 local BACKGROUND_IMAGE = "rbxassetid://88755976907991"
 
+local categoryIcons = {
+	Rods = "rbxassetid://0",
+	Maps = "rbxassetid://0",
+	Coins = "rbxassetid://0",
+	Boosts = "rbxassetid://0",
+}
+
 local function getUiBus()
 	local folder = playerGui:FindFirstChild("UIEvents")
 	if not folder then
@@ -68,13 +75,6 @@ local function getDepth()
 	return depth
 end
 
-local categoryIcons = {
-	Rods = "rbxassetid://0",
-	Maps = "rbxassetid://0",
-	Coins = "rbxassetid://0",
-	Boosts = "rbxassetid://0",
-}
-
 local gui = Instance.new("ScreenGui")
 gui.Name = "ShopUI"
 gui.ResetOnSpawn = false
@@ -124,20 +124,10 @@ end
 local background = buildBackground(gui)
 local fade = addFade(background)
 
-local blocker = Instance.new("TextButton")
-blocker.Name = "Blocker"
-blocker.Size = UDim2.fromScale(1, 1)
-blocker.BackgroundTransparency = 1
-blocker.Text = ""
-blocker.AutoButtonColor = false
-blocker.Modal = true
-blocker.ZIndex = 4
-blocker.Parent = background
-
 local frame = Instance.new("Frame")
 frame.AnchorPoint = Vector2.new(0.5, 0.5)
-frame.Size = UDim2.new(0.78, 0, 0.8, 0)
-frame.Position = UDim2.new(0.5, 0, 0.52, 0)
+frame.Size = UDim2.fromScale(0.86, 0.84)
+frame.Position = UDim2.fromScale(0.5, 0.52)
 frame.BackgroundColor3 = Color3.fromRGB(10, 26, 34)
 frame.BackgroundTransparency = 0.15
 frame.BorderSizePixel = 0
@@ -145,7 +135,7 @@ frame.ZIndex = 5
 frame.Parent = background
 
 local frameCorner = Instance.new("UICorner")
-frameCorner.CornerRadius = UDim.new(0, 16)
+frameCorner.CornerRadius = UDim.new(0.04, 0)
 frameCorner.Parent = frame
 
 local frameStroke = Instance.new("UIStroke")
@@ -153,9 +143,50 @@ frameStroke.Color = Color3.fromRGB(90, 150, 170)
 frameStroke.Thickness = 1
 frameStroke.Parent = frame
 
+local frameSize = Instance.new("UISizeConstraint")
+frameSize.MinSize = Vector2.new(560, 360)
+frameSize.MaxSize = Vector2.new(1100, 760)
+frameSize.Parent = frame
+
+local mainPadding = Instance.new("UIPadding")
+mainPadding.PaddingLeft = UDim.new(0.03, 0)
+mainPadding.PaddingRight = UDim.new(0.03, 0)
+mainPadding.PaddingTop = UDim.new(0.03, 0)
+mainPadding.PaddingBottom = UDim.new(0.03, 0)
+mainPadding.Parent = frame
+
+local container = Instance.new("Frame")
+container.Size = UDim2.fromScale(1, 1)
+container.BackgroundTransparency = 1
+container.ZIndex = 6
+container.Parent = frame
+
+local containerLayout = Instance.new("UIListLayout")
+containerLayout.FillDirection = Enum.FillDirection.Vertical
+containerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+containerLayout.Padding = UDim.new(0.025, 0)
+containerLayout.Parent = container
+
+local header = Instance.new("Frame")
+header.Size = UDim2.fromScale(1, 0.14)
+header.BackgroundTransparency = 1
+header.ZIndex = 6
+header.Parent = container
+
+local headerLayout = Instance.new("UIListLayout")
+headerLayout.FillDirection = Enum.FillDirection.Vertical
+headerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+headerLayout.Padding = UDim.new(0.15, 0)
+headerLayout.Parent = header
+
+local titleRow = Instance.new("Frame")
+titleRow.Size = UDim2.fromScale(1, 0.45)
+titleRow.BackgroundTransparency = 1
+titleRow.ZIndex = 6
+titleRow.Parent = header
+
 local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, -40, 0, 34)
-title.Position = UDim2.new(0, 20, 0, 14)
+title.Size = UDim2.fromScale(1, 1)
 title.BackgroundTransparency = 1
 title.Font = Enum.Font.GothamBold
 title.TextSize = 18
@@ -163,22 +194,191 @@ title.TextColor3 = Color3.fromRGB(240, 240, 240)
 title.Text = "Loja"
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.ZIndex = 6
-title.Parent = frame
+title.Parent = titleRow
+
+local tabsRow = Instance.new("Frame")
+tabsRow.Size = UDim2.fromScale(1, 0.45)
+tabsRow.BackgroundTransparency = 1
+tabsRow.ZIndex = 6
+tabsRow.Parent = header
+
+local tabsLayout = Instance.new("UIListLayout")
+tabsLayout.FillDirection = Enum.FillDirection.Horizontal
+tabsLayout.Padding = UDim.new(0.015, 0)
+tabsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+tabsLayout.Parent = tabsRow
+
+local body = Instance.new("Frame")
+body.Size = UDim2.fromScale(1, 0.8)
+body.BackgroundTransparency = 1
+body.ZIndex = 6
+body.Parent = container
+
+local bodyLayout = Instance.new("UIListLayout")
+bodyLayout.FillDirection = Enum.FillDirection.Horizontal
+bodyLayout.SortOrder = Enum.SortOrder.LayoutOrder
+bodyLayout.Padding = UDim.new(0.02, 0)
+bodyLayout.Parent = body
+
+local leftPanel = Instance.new("Frame")
+leftPanel.Size = UDim2.fromScale(0.64, 1)
+leftPanel.BackgroundTransparency = 1
+leftPanel.ZIndex = 6
+leftPanel.Parent = body
+
+local rightPanel = Instance.new("Frame")
+rightPanel.Size = UDim2.fromScale(0.34, 1)
+rightPanel.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
+rightPanel.BackgroundTransparency = 0.1
+rightPanel.BorderSizePixel = 0
+rightPanel.ZIndex = 6
+rightPanel.Parent = body
+
+local rightCorner = Instance.new("UICorner")
+rightCorner.CornerRadius = UDim.new(0.06, 0)
+rightCorner.Parent = rightPanel
+
+local rightStroke = Instance.new("UIStroke")
+rightStroke.Color = Color3.fromRGB(70, 120, 140)
+rightStroke.Thickness = 1
+rightStroke.Parent = rightPanel
+
+local rightPad = Instance.new("UIPadding")
+rightPad.PaddingLeft = UDim.new(0.05, 0)
+rightPad.PaddingRight = UDim.new(0.05, 0)
+rightPad.PaddingTop = UDim.new(0.05, 0)
+rightPad.PaddingBottom = UDim.new(0.05, 0)
+rightPad.Parent = rightPanel
+
+local rightLayout = Instance.new("UIListLayout")
+rightLayout.FillDirection = Enum.FillDirection.Vertical
+rightLayout.SortOrder = Enum.SortOrder.LayoutOrder
+rightLayout.Padding = UDim.new(0.03, 0)
+rightLayout.Parent = rightPanel
+
+local detailTitle = Instance.new("TextLabel")
+detailTitle.Size = UDim2.fromScale(1, 0.12)
+detailTitle.BackgroundTransparency = 1
+detailTitle.Font = Enum.Font.GothamBold
+detailTitle.TextSize = 16
+detailTitle.TextColor3 = Color3.fromRGB(240, 240, 240)
+detailTitle.Text = "Selecione um item"
+detailTitle.TextXAlignment = Enum.TextXAlignment.Left
+detailTitle.ZIndex = 7
+detailTitle.Parent = rightPanel
+
+local detailType = Instance.new("TextLabel")
+detailType.Size = UDim2.fromScale(1, 0.08)
+detailType.BackgroundTransparency = 1
+detailType.Font = Enum.Font.Gotham
+detailType.TextSize = 12
+detailType.TextColor3 = Color3.fromRGB(170, 210, 220)
+detailType.Text = ""
+detailType.TextXAlignment = Enum.TextXAlignment.Left
+detailType.ZIndex = 7
+detailType.Parent = rightPanel
+
+local detailDesc = Instance.new("TextLabel")
+detailDesc.Size = UDim2.fromScale(1, 0.45)
+detailDesc.BackgroundTransparency = 1
+detailDesc.Font = Enum.Font.Gotham
+detailDesc.TextSize = 13
+detailDesc.TextColor3 = Color3.fromRGB(200, 230, 235)
+detailDesc.Text = "Clique num item para ver detalhes."
+detailDesc.TextXAlignment = Enum.TextXAlignment.Left
+detailDesc.TextYAlignment = Enum.TextYAlignment.Top
+detailDesc.TextWrapped = true
+detailDesc.ZIndex = 7
+detailDesc.Parent = rightPanel
+
+local detailPrice = Instance.new("TextLabel")
+detailPrice.Size = UDim2.fromScale(1, 0.08)
+detailPrice.BackgroundTransparency = 1
+detailPrice.Font = Enum.Font.GothamSemibold
+detailPrice.TextSize = 14
+detailPrice.TextColor3 = Color3.fromRGB(240, 240, 240)
+detailPrice.Text = ""
+detailPrice.TextXAlignment = Enum.TextXAlignment.Left
+detailPrice.ZIndex = 7
+detailPrice.Parent = rightPanel
+
+local buyButton = Instance.new("TextButton")
+buyButton.Size = UDim2.fromScale(1, 0.16)
+buyButton.BackgroundColor3 = Color3.fromRGB(18, 150, 170)
+buyButton.TextColor3 = Color3.fromRGB(245, 245, 245)
+buyButton.Font = Enum.Font.GothamSemibold
+buyButton.TextSize = 16
+buyButton.Text = "Comprar"
+buyButton.AutoButtonColor = false
+buyButton.ZIndex = 7
+buyButton.Parent = rightPanel
+
+local buyCorner = Instance.new("UICorner")
+buyCorner.CornerRadius = UDim.new(0.2, 0)
+buyCorner.Parent = buyButton
+
+local buyStroke = Instance.new("UIStroke")
+buyStroke.Color = Color3.fromRGB(140, 230, 245)
+buyStroke.Thickness = 1
+buyStroke.Parent = buyButton
+
+buyButton.MouseEnter:Connect(function()
+	TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(26, 170, 190) }):Play()
+end)
+buyButton.MouseLeave:Connect(function()
+	TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(18, 150, 170) }):Play()
+end)
+
+local listContainer = Instance.new("Frame")
+listContainer.Size = UDim2.fromScale(1, 1)
+listContainer.BackgroundTransparency = 1
+listContainer.ZIndex = 6
+listContainer.Parent = leftPanel
+
+local listCorner = Instance.new("UICorner")
+listCorner.CornerRadius = UDim.new(0.06, 0)
+listCorner.Parent = listContainer
+
+local listClip = Instance.new("Frame")
+listClip.Size = UDim2.fromScale(1, 1)
+listClip.BackgroundTransparency = 1
+listClip.ClipsDescendants = true
+listClip.Parent = listContainer
+
+local list = Instance.new("ScrollingFrame")
+list.Size = UDim2.fromScale(1, 1)
+list.BackgroundTransparency = 1
+list.BorderSizePixel = 0
+list.CanvasSize = UDim2.new(0, 0, 0, 0)
+list.ScrollBarThickness = 6
+list.ZIndex = 6
+list.Parent = listClip
+
+local grid = Instance.new("UIGridLayout")
+grid.CellPadding = UDim2.new(0.02, 0, 0.02, 0)
+grid.CellSize = UDim2.new(0.24, 0, 0.22, 0)
+grid.SortOrder = Enum.SortOrder.LayoutOrder
+grid.Parent = list
+
+grid:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+	list.CanvasSize = UDim2.new(0, 0, 0, grid.AbsoluteContentSize.Y + 8)
+end)
 
 local backButton = Instance.new("TextButton")
-backButton.Size = UDim2.new(0, 90, 0, 28)
-backButton.Position = UDim2.new(0, 20, 0, 50)
+backButton.Size = UDim2.fromScale(0.12, 0.36)
+backButton.AnchorPoint = Vector2.new(1, 0)
+backButton.Position = UDim2.fromScale(1, 0)
 backButton.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
 backButton.TextColor3 = Color3.fromRGB(220, 230, 240)
 backButton.Font = Enum.Font.GothamSemibold
 backButton.TextSize = 14
-backButton.Text = "< Voltar"
+backButton.Text = "Voltar"
 backButton.AutoButtonColor = false
 backButton.ZIndex = 6
-backButton.Parent = frame
+backButton.Parent = titleRow
 
 local backCorner = Instance.new("UICorner")
-backCorner.CornerRadius = UDim.new(0, 10)
+backCorner.CornerRadius = UDim.new(0.2, 0)
 backCorner.Parent = backButton
 
 local backStroke = Instance.new("UIStroke")
@@ -198,145 +398,10 @@ backButton.MouseButton1Click:Connect(function()
 	uiBus:Fire("OpenPanel", "MainMenu")
 end)
 
-local leftPanel = Instance.new("Frame")
-leftPanel.Size = UDim2.new(0.62, 0, 1, -100)
-leftPanel.Position = UDim2.new(0, 20, 0, 88)
-leftPanel.BackgroundTransparency = 1
-leftPanel.ZIndex = 6
-leftPanel.Parent = frame
-
-local rightPanel = Instance.new("Frame")
-rightPanel.Size = UDim2.new(0.34, 0, 1, -100)
-rightPanel.Position = UDim2.new(0.66, 0, 0, 88)
-rightPanel.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
-rightPanel.BackgroundTransparency = 0.1
-rightPanel.BorderSizePixel = 0
-rightPanel.ZIndex = 6
-rightPanel.Parent = frame
-
-local rightCorner = Instance.new("UICorner")
-rightCorner.CornerRadius = UDim.new(0, 12)
-rightCorner.Parent = rightPanel
-
-local rightStroke = Instance.new("UIStroke")
-rightStroke.Color = Color3.fromRGB(70, 120, 140)
-rightStroke.Thickness = 1
-rightStroke.Parent = rightPanel
-
-local detailTitle = Instance.new("TextLabel")
-detailTitle.Size = UDim2.new(1, -24, 0, 28)
-detailTitle.Position = UDim2.new(0, 12, 0, 12)
-detailTitle.BackgroundTransparency = 1
-detailTitle.Font = Enum.Font.GothamBold
-detailTitle.TextSize = 16
-detailTitle.TextColor3 = Color3.fromRGB(240, 240, 240)
-detailTitle.Text = "Selecione um item"
-detailTitle.TextXAlignment = Enum.TextXAlignment.Left
-detailTitle.ZIndex = 7
-detailTitle.Parent = rightPanel
-
-local detailType = Instance.new("TextLabel")
-detailType.Size = UDim2.new(1, -24, 0, 20)
-detailType.Position = UDim2.new(0, 12, 0, 40)
-detailType.BackgroundTransparency = 1
-detailType.Font = Enum.Font.Gotham
-detailType.TextSize = 12
-detailType.TextColor3 = Color3.fromRGB(170, 210, 220)
-detailType.Text = ""
-detailType.TextXAlignment = Enum.TextXAlignment.Left
-detailType.ZIndex = 7
-detailType.Parent = rightPanel
-
-local detailDesc = Instance.new("TextLabel")
-detailDesc.Size = UDim2.new(1, -24, 0, 140)
-detailDesc.Position = UDim2.new(0, 12, 0, 66)
-detailDesc.BackgroundTransparency = 1
-detailDesc.Font = Enum.Font.Gotham
-detailDesc.TextSize = 13
-detailDesc.TextColor3 = Color3.fromRGB(200, 230, 235)
-detailDesc.Text = "Clique num item para ver detalhes."
-detailDesc.TextXAlignment = Enum.TextXAlignment.Left
-detailDesc.TextYAlignment = Enum.TextYAlignment.Top
-detailDesc.TextWrapped = true
-detailDesc.ZIndex = 7
-detailDesc.Parent = rightPanel
-
-local detailPrice = Instance.new("TextLabel")
-detailPrice.Size = UDim2.new(1, -24, 0, 20)
-detailPrice.Position = UDim2.new(0, 12, 1, -70)
-detailPrice.BackgroundTransparency = 1
-detailPrice.Font = Enum.Font.GothamSemibold
-detailPrice.TextSize = 14
-detailPrice.TextColor3 = Color3.fromRGB(240, 240, 240)
-detailPrice.Text = ""
-detailPrice.TextXAlignment = Enum.TextXAlignment.Left
-detailPrice.ZIndex = 7
-detailPrice.Parent = rightPanel
-
-local buyButton = Instance.new("TextButton")
-buyButton.Size = UDim2.new(1, -24, 0, 36)
-buyButton.Position = UDim2.new(0, 12, 1, -44)
-buyButton.BackgroundColor3 = Color3.fromRGB(18, 150, 170)
-buyButton.TextColor3 = Color3.fromRGB(245, 245, 245)
-buyButton.Font = Enum.Font.GothamSemibold
-buyButton.TextSize = 16
-buyButton.Text = "Comprar"
-buyButton.AutoButtonColor = false
-buyButton.ZIndex = 7
-buyButton.Parent = rightPanel
-
-local buyCorner = Instance.new("UICorner")
-buyCorner.CornerRadius = UDim.new(0, 10)
-buyCorner.Parent = buyButton
-
-local buyStroke = Instance.new("UIStroke")
-buyStroke.Color = Color3.fromRGB(140, 230, 245)
-buyStroke.Thickness = 1
-buyStroke.Parent = buyButton
-
-buyButton.MouseEnter:Connect(function()
-	TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(26, 170, 190) }):Play()
-end)
-buyButton.MouseLeave:Connect(function()
-	TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(18, 150, 170) }):Play()
-end)
-
-local tabs = Instance.new("Frame")
-tabs.Size = UDim2.new(1, 0, 0, 36)
-tabs.Position = UDim2.new(0, 0, 0, 0)
-tabs.BackgroundTransparency = 1
-tabs.ZIndex = 6
-tabs.Parent = leftPanel
-
-local tabLayout = Instance.new("UIListLayout")
-tabLayout.FillDirection = Enum.FillDirection.Horizontal
-tabLayout.Padding = UDim.new(0, 8)
-tabLayout.SortOrder = Enum.SortOrder.LayoutOrder
-tabLayout.Parent = tabs
-
-local list = Instance.new("ScrollingFrame")
-list.Size = UDim2.new(1, 0, 1, -44)
-list.Position = UDim2.new(0, 0, 0, 44)
-list.BackgroundTransparency = 1
-list.BorderSizePixel = 0
-list.CanvasSize = UDim2.new(0, 0, 0, 0)
-list.ScrollBarThickness = 6
-list.ZIndex = 6
-list.Parent = leftPanel
-
-local grid = Instance.new("UIGridLayout")
-grid.CellPadding = UDim2.new(0, 10, 0, 10)
-grid.CellSize = UDim2.new(0.24, 0, 0, 72)
-grid.SortOrder = Enum.SortOrder.LayoutOrder
-grid.Parent = list
-
 local selected
 local currentTab = "All"
 local cards = {}
 local cardData = {}
-local currentColumns = 4
-local updateCanvas
-local setSelection
 
 local function resetDetails()
 	selected = nil
@@ -345,6 +410,15 @@ local function resetDetails()
 	detailDesc.Text = "Clique num item para ver detalhes."
 	detailPrice.Text = ""
 	buyButton.Text = "Comprar"
+end
+
+local function setSelection(data)
+	selected = data
+	detailTitle.Text = data.name
+	detailType.Text = data.typeLabel
+	detailDesc.Text = data.description
+	detailPrice.Text = data.priceText
+	buyButton.Text = data.actionText
 end
 
 local function selectFirstVisible()
@@ -357,17 +431,7 @@ local function selectFirstVisible()
 			end
 		end
 	end
-
 	resetDetails()
-end
-
-setSelection = function(data)
-	selected = data
-	detailTitle.Text = data.name
-	detailType.Text = data.typeLabel
-	detailDesc.Text = data.description
-	detailPrice.Text = data.priceText
-	buyButton.Text = data.actionText
 end
 
 buyButton.MouseButton1Click:Connect(function()
@@ -380,7 +444,7 @@ end)
 
 local function makeTab(label, key)
 	local tab = Instance.new("TextButton")
-	tab.Size = UDim2.new(0, 110, 1, 0)
+	tab.Size = UDim2.fromScale(0.16, 1)
 	tab.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
 	tab.TextColor3 = Color3.fromRGB(230, 240, 245)
 	tab.Font = Enum.Font.GothamSemibold
@@ -388,10 +452,10 @@ local function makeTab(label, key)
 	tab.Text = label
 	tab.AutoButtonColor = false
 	tab.ZIndex = 6
-	tab.Parent = tabs
+	tab.Parent = tabsRow
 
 	local corner = Instance.new("UICorner")
-	corner.CornerRadius = UDim.new(0, 10)
+	corner.CornerRadius = UDim.new(0.2, 0)
 	corner.Parent = tab
 
 	local stroke = Instance.new("UIStroke")
@@ -410,16 +474,13 @@ local function makeTab(label, key)
 	tab.MouseButton1Click:Connect(function()
 		playClick()
 		currentTab = key
-		for _, child in ipairs(tabs:GetChildren()) do
+		for _, child in ipairs(tabsRow:GetChildren()) do
 			if child:IsA("TextButton") then
 				child.BackgroundColor3 = (child.Name == key) and Color3.fromRGB(18, 150, 170) or Color3.fromRGB(16, 40, 52)
 			end
 		end
 		for _, card in ipairs(cards) do
 			card.Visible = (key == "All") or (card:GetAttribute("Category") == key)
-		end
-		if updateCanvas then
-			updateCanvas()
 		end
 		selectFirstVisible()
 	end)
@@ -430,7 +491,6 @@ end
 
 local function makeCard(data)
 	local card = Instance.new("TextButton")
-	card.Size = UDim2.new(0, 0, 0, 72)
 	card.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
 	card.TextColor3 = Color3.fromRGB(240, 240, 240)
 	card.Font = Enum.Font.GothamSemibold
@@ -443,13 +503,8 @@ local function makeCard(data)
 	card:SetAttribute("Category", data.category)
 	card.LayoutOrder = data.order
 
-	local padding = Instance.new("UIPadding")
-	padding.PaddingLeft = UDim.new(0, 40)
-	padding.PaddingTop = UDim.new(0, 10)
-	padding.Parent = card
-
 	local corner = Instance.new("UICorner")
-	corner.CornerRadius = UDim.new(0, 10)
+	corner.CornerRadius = UDim.new(0.2, 0)
 	corner.Parent = card
 
 	local stroke = Instance.new("UIStroke")
@@ -457,9 +512,14 @@ local function makeCard(data)
 	stroke.Thickness = 1
 	stroke.Parent = card
 
+	local padding = Instance.new("UIPadding")
+	padding.PaddingLeft = UDim.new(0.18, 0)
+	padding.PaddingTop = UDim.new(0.12, 0)
+	padding.Parent = card
+
 	local icon = Instance.new("ImageLabel")
-	icon.Size = UDim2.new(0, 20, 0, 20)
-	icon.Position = UDim2.new(0, 12, 0, 12)
+	icon.Size = UDim2.fromScale(0.16, 0.5)
+	icon.Position = UDim2.fromScale(0.08, 0.18)
 	icon.BackgroundTransparency = 1
 	icon.Image = data.imageId or categoryIcons[data.category] or "rbxassetid://0"
 	icon.ImageColor3 = Color3.fromRGB(210, 235, 245)
@@ -467,8 +527,8 @@ local function makeCard(data)
 	icon.Parent = card
 
 	local price = Instance.new("TextLabel")
-	price.Size = UDim2.new(1, -12, 0, 16)
-	price.Position = UDim2.new(0, 12, 0, 36)
+	price.Size = UDim2.fromScale(0.8, 0.25)
+	price.Position = UDim2.fromScale(0.18, 0.52)
 	price.BackgroundTransparency = 1
 	price.Font = Enum.Font.Gotham
 	price.TextSize = 12
@@ -505,8 +565,8 @@ for _, rod in ipairs(RodDatabase.Rods) do
 		description = string.format("Aumenta raridade em +%d e reduz tempo para %0.1fs.", rod.rarityBonus, rod.speed),
 		actionText = "Comprar cana",
 		category = "Rods",
-		imageId = categoryIcons.Rods,
 		order = 10,
+		imageId = categoryIcons.Rods,
 	})
 end
 
@@ -520,8 +580,8 @@ for _, map in ipairs(MapDatabase.Maps) do
 		description = string.format("Mapa com bonus de raridade +%d. Nivel minimo %d.", map.rarityBonus, map.minLevel),
 		actionText = "Comprar mapa",
 		category = "Maps",
-		imageId = categoryIcons.Maps,
 		order = 20,
+		imageId = categoryIcons.Maps,
 	})
 end
 
@@ -536,8 +596,8 @@ for _, product in ipairs(ProductDatabase.Products) do
 			description = string.format("Recebe %d moedas instantaneamente.", product.amount or 0),
 			actionText = "Comprar moedas",
 			category = "Coins",
-			imageId = categoryIcons.Coins,
 			order = 30,
+			imageId = categoryIcons.Coins,
 		})
 	elseif product.category == "Boost" then
 		table.insert(items, {
@@ -549,8 +609,8 @@ for _, product in ipairs(ProductDatabase.Products) do
 			description = string.format("Multiplicador x%d por %d minutos.", product.multiplier or 1, math.floor((product.durationSeconds or 0) / 60)),
 			actionText = "Ativar boost",
 			category = "Boosts",
-			imageId = categoryIcons.Boosts,
 			order = 40,
+			imageId = categoryIcons.Boosts,
 		})
 	end
 end
@@ -567,37 +627,10 @@ for _, data in ipairs(items) do
 	table.insert(cards, card)
 end
 
-updateCanvas = function()
-	local visibleCount = 0
-	for _, card in ipairs(cards) do
-		if card.Visible then
-			visibleCount = visibleCount + 1
-		end
-	end
-	local rows = math.ceil(visibleCount / math.max(1, currentColumns))
-	local cellHeight = 72
-	local padding = 10
-	local total = rows * cellHeight + math.max(0, rows - 1) * padding + 12
-	list.CanvasSize = UDim2.new(0, 0, 0, total)
-end
-
-for _, card in ipairs(cards) do
-	card.Visible = true
-end
-
-for _, child in ipairs(tabs:GetChildren()) do
-	if child:IsA("TextButton") then
-		child.BackgroundColor3 = child.Name == "All" and Color3.fromRGB(18, 150, 170) or Color3.fromRGB(16, 40, 52)
-	end
-end
-
-updateCanvas()
-
 local function applyTabFilter()
 	for _, card in ipairs(cards) do
 		card.Visible = (currentTab == "All") or (card:GetAttribute("Category") == currentTab)
 	end
-	updateCanvas()
 	selectFirstVisible()
 end
 
@@ -605,22 +638,29 @@ applyTabFilter()
 
 local function layoutPanels()
 	local width = frame.AbsoluteSize.X
-	if width < 800 then
-		leftPanel.Size = UDim2.new(1, 0, 0.6, -70)
-		leftPanel.Position = UDim2.new(0, 20, 0, 88)
-		rightPanel.Size = UDim2.new(1, 0, 0.4, -40)
-		rightPanel.Position = UDim2.new(0, 20, 0.6, 60)
-		grid.CellSize = UDim2.new(0.48, 0, 0, 72)
-		currentColumns = 2
+	if width < 760 then
+		bodyLayout.FillDirection = Enum.FillDirection.Vertical
+		leftPanel.Size = UDim2.fromScale(1, 0.62)
+		rightPanel.Size = UDim2.fromScale(1, 0.38)
+		grid.CellSize = UDim2.new(0.48, 0, 0.3, 0)
+		backButton.Size = UDim2.fromScale(0.2, 0.7)
+		for _, tab in ipairs(tabsRow:GetChildren()) do
+			if tab:IsA("TextButton") then
+				tab.Size = UDim2.fromScale(0.22, 1)
+			end
+		end
 	else
-		leftPanel.Size = UDim2.new(0.62, 0, 1, -100)
-		leftPanel.Position = UDim2.new(0, 20, 0, 88)
-		rightPanel.Size = UDim2.new(0.34, 0, 1, -100)
-		rightPanel.Position = UDim2.new(0.66, 0, 0, 88)
-		grid.CellSize = UDim2.new(0.24, 0, 0, 72)
-		currentColumns = 4
+		bodyLayout.FillDirection = Enum.FillDirection.Horizontal
+		leftPanel.Size = UDim2.fromScale(0.64, 1)
+		rightPanel.Size = UDim2.fromScale(0.34, 1)
+		grid.CellSize = UDim2.new(0.24, 0, 0.22, 0)
+		backButton.Size = UDim2.fromScale(0.12, 0.9)
+		for _, tab in ipairs(tabsRow:GetChildren()) do
+			if tab:IsA("TextButton") then
+				tab.Size = UDim2.fromScale(0.16, 1)
+			end
+		end
 	end
-	updateCanvas()
 end
 
 frame:GetPropertyChangedSignal("AbsoluteSize"):Connect(layoutPanels)
@@ -636,7 +676,7 @@ local function openPanel()
 	isOpen = true
 	gui.Enabled = true
 	fade.BackgroundTransparency = 0
-	frame.Position = defaultPos + UDim2.new(0, 0, 0, 12)
+	frame.Position = defaultPos + UDim2.new(0, 0, 0, 0.02)
 	TweenService:Create(fade, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
 		BackgroundTransparency = 1,
 	}):Play()
@@ -650,8 +690,8 @@ local function openPanel()
 		FarIntensity = 0.25,
 		NearIntensity = 0.15,
 	}):Play()
-	selectFirstVisible()
 	layoutPanels()
+	selectFirstVisible()
 end
 
 local function closePanel()
@@ -662,7 +702,7 @@ local function closePanel()
 		BackgroundTransparency = 0,
 	}):Play()
 	TweenService:Create(frame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-		Position = defaultPos + UDim2.new(0, 0, 0, 12),
+		Position = defaultPos + UDim2.new(0, 0, 0, 0.02),
 	}):Play()
 	TweenService:Create(getBlur(), TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
 		Size = 0,
