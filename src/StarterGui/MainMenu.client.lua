@@ -122,66 +122,6 @@ local function buildBackground(parent)
 	sunGlow.Rotation = 90
 	sunGlow.Parent = sun
 
-	local water = Instance.new("Frame")
-	water.Size = UDim2.new(1, 0, 0, 240)
-	water.Position = UDim2.new(0, 0, 1, -240)
-	water.BackgroundColor3 = Color3.fromRGB(6, 96, 120)
-	water.BorderSizePixel = 0
-	water.Parent = background
-	local waterGradient = Instance.new("UIGradient")
-	waterGradient.Color = ColorSequence.new({
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(6, 110, 135)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(4, 46, 68)),
-	})
-	waterGradient.Rotation = 90
-	waterGradient.Parent = water
-
-	local waveA = Instance.new("Frame")
-	waveA.Size = UDim2.new(1.2, 0, 0, 80)
-	waveA.Position = UDim2.new(-0.1, 0, 1, -160)
-	waveA.BackgroundColor3 = Color3.fromRGB(24, 150, 180)
-	waveA.BackgroundTransparency = 0.6
-	waveA.BorderSizePixel = 0
-	waveA.Parent = background
-	local waveCorner = Instance.new("UICorner")
-	waveCorner.CornerRadius = UDim.new(0, 60)
-	waveCorner.Parent = waveA
-
-	local waveB = waveA:Clone()
-	waveB.Position = UDim2.new(-0.2, 0, 1, -120)
-	waveB.BackgroundColor3 = Color3.fromRGB(32, 170, 190)
-	waveB.BackgroundTransparency = 0.65
-	waveB.Parent = background
-
-	TweenService:Create(waveA, TweenInfo.new(9, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {
-		Position = UDim2.new(0, 0, 1, -160),
-	}):Play()
-	TweenService:Create(waveB, TweenInfo.new(7, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {
-		Position = UDim2.new(0, 0, 1, -120),
-	}):Play()
-
-	local function addBubble(size, position, duration)
-		local bubble = Instance.new("Frame")
-		bubble.Size = size
-		bubble.Position = position
-		bubble.BackgroundColor3 = Color3.fromRGB(200, 235, 245)
-		bubble.BackgroundTransparency = 0.55
-		bubble.BorderSizePixel = 0
-		bubble.Parent = background
-		local corner = Instance.new("UICorner")
-		corner.CornerRadius = UDim.new(1, 0)
-		corner.Parent = bubble
-
-		TweenService:Create(bubble, TweenInfo.new(duration, Enum.EasingStyle.Sine, Enum.EasingDirection.Out, -1), {
-			Position = position - UDim2.new(0, 0, 0, 120),
-			BackgroundTransparency = 0.85,
-		}):Play()
-	end
-
-	addBubble(UDim2.new(0, 10, 0, 10), UDim2.new(0.2, 0, 0.85, 0), 6)
-	addBubble(UDim2.new(0, 14, 0, 14), UDim2.new(0.6, 0, 0.9, 0), 8)
-	addBubble(UDim2.new(0, 8, 0, 8), UDim2.new(0.8, 0, 0.82, 0), 5)
-
 	return background
 end
 
