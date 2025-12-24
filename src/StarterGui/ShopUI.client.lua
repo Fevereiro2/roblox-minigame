@@ -66,6 +66,13 @@ local function getDepth()
 	return depth
 end
 
+local categoryIcons = {
+	Rods = "rbxassetid://0",
+	Maps = "rbxassetid://0",
+	Coins = "rbxassetid://0",
+	Boosts = "rbxassetid://0",
+}
+
 local gui = Instance.new("ScreenGui")
 gui.Name = "ShopUI"
 gui.ResetOnSpawn = false
@@ -334,6 +341,32 @@ grid.Parent = list
 local selected
 local currentTab = "All"
 local cards = {}
+local cardData = {}
+local currentColumns = 4
+local updateCanvas
+
+local function resetDetails()
+	selected = nil
+	detailTitle.Text = "Selecione um item"
+	detailType.Text = ""
+	detailDesc.Text = "Clique num item para ver detalhes."
+	detailPrice.Text = ""
+	buyButton.Text = "Comprar"
+end
+
+local function selectFirstVisible()
+	for _, card in ipairs(cards) do
+		if card.Visible then
+			local data = cardData[card]
+			if data then
+				setSelection(data)
+				return
+			end
+		end
+	end
+
+	resetDetails()
+end
 
 local function setSelection(data)
 	selected = data
@@ -392,6 +425,10 @@ local function makeTab(label, key)
 		for _, card in ipairs(cards) do
 			card.Visible = (key == "All") or (card:GetAttribute("Category") == key)
 		end
+		if updateCanvas then
+			updateCanvas()
+		end
+		selectFirstVisible()
 	end)
 
 	tab.Name = key
@@ -414,7 +451,7 @@ local function makeCard(data)
 	card.LayoutOrder = data.order
 
 	local padding = Instance.new("UIPadding")
-	padding.PaddingLeft = UDim.new(0, 12)
+	padding.PaddingLeft = UDim.new(0, 40)
 	padding.PaddingTop = UDim.new(0, 10)
 	padding.Parent = card
 
@@ -426,6 +463,15 @@ local function makeCard(data)
 	stroke.Color = Color3.fromRGB(70, 120, 140)
 	stroke.Thickness = 1
 	stroke.Parent = card
+
+	local icon = Instance.new("ImageLabel")
+	icon.Size = UDim2.new(0, 20, 0, 20)
+	icon.Position = UDim2.new(0, 12, 0, 12)
+	icon.BackgroundTransparency = 1
+	icon.Image = data.imageId or categoryIcons[data.category] or "rbxassetid://0"
+	icon.ImageColor3 = Color3.fromRGB(210, 235, 245)
+	icon.ZIndex = 7
+	icon.Parent = card
 
 	local price = Instance.new("TextLabel")
 	price.Size = UDim2.new(1, -12, 0, 16)
@@ -466,6 +512,7 @@ for _, rod in ipairs(RodDatabase.Rods) do
 		description = string.format("Aumenta raridade em +%d e reduz tempo para %0.1fs.", rod.rarityBonus, rod.speed),
 		actionText = "Comprar cana",
 		category = "Rods",
+		imageId = categoryIcons.Rods,
 		order = 10,
 	})
 end
@@ -480,6 +527,7 @@ for _, map in ipairs(MapDatabase.Maps) do
 		description = string.format("Mapa com bonus de raridade +%d. Nivel minimo %d.", map.rarityBonus, map.minLevel),
 		actionText = "Comprar mapa",
 		category = "Maps",
+		imageId = categoryIcons.Maps,
 		order = 20,
 	})
 end
@@ -495,6 +543,7 @@ for _, product in ipairs(ProductDatabase.Products) do
 			description = string.format("Recebe %d moedas instantaneamente.", product.amount or 0),
 			actionText = "Comprar moedas",
 			category = "Coins",
+			imageId = categoryIcons.Coins,
 			order = 30,
 		})
 	elseif product.category == "Boost" then
@@ -507,6 +556,7 @@ for _, product in ipairs(ProductDatabase.Products) do
 			description = string.format("Multiplicador x%d por %d minutos.", product.multiplier or 1, math.floor((product.durationSeconds or 0) / 60)),
 			actionText = "Ativar boost",
 			category = "Boosts",
+			imageId = categoryIcons.Boosts,
 			order = 40,
 		})
 	end
@@ -520,17 +570,18 @@ makeTab("Boosts", "Boosts")
 
 for _, data in ipairs(items) do
 	local card = makeCard(data)
+	cardData[card] = data
 	table.insert(cards, card)
 end
 
-local function updateCanvas()
+updateCanvas = function()
 	local visibleCount = 0
 	for _, card in ipairs(cards) do
 		if card.Visible then
 			visibleCount = visibleCount + 1
 		end
 	end
-	local rows = math.ceil(visibleCount / 4)
+	local rows = math.ceil(visibleCount / math.max(1, currentColumns))
 	local cellHeight = 72
 	local padding = 10
 	local total = rows * cellHeight + math.max(0, rows - 1) * padding + 12
@@ -554,6 +605,7 @@ local function applyTabFilter()
 		card.Visible = (currentTab == "All") or (card:GetAttribute("Category") == currentTab)
 	end
 	updateCanvas()
+	selectFirstVisible()
 end
 
 applyTabFilter()
@@ -566,12 +618,14 @@ local function layoutPanels()
 		rightPanel.Size = UDim2.new(1, 0, 0.4, -40)
 		rightPanel.Position = UDim2.new(0, 20, 0.6, 60)
 		grid.CellSize = UDim2.new(0.48, 0, 0, 72)
+		currentColumns = 2
 	else
 		leftPanel.Size = UDim2.new(0.62, 0, 1, -100)
 		leftPanel.Position = UDim2.new(0, 20, 0, 88)
 		rightPanel.Size = UDim2.new(0.34, 0, 1, -100)
 		rightPanel.Position = UDim2.new(0.66, 0, 0, 88)
 		grid.CellSize = UDim2.new(0.24, 0, 0, 72)
+		currentColumns = 4
 	end
 	updateCanvas()
 end
@@ -598,6 +652,7 @@ local function openPanel()
 		FarIntensity = 0.25,
 		NearIntensity = 0.15,
 	}):Play()
+	selectFirstVisible()
 end
 
 local function closePanel()
