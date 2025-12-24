@@ -450,3 +450,18 @@ uiBus.Event:Connect(function(action, panel)
 		closePanel()
 	end
 end)
+
+player:GetAttributeChangedSignal("EquippedRod"):Connect(function()
+	if gui.Enabled then
+		rebuildList()
+	end
+end)
+
+equipEvent.OnClientEvent:Connect(function(payload)
+	if type(payload) ~= "table" then
+		return
+	end
+	if payload.ok and gui.Enabled then
+		rebuildList()
+	end
+end)
