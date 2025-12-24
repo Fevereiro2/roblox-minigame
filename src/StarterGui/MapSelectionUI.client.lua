@@ -37,25 +37,46 @@ gui.IgnoreGuiInset = true
 gui.Enabled = false
 gui.Parent = playerGui
 
-local background = Instance.new("Frame")
-background.Size = UDim2.fromScale(1, 1)
-background.BackgroundColor3 = Color3.fromRGB(10, 16, 24)
-background.BorderSizePixel = 0
-background.Parent = gui
+local function buildBackground(parent)
+	local background = Instance.new("Frame")
+	background.Size = UDim2.fromScale(1, 1)
+	background.BackgroundColor3 = Color3.fromRGB(10, 18, 24)
+	background.BorderSizePixel = 0
+	background.Parent = parent
 
-local gradient = Instance.new("UIGradient")
-gradient.Color = ColorSequence.new({
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 18, 26)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 42, 60)),
-})
-gradient.Rotation = 120
-gradient.Parent = background
+	local gradient = Instance.new("UIGradient")
+	gradient.Color = ColorSequence.new({
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 22, 28)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(7, 44, 58)),
+	})
+	gradient.Rotation = 120
+	gradient.Parent = background
+
+	local water = Instance.new("Frame")
+	water.Size = UDim2.new(1, 0, 0, 220)
+	water.Position = UDim2.new(0, 0, 1, -220)
+	water.BackgroundColor3 = Color3.fromRGB(12, 64, 86)
+	water.BorderSizePixel = 0
+	water.Parent = background
+	local waterGradient = Instance.new("UIGradient")
+	waterGradient.Color = ColorSequence.new({
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 80, 110)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(6, 34, 52)),
+	})
+	waterGradient.Rotation = 90
+	waterGradient.Parent = water
+
+	return background
+end
+
+local background = buildBackground(gui)
 
 local frame = Instance.new("Frame")
 frame.AnchorPoint = Vector2.new(0.5, 0.5)
-frame.Size = UDim2.new(0.7, 0, 0.76, 0)
+frame.Size = UDim2.new(0.72, 0, 0.78, 0)
 frame.Position = UDim2.new(0.5, 0, 0.52, 0)
-frame.BackgroundColor3 = Color3.fromRGB(18, 26, 36)
+frame.BackgroundColor3 = Color3.fromRGB(12, 22, 30)
+frame.BackgroundTransparency = 0.15
 frame.BorderSizePixel = 0
 frame.Parent = background
 
@@ -64,12 +85,12 @@ frameCorner.CornerRadius = UDim.new(0, 16)
 frameCorner.Parent = frame
 
 local frameStroke = Instance.new("UIStroke")
-frameStroke.Color = Color3.fromRGB(60, 90, 110)
+frameStroke.Color = Color3.fromRGB(70, 110, 125)
 frameStroke.Thickness = 1
 frameStroke.Parent = frame
 
 local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, -40, 0, 36)
+title.Size = UDim2.new(1, -40, 0, 34)
 title.Position = UDim2.new(0, 20, 0, 14)
 title.BackgroundTransparency = 1
 title.Font = Enum.Font.GothamBold
@@ -81,8 +102,8 @@ title.Parent = frame
 
 local backButton = Instance.new("TextButton")
 backButton.Size = UDim2.new(0, 90, 0, 28)
-backButton.Position = UDim2.new(0, 20, 0, 52)
-backButton.BackgroundColor3 = Color3.fromRGB(22, 34, 46)
+backButton.Position = UDim2.new(0, 20, 0, 50)
+backButton.BackgroundColor3 = Color3.fromRGB(16, 34, 46)
 backButton.TextColor3 = Color3.fromRGB(220, 230, 240)
 backButton.Font = Enum.Font.GothamSemibold
 backButton.TextSize = 14
@@ -95,15 +116,15 @@ backCorner.CornerRadius = UDim.new(0, 10)
 backCorner.Parent = backButton
 
 local backStroke = Instance.new("UIStroke")
-backStroke.Color = Color3.fromRGB(60, 90, 110)
+backStroke.Color = Color3.fromRGB(60, 95, 110)
 backStroke.Thickness = 1
 backStroke.Parent = backButton
 
 backButton.MouseEnter:Connect(function()
-	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(28, 44, 58) }):Play()
+	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(20, 44, 58) }):Play()
 end)
 backButton.MouseLeave:Connect(function()
-	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(22, 34, 46) }):Play()
+	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(16, 34, 46) }):Play()
 end)
 backButton.MouseButton1Click:Connect(function()
 	uiBus:Fire("CloseAll")
@@ -114,7 +135,7 @@ local statusLabel = Instance.new("TextLabel")
 statusLabel.Size = UDim2.new(1, -40, 0, 20)
 statusLabel.Position = UDim2.new(0, 20, 0, 86)
 statusLabel.BackgroundTransparency = 1
-statusLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+statusLabel.TextColor3 = Color3.fromRGB(190, 210, 220)
 statusLabel.Font = Enum.Font.Gotham
 statusLabel.TextSize = 13
 statusLabel.Text = ""
@@ -137,7 +158,7 @@ layout.Parent = list
 local function addMapButton(map)
 	local button = Instance.new("TextButton")
 	button.Size = UDim2.new(1, 0, 0, 38)
-	button.BackgroundColor3 = Color3.fromRGB(22, 34, 46)
+	button.BackgroundColor3 = Color3.fromRGB(16, 34, 46)
 	button.TextColor3 = Color3.fromRGB(240, 240, 240)
 	button.Font = Enum.Font.GothamSemibold
 	button.TextSize = 14
@@ -155,15 +176,15 @@ local function addMapButton(map)
 	corner.Parent = button
 
 	local stroke = Instance.new("UIStroke")
-	stroke.Color = Color3.fromRGB(60, 90, 110)
+	stroke.Color = Color3.fromRGB(60, 95, 110)
 	stroke.Thickness = 1
 	stroke.Parent = button
 
 	button.MouseEnter:Connect(function()
-		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(28, 44, 58) }):Play()
+		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(20, 44, 58) }):Play()
 	end)
 	button.MouseLeave:Connect(function()
-		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(22, 34, 46) }):Play()
+		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(16, 34, 46) }):Play()
 	end)
 
 	button.MouseButton1Click:Connect(function()
