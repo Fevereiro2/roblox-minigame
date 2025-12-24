@@ -1,4 +1,5 @@
 local Players = game:GetService("Players")
+local ContextActionService = game:GetService("ContextActionService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local SoundService = game:GetService("SoundService")
 local UserInputService = game:GetService("UserInputService")
@@ -49,6 +50,28 @@ end
 
 ensureSound("UIClick", "rbxassetid://0", 0.6, false)
 
+local function sinkAction()
+	return Enum.ContextActionResult.Sink
+end
+
+local function lockControls()
+	ContextActionService:BindAction("BlockMovement", sinkAction, false,
+		Enum.KeyCode.W,
+		Enum.KeyCode.A,
+		Enum.KeyCode.S,
+		Enum.KeyCode.D,
+		Enum.KeyCode.Space,
+		Enum.KeyCode.LeftShift,
+		Enum.KeyCode.RightShift
+	)
+	ContextActionService:BindAction("BlockThumbstick", sinkAction, false, Enum.KeyCode.Thumbstick1)
+end
+
+local function unlockControls()
+	ContextActionService:UnbindAction("BlockMovement")
+	ContextActionService:UnbindAction("BlockThumbstick")
+end
+
 local hud = Instance.new("ScreenGui")
 hud.Name = "FishingHud"
 hud.ResetOnSpawn = false
@@ -90,6 +113,10 @@ end)
 uiBus.Event:Connect(function(action)
 	if action == "RequestFish" then
 		requestFish()
+	elseif action == "OpenPanel" then
+		lockControls()
+	elseif action == "CloseAll" then
+		unlockControls()
 	end
 end)
 
