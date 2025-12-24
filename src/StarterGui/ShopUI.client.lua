@@ -118,40 +118,21 @@ local function buildBackground(parent)
 	gradient.Rotation = 120
 	gradient.Parent = background
 
-	local water = Instance.new("Frame")
-	water.Size = UDim2.new(1, 0, 0, 220)
-	water.Position = UDim2.new(0, 0, 1, -220)
-	water.BackgroundColor3 = Color3.fromRGB(6, 96, 120)
-	water.BorderSizePixel = 0
-	water.Parent = background
-	local waterGradient = Instance.new("UIGradient")
-	waterGradient.Color = ColorSequence.new({
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(6, 110, 135)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(4, 46, 68)),
-	})
-	waterGradient.Rotation = 90
-	waterGradient.Parent = water
-
-	local wave = Instance.new("Frame")
-	wave.Size = UDim2.new(1.1, 0, 0, 70)
-	wave.Position = UDim2.new(-0.05, 0, 1, -150)
-	wave.BackgroundColor3 = Color3.fromRGB(24, 150, 180)
-	wave.BackgroundTransparency = 0.6
-	wave.BorderSizePixel = 0
-	wave.Parent = background
-	local waveCorner = Instance.new("UICorner")
-	waveCorner.CornerRadius = UDim.new(0, 60)
-	waveCorner.Parent = wave
-
-	TweenService:Create(wave, TweenInfo.new(9, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {
-		Position = UDim2.new(0, 0, 1, -150),
-	}):Play()
-
 	return background
 end
 
 local background = buildBackground(gui)
 local fade = addFade(background)
+
+local blocker = Instance.new("TextButton")
+blocker.Name = "Blocker"
+blocker.Size = UDim2.fromScale(1, 1)
+blocker.BackgroundTransparency = 1
+blocker.Text = ""
+blocker.AutoButtonColor = false
+blocker.Modal = true
+blocker.ZIndex = 4
+blocker.Parent = background
 
 local frame = Instance.new("Frame")
 frame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -645,8 +626,13 @@ frame:GetPropertyChangedSignal("AbsoluteSize"):Connect(layoutPanels)
 layoutPanels()
 
 local defaultPos = frame.Position
+local isOpen = false
 
 local function openPanel()
+	if isOpen then
+		return
+	end
+	isOpen = true
 	gui.Enabled = true
 	fade.BackgroundTransparency = 0
 	frame.Position = defaultPos + UDim2.new(0, 0, 0, 12)
@@ -664,6 +650,7 @@ local function openPanel()
 		NearIntensity = 0.15,
 	}):Play()
 	selectFirstVisible()
+	layoutPanels()
 end
 
 local function closePanel()
@@ -687,6 +674,7 @@ local function closePanel()
 		gui.Enabled = false
 		frame.Position = defaultPos
 		fade.BackgroundTransparency = 1
+		isOpen = false
 	end)
 end
 
