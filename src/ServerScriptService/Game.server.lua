@@ -3,8 +3,6 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local State = require(ServerScriptService:WaitForChild("State"))
 
-Players.CharacterAutoLoads = false
-
 State.GetRemote("FishRequest")
 State.GetRemote("BuyItem")
 State.GetRemote("SelectMap")
