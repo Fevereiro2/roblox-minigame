@@ -1,4 +1,6 @@
 local Players = game:GetService("Players")
+local Lighting = game:GetService("Lighting")
+local SoundService = game:GetService("SoundService")
 local TweenService = game:GetService("TweenService")
 
 local player = Players.LocalPlayer
@@ -23,6 +25,38 @@ local function getUiBus()
 end
 
 local uiBus = getUiBus()
+
+local function playClick()
+	local sound = SoundService:FindFirstChild("UIClick")
+	if sound then
+		sound:Play()
+	end
+end
+
+local function getBlur()
+	local blur = Lighting:FindFirstChild("MenuBlur")
+	if not blur then
+		blur = Instance.new("BlurEffect")
+		blur.Name = "MenuBlur"
+		blur.Size = 0
+		blur.Parent = Lighting
+	end
+	return blur
+end
+
+local function getDepth()
+	local depth = Lighting:FindFirstChild("MenuDepth")
+	if not depth then
+		depth = Instance.new("DepthOfFieldEffect")
+		depth.Name = "MenuDepth"
+		depth.FarIntensity = 0
+		depth.NearIntensity = 0
+		depth.InFocusRadius = 30
+		depth.FocusDistance = 10
+		depth.Parent = Lighting
+	end
+	return depth
+end
 
 local gui = Instance.new("ScreenGui")
 gui.Name = "MainMenu"
@@ -201,6 +235,15 @@ local list = Instance.new("UIListLayout")
 list.Padding = UDim.new(0, 10)
 list.Parent = buttons
 
+local icons = {
+	Jogar = "rbxassetid://0",
+	Shop = "rbxassetid://0",
+	Peixes = "rbxassetid://0",
+	Personagem = "rbxassetid://0",
+	Canas = "rbxassetid://0",
+	Mapas = "rbxassetid://0",
+}
+
 local function applyHover(button, baseColor, hoverColor)
 	button.MouseEnter:Connect(function()
 		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = hoverColor }):Play()
@@ -221,7 +264,7 @@ local function styleButton(button, isPrimary)
 	button.ZIndex = 6
 
 	local padding = Instance.new("UIPadding")
-	padding.PaddingLeft = UDim.new(0, 18)
+	padding.PaddingLeft = UDim.new(0, 50)
 	padding.Parent = button
 
 	local corner = Instance.new("UICorner")
@@ -237,46 +280,61 @@ local function styleButton(button, isPrimary)
 	applyHover(button, button.BackgroundColor3, hoverColor)
 end
 
-local function makeButton(label, isPrimary)
+local function makeButton(label, isPrimary, iconId)
 	local button = Instance.new("TextButton")
 	button.Text = label
 	button.Parent = buttons
 	styleButton(button, isPrimary)
+
+	local icon = Instance.new("ImageLabel")
+	icon.Size = UDim2.new(0, 22, 0, 22)
+	icon.Position = UDim2.new(0, 18, 0.5, -11)
+	icon.BackgroundTransparency = 1
+	icon.Image = iconId
+	icon.ZIndex = 7
+	icon.Parent = button
+
 	return button
 end
 
-local playButton = makeButton("Jogar", true)
+local playButton = makeButton("Jogar", true, icons.Jogar)
 playButton.MouseButton1Click:Connect(function()
+	playClick()
 	uiBus:Fire("CloseAll")
 	uiBus:Fire("OpenPanel", "MapSelection")
 	gui.Enabled = false
 end)
 
-makeButton("Shop", false).MouseButton1Click:Connect(function()
+makeButton("Shop", false, icons.Shop).MouseButton1Click:Connect(function()
+	playClick()
 	uiBus:Fire("CloseAll")
 	uiBus:Fire("OpenPanel", "Shop")
 	gui.Enabled = false
 end)
 
-makeButton("Peixes", false).MouseButton1Click:Connect(function()
+makeButton("Peixes", false, icons.Peixes).MouseButton1Click:Connect(function()
+	playClick()
 	uiBus:Fire("CloseAll")
 	uiBus:Fire("OpenPanel", "Pokedex")
 	gui.Enabled = false
 end)
 
-makeButton("Personagem", false).MouseButton1Click:Connect(function()
+makeButton("Personagem", false, icons.Personagem).MouseButton1Click:Connect(function()
+	playClick()
 	uiBus:Fire("CloseAll")
 	uiBus:Fire("OpenPanel", "Character")
 	gui.Enabled = false
 end)
 
-makeButton("Canas", false).MouseButton1Click:Connect(function()
+makeButton("Canas", false, icons.Canas).MouseButton1Click:Connect(function()
+	playClick()
 	uiBus:Fire("CloseAll")
 	uiBus:Fire("OpenPanel", "Rods")
 	gui.Enabled = false
 end)
 
-makeButton("Mapas", false).MouseButton1Click:Connect(function()
+makeButton("Mapas", false, icons.Mapas).MouseButton1Click:Connect(function()
+	playClick()
 	uiBus:Fire("CloseAll")
 	uiBus:Fire("OpenPanel", "MapSelection")
 	gui.Enabled = false
@@ -304,11 +362,19 @@ local function openPanel()
 	gui.Enabled = true
 	fade.BackgroundTransparency = 0
 	content.Position = defaultPos + UDim2.new(0, 0, 0, 12)
+
 	TweenService:Create(fade, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
 		BackgroundTransparency = 1,
 	}):Play()
 	TweenService:Create(content, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
 		Position = defaultPos,
+	}):Play()
+	TweenService:Create(getBlur(), TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		Size = 12,
+	}):Play()
+	TweenService:Create(getDepth(), TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		FarIntensity = 0.25,
+		NearIntensity = 0.15,
 	}):Play()
 end
 
@@ -321,6 +387,13 @@ local function closePanel()
 	}):Play()
 	TweenService:Create(content, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
 		Position = defaultPos + UDim2.new(0, 0, 0, 12),
+	}):Play()
+	TweenService:Create(getBlur(), TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+		Size = 0,
+	}):Play()
+	TweenService:Create(getDepth(), TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+		FarIntensity = 0,
+		NearIntensity = 0,
 	}):Play()
 	task.delay(0.22, function()
 		gui.Enabled = false
