@@ -186,7 +186,7 @@ titleRow.ZIndex = 6
 titleRow.Parent = header
 
 local title = Instance.new("TextLabel")
-title.Size = UDim2.fromScale(1, 1)
+title.Size = UDim2.fromScale(0.6, 1)
 title.BackgroundTransparency = 1
 title.Font = Enum.Font.GothamBold
 title.TextSize = 18
@@ -195,6 +195,43 @@ title.Text = "Loja"
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.ZIndex = 6
 title.Parent = titleRow
+
+local coinsPanel = Instance.new("Frame")
+coinsPanel.Size = UDim2.fromScale(0.4, 1)
+coinsPanel.AnchorPoint = Vector2.new(1, 0)
+coinsPanel.Position = UDim2.fromScale(1, 0)
+coinsPanel.BackgroundTransparency = 1
+coinsPanel.ZIndex = 6
+coinsPanel.Parent = titleRow
+
+local coinsLayout = Instance.new("UIListLayout")
+coinsLayout.FillDirection = Enum.FillDirection.Vertical
+coinsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+coinsLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+coinsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+coinsLayout.Parent = coinsPanel
+
+local coinsLabel = Instance.new("TextLabel")
+coinsLabel.Size = UDim2.fromScale(1, 0.5)
+coinsLabel.BackgroundTransparency = 1
+coinsLabel.Font = Enum.Font.GothamSemibold
+coinsLabel.TextSize = 14
+coinsLabel.TextColor3 = Color3.fromRGB(230, 240, 245)
+coinsLabel.Text = "Moedas: 0"
+coinsLabel.TextXAlignment = Enum.TextXAlignment.Right
+coinsLabel.ZIndex = 6
+coinsLabel.Parent = coinsPanel
+
+local purchasedLabel = Instance.new("TextLabel")
+purchasedLabel.Size = UDim2.fromScale(1, 0.5)
+purchasedLabel.BackgroundTransparency = 1
+purchasedLabel.Font = Enum.Font.Gotham
+purchasedLabel.TextSize = 12
+purchasedLabel.TextColor3 = Color3.fromRGB(170, 210, 220)
+purchasedLabel.Text = "Compradas: 0"
+purchasedLabel.TextXAlignment = Enum.TextXAlignment.Right
+purchasedLabel.ZIndex = 6
+purchasedLabel.Parent = coinsPanel
 
 local tabsRow = Instance.new("Frame")
 tabsRow.Size = UDim2.fromScale(1, 0.45)
@@ -433,6 +470,23 @@ local function selectFirstVisible()
 	end
 	resetDetails()
 end
+
+local function updateCoins()
+	local coins = player:GetAttribute("Coins")
+	local purchased = player:GetAttribute("PurchasedCoins")
+	if typeof(coins) ~= "number" then
+		coins = 0
+	end
+	if typeof(purchased) ~= "number" then
+		purchased = 0
+	end
+	coinsLabel.Text = string.format("Moedas: %d", coins)
+	purchasedLabel.Text = string.format("Compradas: %d", purchased)
+end
+
+player:GetAttributeChangedSignal("Coins"):Connect(updateCoins)
+player:GetAttributeChangedSignal("PurchasedCoins"):Connect(updateCoins)
+updateCoins()
 
 buyButton.MouseButton1Click:Connect(function()
 	if not selected then
