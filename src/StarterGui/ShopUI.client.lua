@@ -336,6 +336,7 @@ local cards = {}
 local cardData = {}
 local currentColumns = 4
 local updateCanvas
+local setSelection
 
 local function resetDetails()
 	selected = nil
@@ -360,7 +361,7 @@ local function selectFirstVisible()
 	resetDetails()
 end
 
-local function setSelection(data)
+setSelection = function(data)
 	selected = data
 	detailTitle.Text = data.name
 	detailType.Text = data.typeLabel
