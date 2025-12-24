@@ -30,8 +30,15 @@ local function getUiBus()
 end
 
 local uiBus = getUiBus()
-local camera = Workspace.CurrentCamera
+local camera = Workspace.CurrentCamera or Workspace:WaitForChild("Camera")
 local menuCameraCFrame = CFrame.new(0, 12, 32) * CFrame.Angles(0, math.rad(180), 0)
+
+local function setMenuCamera()
+	if camera then
+		camera.CameraType = Enum.CameraType.Scriptable
+		camera.CFrame = menuCameraCFrame
+	end
+end
 
 local function ensureSound(name, soundId, volume, looped)
 	local sound = SoundService:FindFirstChild(name)
@@ -52,6 +59,9 @@ if not ambient.IsPlaying then
 end
 
 ensureSound("UIClick", "rbxassetid://0", 0.6, false)
+
+lockControls()
+setMenuCamera()
 
 local function sinkAction()
 	return Enum.ContextActionResult.Sink
@@ -118,10 +128,7 @@ uiBus.Event:Connect(function(action)
 		requestFish()
 	elseif action == "OpenPanel" then
 		lockControls()
-		if camera then
-			camera.CameraType = Enum.CameraType.Scriptable
-			camera.CFrame = menuCameraCFrame
-		end
+		setMenuCamera()
 	elseif action == "CloseAll" then
 		unlockControls()
 		if camera then
