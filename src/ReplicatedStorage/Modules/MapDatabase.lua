@@ -53,4 +53,13 @@ function MapDatabase.GetById(mapId)
 	return nil
 end
 
+function MapDatabase.GetByGamePassId(gamePassId)
+	for _, map in ipairs(MapDatabase.Maps) do
+		if map.gamePassId == gamePassId then
+			return map
+		end
+	end
+	return nil
+end
+
 return MapDatabase
