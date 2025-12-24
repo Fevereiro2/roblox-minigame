@@ -6,6 +6,8 @@ local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
+local BACKGROUND_IMAGE = "rbxassetid://88755976907991"
+
 local function getUiBus()
 	local folder = playerGui:FindFirstChild("UIEvents")
 	if not folder then
@@ -82,6 +84,15 @@ background.Size = UDim2.fromScale(1, 1)
 background.BackgroundColor3 = Color3.fromRGB(8, 30, 38)
 background.BorderSizePixel = 0
 background.Parent = gui
+
+local wallpaper = Instance.new("ImageLabel")
+wallpaper.Name = "Wallpaper"
+wallpaper.Size = UDim2.fromScale(1, 1)
+wallpaper.BackgroundTransparency = 1
+wallpaper.Image = BACKGROUND_IMAGE
+wallpaper.ScaleType = Enum.ScaleType.Crop
+wallpaper.ImageTransparency = 0.2
+wallpaper.Parent = background
 
 local gradient = Instance.new("UIGradient")
 gradient.Color = ColorSequence.new({
