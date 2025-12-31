@@ -92,7 +92,7 @@ end
 local function buildBackground(parent)
 	local background = Instance.new("Frame")
 	background.Size = UDim2.fromScale(1, 1)
-	background.BackgroundColor3 = Color3.fromRGB(8, 30, 38)
+	background.BackgroundColor3 = Colors.Background
 	background.BorderSizePixel = 0
 	background.Parent = parent
 
@@ -119,24 +119,9 @@ end
 local background = buildBackground(gui)
 local fade = addFade(background)
 
-local frame = Instance.new("Frame")
-frame.AnchorPoint = Vector2.new(0.5, 0.5)
-frame.Size = UDim2.fromScale(0.86, 0.84)
-frame.Position = UDim2.fromScale(0.5, 0.52)
-frame.BackgroundColor3 = Color3.fromRGB(10, 26, 34)
+local frame = Panel.Create(background, UDim2.fromScale(0.86, 0.84), UDim2.fromScale(0.5, 0.52))
 frame.BackgroundTransparency = 0.15
-frame.BorderSizePixel = 0
 frame.ZIndex = 5
-frame.Parent = background
-
-local frameCorner = Instance.new("UICorner")
-frameCorner.CornerRadius = UDim.new(0.04, 0)
-frameCorner.Parent = frame
-
-local frameStroke = Instance.new("UIStroke")
-frameStroke.Color = Color3.fromRGB(90, 150, 170)
-frameStroke.Thickness = 1
-frameStroke.Parent = frame
 
 local frameSize = Instance.new("UISizeConstraint")
 frameSize.MinSize = Vector2.new(560, 360)
