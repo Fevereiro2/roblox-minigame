@@ -891,6 +891,20 @@ buyEvent.OnClientEvent:Connect(function(payload)
 	end
 
 	if payload.ok then
+		if payload.status ~= "PROMPTED" and (payload.itemType == "Rod" or payload.itemType == "Map") then
+			for _, data in ipairs(items) do
+				if data.itemType == payload.itemType and data.itemId == payload.itemId then
+					data.owned = true
+					if data.badge then
+						data.badge.Visible = true
+					end
+					if selected == data then
+						setSelection(data)
+					end
+					break
+				end
+			end
+		end
 		uiBus:Fire("Notify", "Compra realizada")
 	else
 		uiBus:Fire("Notify", "Compra falhou")
