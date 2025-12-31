@@ -248,6 +248,9 @@ local function openPanel()
 end
 
 local function closePanel()
+	if playerGui:GetAttribute("PanelTarget") == PANEL_NAME then
+		return
+	end
 	if not gui.Enabled then
 		return
 	end
