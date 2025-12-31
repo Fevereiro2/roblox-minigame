@@ -64,6 +64,25 @@ function State.MergeDefaults(defaults, loaded)
 	return data
 end
 
+function State.MergeData(base, incoming)
+	local data = cloneTable(base or {})
+	if type(incoming) ~= "table" then
+		return data
+	end
+
+	for key, value in pairs(incoming) do
+		if type(value) == "table" and type(data[key]) == "table" then
+			for innerKey, innerValue in pairs(value) do
+				data[key][innerKey] = innerValue
+			end
+		else
+			data[key] = value
+		end
+	end
+
+	return data
+end
+
 function State.GetData(player)
 	return State.PlayerData[player.UserId]
 end
@@ -101,7 +120,10 @@ function State.SavePlayer(player)
 	local payload = cloneTable(data)
 
 	pcall(function()
-		State.Store:SetAsync(key, payload)
+		State.Store:UpdateAsync(key, function(old)
+			local base = State.MergeDefaults(State.DefaultData(), old)
+			return State.MergeData(base, payload)
+		end)
 	end)
 end
 
