@@ -7,6 +7,10 @@ local playerGui = player:WaitForChild("PlayerGui")
 local getFishRequest = require(ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("FishRequest"))
 local fishEvent = getFishRequest()
 
+local uiRoot = playerGui:WaitForChild("UI")
+local Theme = require(uiRoot:WaitForChild("Theme"))
+local Colors = Theme.Colors
+
 local root = script:FindFirstAncestor("StarterPlayerScripts") or script.Parent.Parent
 local UIBus = require(root:WaitForChild("Systems"):WaitForChild("UIBus"))
 local uiBus = UIBus.Get()
@@ -29,8 +33,8 @@ local function getInfoLabel(hud)
 		label.Name = "FishingInfo"
 		label.Size = UDim2.new(0, 360, 0, 40)
 		label.Position = UDim2.new(0, 16, 0, 16)
-		label.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-		label.TextColor3 = Color3.fromRGB(240, 240, 240)
+		label.BackgroundColor3 = Colors.HudBackground
+		label.TextColor3 = Colors.Text
 		label.Font = Enum.Font.GothamSemibold
 		label.TextSize = 16
 		label.TextXAlignment = Enum.TextXAlignment.Left
