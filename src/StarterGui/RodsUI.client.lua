@@ -249,6 +249,17 @@ local function addSection(text)
 	label.Parent = list
 end
 
+local function getRarityColor(rod)
+	if rod.rarityBonus >= 6 then
+		return Color3.fromRGB(220, 90, 255)
+	elseif rod.rarityBonus >= 4 then
+		return Color3.fromRGB(255, 190, 80)
+	elseif rod.rarityBonus >= 2 then
+		return Color3.fromRGB(90, 170, 255)
+	end
+	return Color3.fromRGB(170, 210, 220)
+end
+
 local function addRodCard(rod, tag, equipped, locked)
 	local row = Instance.new("Frame")
 	row.Size = UDim2.fromScale(1, 0)
@@ -305,11 +316,23 @@ local function addRodCard(rod, tag, equipped, locked)
 	stats.BackgroundTransparency = 1
 	stats.Font = Enum.Font.Gotham
 	stats.TextSize = 12
-	stats.TextColor3 = Color3.fromRGB(190, 220, 235)
+	stats.TextColor3 = getRarityColor(rod)
 	stats.TextXAlignment = Enum.TextXAlignment.Left
 	stats.Text = string.format("Raridade +%d | Tempo %0.1fs | %s", rod.rarityBonus, rod.speed, tag)
 	stats.ZIndex = 7
 	stats.Parent = row
+
+	local priceLabel = Instance.new("TextLabel")
+	priceLabel.Size = UDim2.fromScale(1, 0)
+	priceLabel.AutomaticSize = Enum.AutomaticSize.Y
+	priceLabel.BackgroundTransparency = 1
+	priceLabel.Font = Enum.Font.Gotham
+	priceLabel.TextSize = 12
+	priceLabel.TextColor3 = Color3.fromRGB(190, 220, 235)
+	priceLabel.TextXAlignment = Enum.TextXAlignment.Left
+	priceLabel.Text = string.format("Preco: %d %s", rod.price, rod.currency)
+	priceLabel.ZIndex = 7
+	priceLabel.Parent = row
 
 	local equipButton = Instance.new("TextButton")
 	equipButton.Size = UDim2.fromScale(1, 0)
@@ -363,6 +386,41 @@ local function addRodCard(rod, tag, equipped, locked)
 		playClick()
 		equipEvent:FireServer(rod.id)
 	end)
+
+	if locked then
+		local buyButton = Instance.new("TextButton")
+		buyButton.Size = UDim2.fromScale(1, 0)
+		buyButton.AutomaticSize = Enum.AutomaticSize.Y
+		buyButton.BackgroundColor3 = Color3.fromRGB(18, 120, 140)
+		buyButton.TextColor3 = Color3.fromRGB(245, 245, 245)
+		buyButton.Font = Enum.Font.GothamSemibold
+		buyButton.TextSize = 13
+		buyButton.Text = "Comprar na loja"
+		buyButton.AutoButtonColor = false
+		buyButton.ZIndex = 7
+		buyButton.Parent = row
+
+		local buyCorner = Instance.new("UICorner")
+		buyCorner.CornerRadius = UDim.new(0.25, 0)
+		buyCorner.Parent = buyButton
+
+		local buyStroke = Instance.new("UIStroke")
+		buyStroke.Color = Color3.fromRGB(140, 230, 245)
+		buyStroke.Thickness = 1
+		buyStroke.Parent = buyButton
+
+		buyButton.MouseEnter:Connect(function()
+			TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(22, 140, 160) }):Play()
+		end)
+		buyButton.MouseLeave:Connect(function()
+			TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(18, 120, 140) }):Play()
+		end)
+		buyButton.MouseButton1Click:Connect(function()
+			playClick()
+			uiBus:Fire("CloseAll")
+			uiBus:Fire("OpenPanel", "Shop")
+		end)
+	end
 end
 
 local function rebuildList(profile)
