@@ -362,9 +362,15 @@ buyStroke.Thickness = 1
 buyStroke.Parent = buyButton
 
 buyButton.MouseEnter:Connect(function()
+	if not buyButton.Active then
+		return
+	end
 	TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(26, 170, 190) }):Play()
 end)
 buyButton.MouseLeave:Connect(function()
+	if not buyButton.Active then
+		return
+	end
 	TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(18, 150, 170) }):Play()
 end)
 
