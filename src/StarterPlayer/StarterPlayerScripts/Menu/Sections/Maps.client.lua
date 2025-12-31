@@ -225,11 +225,13 @@ layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
 end)
 
 local defaultPos = frame.Position
+local PANEL_NAME = "Maps"
 
 local function openPanel()
 	gui.Enabled = true
 	fade.BackgroundTransparency = 0
 	frame.Position = defaultPos + UDim2.new(0, 0, 0, 12)
+	playerGui:SetAttribute("PanelTarget", "")
 	TweenService:Create(fade, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
 		BackgroundTransparency = 1,
 	}):Play()
@@ -276,6 +278,15 @@ uiBus.Event:Connect(function(action, panel)
 		closePanel()
 	end
 end)
+
+local function checkPanelTarget()
+	if playerGui:GetAttribute("PanelTarget") == PANEL_NAME then
+		openPanel()
+	end
+end
+
+playerGui:GetAttributeChangedSignal("PanelTarget"):Connect(checkPanelTarget)
+checkPanelTarget()
 
 selectEvent.OnClientEvent:Connect(function(payload)
 	if type(payload) ~= "table" then
