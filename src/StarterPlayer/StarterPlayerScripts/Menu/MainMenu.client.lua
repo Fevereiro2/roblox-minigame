@@ -1,17 +1,15 @@
 local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local SoundService = game:GetService("SoundService")
 local TweenService = game:GetService("TweenService")
 
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
-local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("UIConfig"))
-local LOGO_IMAGE = UIConfig.Assets.Logo
-local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
+local LOGO_IMAGE = Theme.Assets.Logo
+local BACKGROUND_IMAGE = Theme.Assets.Wallpaper
 
-local uiRoot = playerGui:WaitForChild("UI")
+local uiRoot = game:GetService("StarterGui"):WaitForChild("UI")
 local Theme = require(uiRoot:WaitForChild("Theme"))
 local components = uiRoot:WaitForChild("Components")
 local Button = require(components:WaitForChild("Button"))
@@ -345,3 +343,4 @@ end)
 
 playerGui:SetAttribute("MenuOpen", true)
 uiBus:Fire("OpenPanel", "MainMenu")
+
