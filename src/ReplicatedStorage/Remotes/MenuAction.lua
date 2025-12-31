@@ -19,5 +19,5 @@ local function getRemote(name)
 end
 
 return function()
-	return getRemote("SelectMap")
+	return getRemote("MenuAction")
 end
