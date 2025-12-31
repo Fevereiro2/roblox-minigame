@@ -19,6 +19,16 @@ local ProductDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitFo
 local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("UIConfig"))
 local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
 
+local uiRoot = playerGui:WaitForChild("UI")
+local Theme = require(uiRoot:WaitForChild("Theme"))
+local components = uiRoot:WaitForChild("Components")
+local Panel = require(components:WaitForChild("Panel"))
+local Colors = Theme.Colors
+local Fonts = Theme.Fonts
+
+local root = script:FindFirstAncestor("StarterPlayerScripts") or script.Parent.Parent.Parent
+local UIBus = require(root:WaitForChild("Systems"):WaitForChild("UIBus"))
+
 local categoryIcons = {
 	Rods = "rbxassetid://0",
 	Maps = "rbxassetid://0",
@@ -26,25 +36,7 @@ local categoryIcons = {
 	Boosts = "rbxassetid://0",
 }
 
-local function getUiBus()
-	local folder = playerGui:FindFirstChild("UIEvents")
-	if not folder then
-		folder = Instance.new("Folder")
-		folder.Name = "UIEvents"
-		folder.Parent = playerGui
-	end
-
-	local bus = folder:FindFirstChild("UIBus")
-	if not bus then
-		bus = Instance.new("BindableEvent")
-		bus.Name = "UIBus"
-		bus.Parent = folder
-	end
-
-	return bus
-end
-
-local uiBus = getUiBus()
+local uiBus = UIBus.Get()
 
 local function playClick()
 	local sound = SoundService:FindFirstChild("UIClick")
