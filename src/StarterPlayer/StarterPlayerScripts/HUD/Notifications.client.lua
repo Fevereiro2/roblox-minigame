@@ -4,6 +4,10 @@ local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
+local uiRoot = playerGui:WaitForChild("UI")
+local Theme = require(uiRoot:WaitForChild("Theme"))
+local Colors = Theme.Colors
+
 local root = script:FindFirstAncestor("StarterPlayerScripts") or script.Parent.Parent
 local UIBus = require(root:WaitForChild("Systems"):WaitForChild("UIBus"))
 local uiBus = UIBus.Get()
@@ -26,8 +30,8 @@ local function getLabel(hud)
 		label.Name = "NotifyLabel"
 		label.Size = UDim2.new(0, 320, 0, 36)
 		label.Position = UDim2.new(0.5, -160, 0, 70)
-		label.BackgroundColor3 = Color3.fromRGB(18, 32, 40)
-		label.TextColor3 = Color3.fromRGB(240, 240, 240)
+		label.BackgroundColor3 = Colors.NotificationBackground
+		label.TextColor3 = Colors.Text
 		label.Font = Enum.Font.GothamSemibold
 		label.TextSize = 14
 		label.Text = ""
@@ -39,7 +43,7 @@ local function getLabel(hud)
 		corner.Parent = label
 
 		local stroke = Instance.new("UIStroke")
-		stroke.Color = Color3.fromRGB(70, 120, 140)
+		stroke.Color = Colors.PanelStroke
 		stroke.Thickness = 1
 		stroke.Parent = label
 	end
