@@ -9,10 +9,9 @@ local playerGui = player:WaitForChild("PlayerGui")
 
 local FishDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("FishDatabase"))
 
-local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("UIConfig"))
-local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
+local BACKGROUND_IMAGE = Theme.Assets.Wallpaper
 
-local uiRoot = playerGui:WaitForChild("UI")
+local uiRoot = game:GetService("StarterGui"):WaitForChild("UI")
 local Theme = require(uiRoot:WaitForChild("Theme"))
 local components = uiRoot:WaitForChild("Components")
 local Panel = require(components:WaitForChild("Panel"))
@@ -262,3 +261,4 @@ uiBus.Event:Connect(function(action, payload)
 		discovered[payload] = true
 	end
 end)
+
