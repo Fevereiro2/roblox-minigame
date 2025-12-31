@@ -9,14 +9,13 @@ local playerGui = player:WaitForChild("PlayerGui")
 
 local FishDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("FishDatabase"))
 
-local BACKGROUND_IMAGE = Theme.Assets.Wallpaper
-
 local uiRoot = game:GetService("StarterGui"):WaitForChild("UI")
 local Theme = require(uiRoot:WaitForChild("Theme"))
 local components = uiRoot:WaitForChild("Components")
 local Panel = require(components:WaitForChild("Panel"))
 local Colors = Theme.Colors
 local Fonts = Theme.Fonts
+local BACKGROUND_IMAGE = Theme.Assets.Wallpaper
 
 local root = script:FindFirstAncestor("StarterPlayerScripts") or script.Parent.Parent.Parent
 local UIBus = require(root:WaitForChild("Systems"):WaitForChild("UIBus"))
