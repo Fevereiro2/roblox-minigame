@@ -128,9 +128,9 @@ local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, -40, 0, 34)
 title.Position = UDim2.new(0, 20, 0, 14)
 title.BackgroundTransparency = 1
-title.Font = Enum.Font.GothamBold
+title.Font = Fonts.Heading
 title.TextSize = 18
-title.TextColor3 = Color3.fromRGB(240, 240, 240)
+title.TextColor3 = Colors.Text
 title.Text = "Selecione um mapa"
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.ZIndex = 6
@@ -139,9 +139,9 @@ title.Parent = frame
 local backButton = Instance.new("TextButton")
 backButton.Size = UDim2.new(0, 90, 0, 28)
 backButton.Position = UDim2.new(0, 20, 0, 50)
-backButton.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
-backButton.TextColor3 = Color3.fromRGB(220, 230, 240)
-backButton.Font = Enum.Font.GothamSemibold
+backButton.BackgroundColor3 = Colors.Button
+backButton.TextColor3 = Colors.Text
+backButton.Font = Fonts.BodyBold
 backButton.TextSize = 14
 backButton.Text = "< Voltar"
 backButton.AutoButtonColor = false
@@ -153,15 +153,15 @@ backCorner.CornerRadius = UDim.new(0, 10)
 backCorner.Parent = backButton
 
 local backStroke = Instance.new("UIStroke")
-backStroke.Color = Color3.fromRGB(70, 120, 140)
+backStroke.Color = Colors.PanelStroke
 backStroke.Thickness = 1
 backStroke.Parent = backButton
 
 backButton.MouseEnter:Connect(function()
-	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(20, 52, 66) }):Play()
+	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Colors.ButtonHover }):Play()
 end)
 backButton.MouseLeave:Connect(function()
-	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(16, 40, 52) }):Play()
+	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Colors.Button }):Play()
 end)
 backButton.MouseButton1Click:Connect(function()
 	playClick()
@@ -173,8 +173,8 @@ local statusLabel = Instance.new("TextLabel")
 statusLabel.Size = UDim2.new(1, -40, 0, 20)
 statusLabel.Position = UDim2.new(0, 20, 0, 86)
 statusLabel.BackgroundTransparency = 1
-statusLabel.TextColor3 = Color3.fromRGB(190, 210, 220)
-statusLabel.Font = Enum.Font.Gotham
+statusLabel.TextColor3 = Colors.TextMuted
+statusLabel.Font = Fonts.Body
 statusLabel.TextSize = 13
 statusLabel.Text = ""
 statusLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -198,9 +198,9 @@ layout.Parent = list
 local function addMapButton(map)
 	local button = Instance.new("TextButton")
 	button.Size = UDim2.new(1, 0, 0, 38)
-	button.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
-	button.TextColor3 = Color3.fromRGB(240, 240, 240)
-	button.Font = Enum.Font.GothamSemibold
+	button.BackgroundColor3 = Colors.Button
+	button.TextColor3 = Colors.Text
+	button.Font = Fonts.BodyBold
 	button.TextSize = 14
 	button.TextXAlignment = Enum.TextXAlignment.Left
 	button.Text = string.format("%s - %d %s", map.name, map.price, map.currency)
@@ -217,15 +217,15 @@ local function addMapButton(map)
 	corner.Parent = button
 
 	local stroke = Instance.new("UIStroke")
-	stroke.Color = Color3.fromRGB(70, 120, 140)
+	stroke.Color = Colors.PanelStroke
 	stroke.Thickness = 1
 	stroke.Parent = button
 
 	button.MouseEnter:Connect(function()
-		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(20, 52, 66) }):Play()
+		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = Colors.ButtonHover }):Play()
 	end)
 	button.MouseLeave:Connect(function()
-		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(16, 40, 52) }):Play()
+		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = Colors.Button }):Play()
 	end)
 
 	button.MouseButton1Click:Connect(function()
