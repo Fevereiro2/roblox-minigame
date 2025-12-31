@@ -3,7 +3,7 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
-local uiRoot = playerGui:WaitForChild("UI")
+local uiRoot = game:GetService("StarterGui"):WaitForChild("UI")
 local Theme = require(uiRoot:WaitForChild("Theme"))
 local Colors = Theme.Colors
 
@@ -49,3 +49,4 @@ end
 
 player:GetAttributeChangedSignal("Coins"):Connect(updateCoins)
 updateCoins()
+
