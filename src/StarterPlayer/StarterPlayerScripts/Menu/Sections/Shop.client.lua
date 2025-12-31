@@ -7,7 +7,7 @@ local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
-local getBuyItem = require(ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("BuyItem"))
+local getBuyItem = require(ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("ShopAction"))
 local buyEvent = getBuyItem()
 local getProfileRemote = require(ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("GetProfile"))
 local getProfile = getProfileRemote()
