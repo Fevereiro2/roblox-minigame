@@ -109,7 +109,7 @@ local frame = Instance.new("Frame")
 frame.AnchorPoint = Vector2.new(0.5, 0.5)
 frame.Size = UDim2.new(0.72, 0, 0.78, 0)
 frame.Position = UDim2.new(0.5, 0, 0.52, 0)
-frame.BackgroundColor3 = Color3.fromRGB(10, 26, 34)
+frame.BackgroundColor3 = Colors.Panel
 frame.BackgroundTransparency = 0.15
 frame.BorderSizePixel = 0
 frame.ZIndex = 5
@@ -120,7 +120,7 @@ frameCorner.CornerRadius = UDim.new(0, 16)
 frameCorner.Parent = frame
 
 local frameStroke = Instance.new("UIStroke")
-frameStroke.Color = Color3.fromRGB(90, 150, 170)
+frameStroke.Color = Colors.PanelStroke
 frameStroke.Thickness = 1
 frameStroke.Parent = frame
 
