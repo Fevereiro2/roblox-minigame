@@ -9,6 +9,8 @@ local playerGui = player:WaitForChild("PlayerGui")
 
 local getBuyItem = require(ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("BuyItem"))
 local buyEvent = getBuyItem()
+local getProfileRemote = require(ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("GetProfile"))
+local getProfile = getProfileRemote()
 
 local RodDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("RodDatabase"))
 local MapDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("MapDatabase"))
@@ -439,6 +441,8 @@ local selected
 local currentTab = "All"
 local cards = {}
 local cardData = {}
+local ownedRods = {}
+local ownedMaps = {}
 
 local function resetDetails()
 	selected = nil
@@ -447,6 +451,19 @@ local function resetDetails()
 	detailDesc.Text = "Clique num item para ver detalhes."
 	detailPrice.Text = ""
 	buyButton.Text = "Comprar"
+	buyButton.Active = false
+	buyButton.BackgroundColor3 = Color3.fromRGB(70, 90, 100)
+end
+
+local function setBuyState(owned)
+	if owned then
+		buyButton.Text = "Comprado"
+		buyButton.Active = false
+		buyButton.BackgroundColor3 = Color3.fromRGB(70, 90, 100)
+	else
+		buyButton.Active = true
+		buyButton.BackgroundColor3 = Color3.fromRGB(18, 150, 170)
+	end
 end
 
 local function setSelection(data)
@@ -456,6 +473,7 @@ local function setSelection(data)
 	detailDesc.Text = data.description
 	detailPrice.Text = data.priceText
 	buyButton.Text = data.actionText
+	setBuyState(data.owned == true)
 end
 
 local function selectFirstVisible()
@@ -592,6 +610,27 @@ local function makeCard(data)
 	price.ZIndex = 7
 	price.Parent = card
 
+	local badge
+	if data.ownable then
+		badge = Instance.new("TextLabel")
+		badge.Size = UDim2.fromScale(0.45, 0.3)
+		badge.AnchorPoint = Vector2.new(1, 0)
+		badge.Position = UDim2.fromScale(1, 0)
+		badge.BackgroundColor3 = Color3.fromRGB(30, 90, 70)
+		badge.TextColor3 = Color3.fromRGB(235, 255, 245)
+		badge.Font = Enum.Font.GothamSemibold
+		badge.TextSize = 11
+		badge.Text = "OWNED"
+		badge.TextXAlignment = Enum.TextXAlignment.Center
+		badge.Visible = false
+		badge.ZIndex = 8
+		badge.Parent = card
+
+		local badgeCorner = Instance.new("UICorner")
+		badgeCorner.CornerRadius = UDim.new(0.3, 0)
+		badgeCorner.Parent = badge
+	end
+
 	card.MouseEnter:Connect(function()
 		TweenService:Create(card, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(20, 52, 66) }):Play()
 	end)
@@ -604,6 +643,7 @@ local function makeCard(data)
 		setSelection(data)
 	end)
 
+	data.badge = badge
 	return card
 end
 
