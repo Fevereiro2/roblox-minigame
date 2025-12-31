@@ -469,6 +469,7 @@ end
 
 local defaultPos = frame.Position
 local isOpen = false
+local PANEL_NAME = "Rods"
 
 local function openPanel()
 	if isOpen then
@@ -476,6 +477,7 @@ local function openPanel()
 	end
 	isOpen = true
 	gui.Enabled = true
+	playerGui:SetAttribute("PanelTarget", "")
 	fade.BackgroundTransparency = 0
 	frame.Position = defaultPos + UDim2.new(0, 0, 0, 0.02)
 	TweenService:Create(fade, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
@@ -537,6 +539,15 @@ uiBus.Event:Connect(function(action, panel)
 		closePanel()
 	end
 end)
+
+local function checkPanelTarget()
+	if playerGui:GetAttribute("PanelTarget") == PANEL_NAME then
+		openPanel()
+	end
+end
+
+playerGui:GetAttributeChangedSignal("PanelTarget"):Connect(checkPanelTarget)
+checkPanelTarget()
 
 player:GetAttributeChangedSignal("EquippedRod"):Connect(function()
 	if gui.Enabled then
