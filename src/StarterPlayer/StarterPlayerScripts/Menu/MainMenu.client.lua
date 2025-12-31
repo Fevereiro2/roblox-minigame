@@ -6,9 +6,6 @@ local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
-local LOGO_IMAGE = Theme.Assets.Logo
-local BACKGROUND_IMAGE = Theme.Assets.Wallpaper
-
 local uiRoot = game:GetService("StarterGui"):WaitForChild("UI")
 local Theme = require(uiRoot:WaitForChild("Theme"))
 local components = uiRoot:WaitForChild("Components")
@@ -16,6 +13,8 @@ local Button = require(components:WaitForChild("Button"))
 local Panel = require(components:WaitForChild("Panel"))
 local Colors = Theme.Colors
 local Fonts = Theme.Fonts
+local LOGO_IMAGE = Theme.Assets.Logo
+local BACKGROUND_IMAGE = Theme.Assets.Wallpaper
 
 local root = script:FindFirstAncestor("StarterPlayerScripts") or script.Parent.Parent
 local UIBus = require(root:WaitForChild("Systems"):WaitForChild("UIBus"))
