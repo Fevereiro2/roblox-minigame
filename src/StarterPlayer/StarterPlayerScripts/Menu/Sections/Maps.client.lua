@@ -299,7 +299,7 @@ local function closePanel()
 end
 
 uiBus.Event:Connect(function(action, panel)
-	if action == "OpenPanel" and (panel == "MapSelection" or panel == "Maps" or panel == "Play") then
+	if action == "OpenPanel" and (panel == "MapSelection" or panel == "Maps") then
 		openPanel()
 	elseif action == "CloseAll" then
 		closePanel()
