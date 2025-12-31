@@ -781,6 +781,44 @@ layoutPanels()
 local defaultPos = frame.Position
 local isOpen = false
 
+local function applyOwnership(profile)
+	local unlockedRods = {}
+	local unlockedMaps = {}
+	if type(profile) == "table" then
+		for key, value in pairs(profile.UnlockedRods or {}) do
+			if value then
+				unlockedRods[key] = true
+			end
+		end
+		for key, value in pairs(profile.UnlockedMaps or {}) do
+			if value then
+				unlockedMaps[key] = true
+			end
+		end
+	end
+	ownedRods = unlockedRods
+	ownedMaps = unlockedMaps
+
+	for _, data in ipairs(items) do
+		if data.itemType == "Rod" then
+			data.owned = ownedRods[data.itemId] == true
+		elseif data.itemType == "Map" then
+			data.owned = ownedMaps[data.itemId] == true
+		else
+			data.owned = false
+		end
+		if data.badge then
+			data.badge.Visible = data.owned
+		end
+	end
+
+	if selected then
+		setSelection(selected)
+	else
+		selectFirstVisible()
+	end
+end
+
 local function openPanel()
 	if isOpen then
 		return
@@ -804,6 +842,14 @@ local function openPanel()
 	}):Play()
 	layoutPanels()
 	selectFirstVisible()
+	local ok, profile = pcall(function()
+		return getProfile:InvokeServer()
+	end)
+	if ok and type(profile) == "table" then
+		applyOwnership(profile)
+	else
+		applyOwnership(nil)
+	end
 end
 
 local function closePanel()
