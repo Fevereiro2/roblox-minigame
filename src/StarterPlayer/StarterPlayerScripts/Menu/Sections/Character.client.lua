@@ -1,12 +1,14 @@
 local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local SoundService = game:GetService("SoundService")
 local TweenService = game:GetService("TweenService")
 
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
-local BACKGROUND_IMAGE = "rbxassetid://88755976907991"
+local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("UIConfig"))
+local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
 
 local function getUiBus()
 	local folder = playerGui:FindFirstChild("UIEvents")
