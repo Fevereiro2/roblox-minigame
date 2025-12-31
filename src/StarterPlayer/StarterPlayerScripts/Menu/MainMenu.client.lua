@@ -374,4 +374,5 @@ uiBus.Event:Connect(function(action, panel)
 	end
 end)
 
-openPanel()
+playerGui:SetAttribute("MenuOpen", true)
+uiBus:Fire("OpenPanel", "MainMenu")
