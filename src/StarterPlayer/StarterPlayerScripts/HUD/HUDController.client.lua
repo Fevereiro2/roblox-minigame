@@ -7,7 +7,7 @@ local playerGui = player:WaitForChild("PlayerGui")
 local getFishRequest = require(ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("FishRequest"))
 local fishEvent = getFishRequest()
 
-local uiRoot = playerGui:WaitForChild("UI")
+local uiRoot = game:GetService("StarterGui"):WaitForChild("UI")
 local Theme = require(uiRoot:WaitForChild("Theme"))
 local Colors = Theme.Colors
 
@@ -68,3 +68,4 @@ fishEvent.OnClientEvent:Connect(function(payload)
 	setInfo(string.format("Pegou %s (%s) +%d moedas", payload.fishName, payload.rarity, payload.coins))
 	uiBus:Fire("FishDiscovered", payload.fishId)
 end)
+
