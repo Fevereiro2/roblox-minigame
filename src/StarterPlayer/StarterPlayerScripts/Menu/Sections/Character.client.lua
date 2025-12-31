@@ -7,11 +7,12 @@ local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
-local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("UIConfig"))
-local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
+local BACKGROUND_IMAGE = Theme.Assets.Wallpaper
 
-local uiRoot = playerGui:WaitForChild("UI")
+local uiRoot = game:GetService("StarterGui"):WaitForChild("UI")
 local Theme = require(uiRoot:WaitForChild("Theme"))
+local components = uiRoot:WaitForChild("Components")
+local Panel = require(components:WaitForChild("Panel"))
 local Colors = Theme.Colors
 local Fonts = Theme.Fonts
 
@@ -92,24 +93,9 @@ gradient.Parent = background
 
 local fade = addFade(background)
 
-local frame = Instance.new("Frame")
-frame.AnchorPoint = Vector2.new(0.5, 0.5)
-frame.Size = UDim2.new(0.6, 0, 0.6, 0)
-frame.Position = UDim2.new(0.5, 0, 0.5, 0)
-frame.BackgroundColor3 = Colors.Panel
+local frame = Panel.Create(background, UDim2.new(0.6, 0, 0.6, 0), UDim2.new(0.5, 0, 0.5, 0))
 frame.BackgroundTransparency = 0.15
-frame.BorderSizePixel = 0
 frame.ZIndex = 5
-frame.Parent = background
-
-local frameCorner = Instance.new("UICorner")
-frameCorner.CornerRadius = UDim.new(0, 16)
-frameCorner.Parent = frame
-
-local frameStroke = Instance.new("UIStroke")
-frameStroke.Color = Colors.PanelStroke
-frameStroke.Thickness = 1
-frameStroke.Parent = frame
 
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, -40, 0, 34)
@@ -222,3 +208,4 @@ uiBus.Event:Connect(function(action, panel)
 		closePanel()
 	end
 end)
+
