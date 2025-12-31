@@ -175,9 +175,9 @@ titleRowLayout.Parent = titleRow
 local title = Instance.new("TextLabel")
 title.Size = UDim2.fromScale(0.5, 1)
 title.BackgroundTransparency = 1
-title.Font = Enum.Font.GothamBold
+title.Font = Fonts.Heading
 title.TextSize = 18
-title.TextColor3 = Color3.fromRGB(240, 240, 240)
+title.TextColor3 = Colors.Text
 title.Text = "Loja"
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.ZIndex = 6
@@ -213,9 +213,9 @@ coinsLayout.Parent = coinsPanel
 local coinsLabel = Instance.new("TextLabel")
 coinsLabel.Size = UDim2.fromScale(1, 0.5)
 coinsLabel.BackgroundTransparency = 1
-coinsLabel.Font = Enum.Font.GothamSemibold
+coinsLabel.Font = Fonts.BodyBold
 coinsLabel.TextSize = 14
-coinsLabel.TextColor3 = Color3.fromRGB(230, 240, 245)
+coinsLabel.TextColor3 = Colors.Text
 coinsLabel.Text = "Moedas: 0"
 coinsLabel.TextXAlignment = Enum.TextXAlignment.Right
 coinsLabel.ZIndex = 6
@@ -224,9 +224,9 @@ coinsLabel.Parent = coinsPanel
 local purchasedLabel = Instance.new("TextLabel")
 purchasedLabel.Size = UDim2.fromScale(1, 0.5)
 purchasedLabel.BackgroundTransparency = 1
-purchasedLabel.Font = Enum.Font.Gotham
+purchasedLabel.Font = Fonts.Body
 purchasedLabel.TextSize = 12
-purchasedLabel.TextColor3 = Color3.fromRGB(170, 210, 220)
+purchasedLabel.TextColor3 = Colors.TextMuted
 purchasedLabel.Text = "Compradas: 0"
 purchasedLabel.TextXAlignment = Enum.TextXAlignment.Right
 purchasedLabel.ZIndex = 6
@@ -408,9 +408,9 @@ end)
 
 local backButton = Instance.new("TextButton")
 backButton.Size = UDim2.fromScale(0.28, 0.75)
-backButton.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
-backButton.TextColor3 = Color3.fromRGB(220, 230, 240)
-backButton.Font = Enum.Font.GothamSemibold
+backButton.BackgroundColor3 = Colors.Button
+backButton.TextColor3 = Colors.Text
+backButton.Font = Fonts.BodyBold
 backButton.TextSize = 14
 backButton.Text = "Voltar"
 backButton.AutoButtonColor = false
@@ -422,15 +422,15 @@ backCorner.CornerRadius = UDim.new(0.2, 0)
 backCorner.Parent = backButton
 
 local backStroke = Instance.new("UIStroke")
-backStroke.Color = Color3.fromRGB(70, 120, 140)
+backStroke.Color = Colors.PanelStroke
 backStroke.Thickness = 1
 backStroke.Parent = backButton
 
 backButton.MouseEnter:Connect(function()
-	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(20, 52, 66) }):Play()
+	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Colors.ButtonHover }):Play()
 end)
 backButton.MouseLeave:Connect(function()
-	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(16, 40, 52) }):Play()
+	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Colors.Button }):Play()
 end)
 backButton.MouseButton1Click:Connect(function()
 	playClick()
