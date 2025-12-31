@@ -14,11 +14,10 @@ local equipEvent = getEquipRod()
 
 local RodDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("RodDatabase"))
 
-local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("UIConfig"))
-local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
+local BACKGROUND_IMAGE = Theme.Assets.Wallpaper
 local cachedUnlocked = {}
 
-local uiRoot = playerGui:WaitForChild("UI")
+local uiRoot = game:GetService("StarterGui"):WaitForChild("UI")
 local Theme = require(uiRoot:WaitForChild("Theme"))
 local components = uiRoot:WaitForChild("Components")
 local Panel = require(components:WaitForChild("Panel"))
@@ -554,3 +553,4 @@ equipEvent.OnClientEvent:Connect(function(payload)
 		rebuildList()
 	end
 end)
+
