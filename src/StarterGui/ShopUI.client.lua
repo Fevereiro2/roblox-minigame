@@ -671,6 +671,8 @@ for _, rod in ipairs(RodDatabase.Rods) do
 		category = "Rods",
 		order = 10,
 		imageId = categoryIcons.Rods,
+		ownable = true,
+		owned = false,
 	})
 end
 
@@ -686,6 +688,8 @@ for _, map in ipairs(MapDatabase.Maps) do
 		category = "Maps",
 		order = 20,
 		imageId = categoryIcons.Maps,
+		ownable = true,
+		owned = false,
 	})
 end
 
@@ -702,6 +706,8 @@ for _, product in ipairs(ProductDatabase.Products) do
 			category = "Coins",
 			order = 30,
 			imageId = categoryIcons.Coins,
+			ownable = false,
+			owned = false,
 		})
 	elseif product.category == "Boost" then
 		table.insert(items, {
@@ -715,6 +721,8 @@ for _, product in ipairs(ProductDatabase.Products) do
 			category = "Boosts",
 			order = 40,
 			imageId = categoryIcons.Boosts,
+			ownable = false,
+			owned = false,
 		})
 	end
 end
