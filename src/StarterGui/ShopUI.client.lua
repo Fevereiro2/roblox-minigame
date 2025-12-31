@@ -473,7 +473,11 @@ local function setSelection(data)
 	detailDesc.Text = data.description
 	detailPrice.Text = data.priceText
 	buyButton.Text = data.actionText
-	setBuyState(data.owned == true)
+	if data.ownable then
+		setBuyState(data.owned == true)
+	else
+		setBuyState(false)
+	end
 end
 
 local function selectFirstVisible()
