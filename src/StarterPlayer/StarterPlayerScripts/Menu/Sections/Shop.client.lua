@@ -81,7 +81,7 @@ local function addFade(parent)
 	local fade = Instance.new("Frame")
 	fade.Name = "Fade"
 	fade.Size = UDim2.fromScale(1, 1)
-	fade.BackgroundColor3 = Color3.fromRGB(4, 12, 16)
+	fade.BackgroundColor3 = Colors.Fade
 	fade.BackgroundTransparency = 1
 	fade.BorderSizePixel = 0
 	fade.ZIndex = 20
@@ -106,10 +106,7 @@ local function buildBackground(parent)
 	wallpaper.Parent = background
 
 	local gradient = Instance.new("UIGradient")
-	gradient.Color = ColorSequence.new({
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 40, 54)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(4, 92, 114)),
-	})
+	gradient.Color = ColorSequence.new(Theme.Gradients.Primary)
 	gradient.Rotation = 120
 	gradient.Parent = background
 
@@ -453,7 +450,7 @@ local function resetDetails()
 	detailPrice.Text = ""
 	buyButton.Text = "Comprar"
 	buyButton.Active = false
-	buyButton.BackgroundColor3 = Color3.fromRGB(70, 90, 100)
+	buyButton.BackgroundColor3 = Colors.Disabled
 end
 
 local function setBuyState(owned)
@@ -602,7 +599,7 @@ local function makeCard(data)
 	icon.Position = UDim2.fromScale(0.08, 0.18)
 	icon.BackgroundTransparency = 1
 	icon.Image = data.imageId or categoryIcons[data.category] or "rbxassetid://0"
-	icon.ImageColor3 = Color3.fromRGB(210, 235, 245)
+	icon.ImageColor3 = Colors.IconTint
 	icon.ZIndex = 7
 	icon.Parent = card
 
@@ -624,9 +621,9 @@ local function makeCard(data)
 		badge.Size = UDim2.fromScale(0.45, 0.3)
 		badge.AnchorPoint = Vector2.new(1, 0)
 		badge.Position = UDim2.fromScale(1, 0)
-		badge.BackgroundColor3 = Color3.fromRGB(30, 90, 70)
-		badge.TextColor3 = Color3.fromRGB(235, 255, 245)
-		badge.Font = Enum.Font.GothamSemibold
+		badge.BackgroundColor3 = Colors.Success
+		badge.TextColor3 = Colors.SuccessText
+		badge.Font = Fonts.BodyBold
 		badge.TextSize = 11
 		badge.Text = "OWNED"
 		badge.TextXAlignment = Enum.TextXAlignment.Center
