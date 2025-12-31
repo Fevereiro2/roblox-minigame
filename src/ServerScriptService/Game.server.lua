@@ -22,10 +22,16 @@ getProfile.OnServerInvoke = function(player)
 		unlockedRods[key] = value
 	end
 
+	local unlockedMaps = {}
+	for key, value in pairs(data.UnlockedMaps or {}) do
+		unlockedMaps[key] = value
+	end
+
 	return {
 		Coins = data.Coins,
 		PurchasedCoins = data.PurchasedCoins or 0,
 		UnlockedRods = unlockedRods,
+		UnlockedMaps = unlockedMaps,
 		EquippedRod = data.EquippedRod,
 		Level = data.Level,
 	}
