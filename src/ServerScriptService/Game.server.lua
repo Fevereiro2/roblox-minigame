@@ -7,8 +7,8 @@ local ShopService = require(Services:WaitForChild("ShopService"))
 local RewardsService = require(Services:WaitForChild("RewardsService"))
 
 PlayerDataService.GetRemote("FishRequest")
-PlayerDataService.GetRemote("BuyItem")
-PlayerDataService.GetRemote("SelectMap")
+PlayerDataService.GetRemote("ShopAction")
+PlayerDataService.GetRemote("MenuAction")
 PlayerDataService.GetRemote("EquipRod")
 
 local getProfile = PlayerDataService.GetRemoteFunction("GetProfile")
