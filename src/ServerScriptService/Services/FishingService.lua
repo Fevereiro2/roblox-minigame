@@ -6,7 +6,7 @@ function FishingService.Init(PlayerDataService)
 	local RodDatabase = PlayerDataService.Databases.Rods
 
 	local fishEvent = PlayerDataService.GetRemote("FishRequest")
-	local selectEvent = PlayerDataService.GetRemote("SelectMap")
+	local selectEvent = PlayerDataService.GetRemote("MenuAction")
 	local equipEvent = PlayerDataService.GetRemote("EquipRod")
 	local rng = Random.new()
 	local lastFishTimes = {}
