@@ -4,7 +4,7 @@ local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
-local uiRoot = playerGui:WaitForChild("UI")
+local uiRoot = game:GetService("StarterGui"):WaitForChild("UI")
 local Theme = require(uiRoot:WaitForChild("Theme"))
 local Colors = Theme.Colors
 
@@ -84,3 +84,4 @@ uiBus.Event:Connect(function(action, payload)
 		showMessage(tostring(payload or ""))
 	end
 end)
+
