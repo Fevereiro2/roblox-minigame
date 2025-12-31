@@ -192,9 +192,9 @@ local function rebuildList()
 	for _, fish in ipairs(FishDatabase.Fish) do
 		local row = Instance.new("TextLabel")
 		row.Size = UDim2.new(1, 0, 0, 34)
-		row.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
-		row.TextColor3 = Color3.fromRGB(240, 240, 240)
-		row.Font = Enum.Font.GothamSemibold
+		row.BackgroundColor3 = Colors.Button
+		row.TextColor3 = Colors.Text
+		row.Font = Fonts.BodyBold
 		row.TextSize = 14
 		row.TextXAlignment = Enum.TextXAlignment.Left
 		row.Text = discovered[fish.id] and string.format("%s - %s", fish.name, fish.rarity) or "????"
@@ -210,7 +210,7 @@ local function rebuildList()
 		corner.Parent = row
 
 		local stroke = Instance.new("UIStroke")
-		stroke.Color = Color3.fromRGB(70, 120, 140)
+		stroke.Color = Colors.PanelStroke
 		stroke.Thickness = 1
 		stroke.Parent = row
 	end
