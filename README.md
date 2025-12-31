@@ -13,15 +13,17 @@ Base profissional para um Fishing Game em Roblox, preparado para Rojo e escalave
 3) Clique em Play.
 
 ## Estrutura
-- `src/ServerScriptService`: scripts do servidor e validacoes.
-- `src/ReplicatedStorage`: databases e remotes compartilhados.
-- `src/StarterPlayer`: scripts do cliente e HUD.
-- `src/StarterGui`: UI inicial, shop, pokedex e selecao de mapas.
+- `src/ServerScriptService/Services`: servicos do servidor (dados, pesca, loja, rewards).
+- `src/ServerScriptService/Game.server.lua`: orquestrador dos servicos.
+- `src/ReplicatedStorage/Modules`: databases + configuracao visual.
+- `src/ReplicatedStorage/Remotes`: wrappers de RemoteEvents/Functions.
+- `src/StarterPlayer/StarterPlayerScripts`: bootstrap, HUD, menus e sistemas do cliente.
+- `src/StarterGui/UI`: tema e componentes reutilizaveis de UI.
 
 ## Notas
-- Os RemoteEvents sao criados no servidor em `State.GetRemote()`.
+- Os RemoteEvents sao criados no servidor em `PlayerDataService.GetRemote()`.
 - A logica sensivel fica no servidor; o cliente apenas solicita.
-- DataStore ativo em `State.lua` (use um jogo publicado e habilite "Enable Studio Access to API Services" para testes).
+- DataStore ativo em `Services/PlayerDataService.lua` (use um jogo publicado e habilite "Enable Studio Access to API Services" para testes).
 - MarketplaceService pronto para GamePass e Developer Products (preencha os IDs nas databases).
 
 ## Configuracao de monetizacao
