@@ -8,7 +8,7 @@ function ShopService.Init(PlayerDataService)
 	local RodDatabase = PlayerDataService.Databases.Rods
 	local ProductDatabase = PlayerDataService.Databases.Products
 
-	local buyEvent = PlayerDataService.GetRemote("BuyItem")
+	local buyEvent = PlayerDataService.GetRemote("ShopAction")
 
 	local function fail(player, reason)
 		buyEvent:FireClient(player, { ok = false, reason = reason })
