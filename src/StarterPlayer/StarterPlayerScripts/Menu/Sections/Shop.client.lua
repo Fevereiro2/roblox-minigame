@@ -264,7 +264,7 @@ leftPanel.Parent = body
 
 local rightPanel = Instance.new("Frame")
 rightPanel.Size = UDim2.fromScale(0.34, 1)
-rightPanel.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
+rightPanel.BackgroundColor3 = Colors.Button
 rightPanel.BackgroundTransparency = 0.1
 rightPanel.BorderSizePixel = 0
 rightPanel.ZIndex = 6
@@ -275,7 +275,7 @@ rightCorner.CornerRadius = UDim.new(0.06, 0)
 rightCorner.Parent = rightPanel
 
 local rightStroke = Instance.new("UIStroke")
-rightStroke.Color = Color3.fromRGB(70, 120, 140)
+rightStroke.Color = Colors.PanelStroke
 rightStroke.Thickness = 1
 rightStroke.Parent = rightPanel
 
@@ -295,9 +295,9 @@ rightLayout.Parent = rightPanel
 local detailTitle = Instance.new("TextLabel")
 detailTitle.Size = UDim2.fromScale(1, 0.12)
 detailTitle.BackgroundTransparency = 1
-detailTitle.Font = Enum.Font.GothamBold
+detailTitle.Font = Fonts.Heading
 detailTitle.TextSize = 16
-detailTitle.TextColor3 = Color3.fromRGB(240, 240, 240)
+detailTitle.TextColor3 = Colors.Text
 detailTitle.Text = "Selecione um item"
 detailTitle.TextXAlignment = Enum.TextXAlignment.Left
 detailTitle.ZIndex = 7
@@ -306,9 +306,9 @@ detailTitle.Parent = rightPanel
 local detailType = Instance.new("TextLabel")
 detailType.Size = UDim2.fromScale(1, 0.08)
 detailType.BackgroundTransparency = 1
-detailType.Font = Enum.Font.Gotham
+detailType.Font = Fonts.Body
 detailType.TextSize = 12
-detailType.TextColor3 = Color3.fromRGB(170, 210, 220)
+detailType.TextColor3 = Colors.TextMuted
 detailType.Text = ""
 detailType.TextXAlignment = Enum.TextXAlignment.Left
 detailType.ZIndex = 7
@@ -317,9 +317,9 @@ detailType.Parent = rightPanel
 local detailDesc = Instance.new("TextLabel")
 detailDesc.Size = UDim2.fromScale(1, 0.45)
 detailDesc.BackgroundTransparency = 1
-detailDesc.Font = Enum.Font.Gotham
+detailDesc.Font = Fonts.Body
 detailDesc.TextSize = 13
-detailDesc.TextColor3 = Color3.fromRGB(200, 230, 235)
+detailDesc.TextColor3 = Colors.Text
 detailDesc.Text = "Clique num item para ver detalhes."
 detailDesc.TextXAlignment = Enum.TextXAlignment.Left
 detailDesc.TextYAlignment = Enum.TextYAlignment.Top
@@ -330,9 +330,9 @@ detailDesc.Parent = rightPanel
 local detailPrice = Instance.new("TextLabel")
 detailPrice.Size = UDim2.fromScale(1, 0.08)
 detailPrice.BackgroundTransparency = 1
-detailPrice.Font = Enum.Font.GothamSemibold
+detailPrice.Font = Fonts.BodyBold
 detailPrice.TextSize = 14
-detailPrice.TextColor3 = Color3.fromRGB(240, 240, 240)
+detailPrice.TextColor3 = Colors.Text
 detailPrice.Text = ""
 detailPrice.TextXAlignment = Enum.TextXAlignment.Left
 detailPrice.ZIndex = 7
@@ -340,9 +340,9 @@ detailPrice.Parent = rightPanel
 
 local buyButton = Instance.new("TextButton")
 buyButton.Size = UDim2.fromScale(1, 0.16)
-buyButton.BackgroundColor3 = Color3.fromRGB(18, 150, 170)
-buyButton.TextColor3 = Color3.fromRGB(245, 245, 245)
-buyButton.Font = Enum.Font.GothamSemibold
+buyButton.BackgroundColor3 = Colors.Accent
+buyButton.TextColor3 = Colors.Text
+buyButton.Font = Fonts.BodyBold
 buyButton.TextSize = 16
 buyButton.Text = "Comprar"
 buyButton.AutoButtonColor = false
@@ -354,7 +354,7 @@ buyCorner.CornerRadius = UDim.new(0.2, 0)
 buyCorner.Parent = buyButton
 
 local buyStroke = Instance.new("UIStroke")
-buyStroke.Color = Color3.fromRGB(140, 230, 245)
+buyStroke.Color = Colors.AccentHover
 buyStroke.Thickness = 1
 buyStroke.Parent = buyButton
 
@@ -362,13 +362,13 @@ buyButton.MouseEnter:Connect(function()
 	if not buyButton.Active then
 		return
 	end
-	TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(26, 170, 190) }):Play()
+	TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Colors.AccentHover }):Play()
 end)
 buyButton.MouseLeave:Connect(function()
 	if not buyButton.Active then
 		return
 	end
-	TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(18, 150, 170) }):Play()
+	TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Colors.Accent }):Play()
 end)
 
 local listContainer = Instance.new("Frame")
@@ -460,10 +460,10 @@ local function setBuyState(owned)
 	if owned then
 		buyButton.Text = "Comprado"
 		buyButton.Active = false
-		buyButton.BackgroundColor3 = Color3.fromRGB(70, 90, 100)
+		buyButton.BackgroundColor3 = Colors.Button
 	else
 		buyButton.Active = true
-		buyButton.BackgroundColor3 = Color3.fromRGB(18, 150, 170)
+		buyButton.BackgroundColor3 = Colors.Accent
 	end
 end
 
@@ -525,9 +525,9 @@ end)
 local function makeTab(label, key)
 	local tab = Instance.new("TextButton")
 	tab.Size = UDim2.fromScale(0.16, 1)
-	tab.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
-	tab.TextColor3 = Color3.fromRGB(230, 240, 245)
-	tab.Font = Enum.Font.GothamSemibold
+	tab.BackgroundColor3 = Colors.Button
+	tab.TextColor3 = Colors.Text
+	tab.Font = Fonts.BodyBold
 	tab.TextSize = 13
 	tab.Text = label
 	tab.AutoButtonColor = false
@@ -539,15 +539,15 @@ local function makeTab(label, key)
 	corner.Parent = tab
 
 	local stroke = Instance.new("UIStroke")
-	stroke.Color = Color3.fromRGB(70, 120, 140)
+	stroke.Color = Colors.PanelStroke
 	stroke.Thickness = 1
 	stroke.Parent = tab
 
 	tab.MouseEnter:Connect(function()
-		TweenService:Create(tab, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(20, 52, 66) }):Play()
+		TweenService:Create(tab, TweenInfo.new(0.12), { BackgroundColor3 = Colors.ButtonHover }):Play()
 	end)
 	tab.MouseLeave:Connect(function()
-		local base = key == currentTab and Color3.fromRGB(18, 150, 170) or Color3.fromRGB(16, 40, 52)
+		local base = key == currentTab and Colors.Accent or Colors.Button
 		TweenService:Create(tab, TweenInfo.new(0.12), { BackgroundColor3 = base }):Play()
 	end)
 
@@ -556,7 +556,7 @@ local function makeTab(label, key)
 		currentTab = key
 		for _, child in ipairs(tabsRow:GetChildren()) do
 			if child:IsA("TextButton") then
-				child.BackgroundColor3 = (child.Name == key) and Color3.fromRGB(18, 150, 170) or Color3.fromRGB(16, 40, 52)
+				child.BackgroundColor3 = (child.Name == key) and Colors.Accent or Colors.Button
 			end
 		end
 		for _, card in ipairs(cards) do
@@ -571,9 +571,9 @@ end
 
 local function makeCard(data)
 	local card = Instance.new("TextButton")
-	card.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
-	card.TextColor3 = Color3.fromRGB(240, 240, 240)
-	card.Font = Enum.Font.GothamSemibold
+	card.BackgroundColor3 = Colors.Button
+	card.TextColor3 = Colors.Text
+	card.Font = Fonts.BodyBold
 	card.TextSize = 13
 	card.TextXAlignment = Enum.TextXAlignment.Left
 	card.Text = data.name
@@ -588,7 +588,7 @@ local function makeCard(data)
 	corner.Parent = card
 
 	local stroke = Instance.new("UIStroke")
-	stroke.Color = Color3.fromRGB(70, 120, 140)
+	stroke.Color = Colors.PanelStroke
 	stroke.Thickness = 1
 	stroke.Parent = card
 
@@ -610,9 +610,9 @@ local function makeCard(data)
 	price.Size = UDim2.fromScale(0.8, 0.25)
 	price.Position = UDim2.fromScale(0.18, 0.52)
 	price.BackgroundTransparency = 1
-	price.Font = Enum.Font.Gotham
+	price.Font = Fonts.Body
 	price.TextSize = 12
-	price.TextColor3 = Color3.fromRGB(190, 220, 235)
+	price.TextColor3 = Colors.TextMuted
 	price.TextXAlignment = Enum.TextXAlignment.Left
 	price.Text = data.priceText
 	price.ZIndex = 7
@@ -640,10 +640,10 @@ local function makeCard(data)
 	end
 
 	card.MouseEnter:Connect(function()
-		TweenService:Create(card, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(20, 52, 66) }):Play()
+		TweenService:Create(card, TweenInfo.new(0.12), { BackgroundColor3 = Colors.ButtonHover }):Play()
 	end)
 	card.MouseLeave:Connect(function()
-		TweenService:Create(card, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(16, 40, 52) }):Play()
+		TweenService:Create(card, TweenInfo.new(0.12), { BackgroundColor3 = Colors.Button }):Play()
 	end)
 
 	card.MouseButton1Click:Connect(function()
