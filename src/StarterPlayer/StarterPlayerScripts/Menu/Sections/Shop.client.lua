@@ -773,6 +773,7 @@ layoutPanels()
 
 local defaultPos = frame.Position
 local isOpen = false
+local PANEL_NAME = "Shop"
 
 local function applyOwnership(profile)
 	local unlockedRods = {}
@@ -818,6 +819,7 @@ local function openPanel()
 	end
 	isOpen = true
 	gui.Enabled = true
+	playerGui:SetAttribute("PanelTarget", "")
 	fade.BackgroundTransparency = 0
 	frame.Position = defaultPos + UDim2.new(0, 0, 0, 0.02)
 	TweenService:Create(fade, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
@@ -878,6 +880,15 @@ uiBus.Event:Connect(function(action, panel)
 	end
 end)
 
+local function checkPanelTarget()
+	if playerGui:GetAttribute("PanelTarget") == PANEL_NAME then
+		openPanel()
+	end
+end
+
+playerGui:GetAttributeChangedSignal("PanelTarget"):Connect(checkPanelTarget)
+checkPanelTarget()
+
 buyEvent.OnClientEvent:Connect(function(payload)
 	if type(payload) ~= "table" then
 		return
@@ -903,4 +914,3 @@ buyEvent.OnClientEvent:Connect(function(payload)
 		uiBus:Fire("Notify", "Compra falhou")
 	end
 end)
-
