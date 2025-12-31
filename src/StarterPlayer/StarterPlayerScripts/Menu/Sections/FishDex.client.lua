@@ -9,7 +9,8 @@ local playerGui = player:WaitForChild("PlayerGui")
 
 local FishDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("FishDatabase"))
 
-local BACKGROUND_IMAGE = "rbxassetid://88755976907991"
+local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("UIConfig"))
+local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
 
 local function getUiBus()
 	local folder = playerGui:FindFirstChild("UIEvents")
@@ -279,7 +280,7 @@ local function closePanel()
 end
 
 uiBus.Event:Connect(function(action, payload)
-	if action == "OpenPanel" and payload == "Pokedex" then
+	if action == "OpenPanel" and (payload == "Pokedex" or payload == "FishDex") then
 		rebuildList()
 		openPanel()
 	elseif action == "CloseAll" then
