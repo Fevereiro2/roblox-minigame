@@ -12,7 +12,8 @@ local selectEvent = getSelectMap()
 
 local MapDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("MapDatabase"))
 
-local BACKGROUND_IMAGE = "rbxassetid://88755976907991"
+local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("UIConfig"))
+local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
 
 local function getUiBus()
 	local folder = playerGui:FindFirstChild("UIEvents")
