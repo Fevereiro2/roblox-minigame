@@ -1,13 +1,15 @@
 local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local SoundService = game:GetService("SoundService")
 local TweenService = game:GetService("TweenService")
 
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
-local LOGO_IMAGE = "rbxassetid://82425580179801"
-local BACKGROUND_IMAGE = "rbxassetid://88755976907991"
+local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("UIConfig"))
+local LOGO_IMAGE = UIConfig.Assets.Logo
+local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
 
 local function getUiBus()
 	local folder = playerGui:FindFirstChild("UIEvents")
@@ -263,7 +265,7 @@ local playButton = makeButton("Jogar", true, icons.Jogar)
 playButton.MouseButton1Click:Connect(function()
 	playClick()
 	uiBus:Fire("CloseAll")
-	uiBus:Fire("OpenPanel", "MapSelection")
+	uiBus:Fire("OpenPanel", "Play")
 	gui.Enabled = false
 end)
 
@@ -298,7 +300,7 @@ end)
 makeButton("Mapas", false, icons.Mapas).MouseButton1Click:Connect(function()
 	playClick()
 	uiBus:Fire("CloseAll")
-	uiBus:Fire("OpenPanel", "MapSelection")
+	uiBus:Fire("OpenPanel", "Maps")
 	gui.Enabled = false
 end)
 
