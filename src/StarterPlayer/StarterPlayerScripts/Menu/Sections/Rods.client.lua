@@ -14,7 +14,8 @@ local equipEvent = getEquipRod()
 
 local RodDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("RodDatabase"))
 
-local BACKGROUND_IMAGE = "rbxassetid://88755976907991"
+local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("UIConfig"))
+local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
 local cachedUnlocked = {}
 
 local function getUiBus()
