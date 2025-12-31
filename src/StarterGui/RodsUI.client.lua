@@ -249,7 +249,7 @@ local function addSection(text)
 	label.Parent = list
 end
 
-local function addRodCard(rod, tag, equipped)
+local function addRodCard(rod, tag, equipped, locked)
 	local row = Instance.new("Frame")
 	row.Size = UDim2.fromScale(1, 0)
 	row.AutomaticSize = Enum.AutomaticSize.Y
@@ -289,7 +289,13 @@ local function addRodCard(rod, tag, equipped)
 	nameRow.TextSize = 14
 	nameRow.TextColor3 = Color3.fromRGB(240, 240, 240)
 	nameRow.TextXAlignment = Enum.TextXAlignment.Left
-	nameRow.Text = rod.name .. (equipped and " (Equipada)" or "")
+	if locked then
+		nameRow.Text = rod.name .. " (Bloqueada)"
+	elseif equipped then
+		nameRow.Text = rod.name .. " (Equipada)"
+	else
+		nameRow.Text = rod.name
+	end
 	nameRow.ZIndex = 7
 	nameRow.Parent = row
 
@@ -308,11 +314,21 @@ local function addRodCard(rod, tag, equipped)
 	local equipButton = Instance.new("TextButton")
 	equipButton.Size = UDim2.fromScale(1, 0)
 	equipButton.AutomaticSize = Enum.AutomaticSize.Y
-	equipButton.BackgroundColor3 = equipped and Color3.fromRGB(30, 90, 70) or Color3.fromRGB(18, 150, 170)
+	if locked then
+		equipButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+	else
+		equipButton.BackgroundColor3 = equipped and Color3.fromRGB(30, 90, 70) or Color3.fromRGB(18, 150, 170)
+	end
 	equipButton.TextColor3 = Color3.fromRGB(245, 245, 245)
 	equipButton.Font = Enum.Font.GothamSemibold
 	equipButton.TextSize = 14
-	equipButton.Text = equipped and "Equipada" or "Equipar"
+	if locked then
+		equipButton.Text = "Bloqueada"
+	elseif equipped then
+		equipButton.Text = "Equipada"
+	else
+		equipButton.Text = "Equipar"
+	end
 	equipButton.AutoButtonColor = false
 	equipButton.ZIndex = 7
 	equipButton.Parent = row
@@ -327,15 +343,21 @@ local function addRodCard(rod, tag, equipped)
 	equipStroke.Parent = equipButton
 
 	equipButton.MouseEnter:Connect(function()
+		if locked then
+			return
+		end
 		TweenService:Create(equipButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(26, 170, 190) }):Play()
 	end)
 	equipButton.MouseLeave:Connect(function()
+		if locked then
+			return
+		end
 		local base = equipped and Color3.fromRGB(30, 90, 70) or Color3.fromRGB(18, 150, 170)
 		TweenService:Create(equipButton, TweenInfo.new(0.12), { BackgroundColor3 = base }):Play()
 	end)
 
 	equipButton.MouseButton1Click:Connect(function()
-		if equipped then
+		if locked or equipped then
 			return
 		end
 		playClick()
@@ -359,9 +381,10 @@ local function rebuildList(profile)
 	addSection("Canas compradas")
 	local added = false
 	for _, rod in ipairs(RodDatabase.Rods) do
-		if rod.id ~= "rod_basic" and unlocked[rod.id] then
-			addRodCard(rod, "Comprada", equipped == rod.id)
-			added = true
+		if rod.id ~= "rod_basic" then
+			local isUnlocked = unlocked[rod.id] == true
+			addRodCard(rod, isUnlocked and "Comprada" or "Loja", equipped == rod.id, not isUnlocked)
+			added = added or isUnlocked
 		end
 	end
 
