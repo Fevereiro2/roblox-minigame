@@ -228,5 +228,6 @@ MarketplaceService.ProcessReceipt = function(receiptInfo)
 	end
 
 	State.MarkReceipt(data, receiptInfo.PurchaseId)
+	State.SavePlayer(player)
 	return Enum.ProductPurchaseDecision.PurchaseGranted
 end
