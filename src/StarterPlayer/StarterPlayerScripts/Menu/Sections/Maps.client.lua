@@ -12,10 +12,9 @@ local selectEvent = getSelectMap()
 
 local MapDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("MapDatabase"))
 
-local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("UIConfig"))
-local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
+local BACKGROUND_IMAGE = Theme.Assets.Wallpaper
 
-local uiRoot = playerGui:WaitForChild("UI")
+local uiRoot = game:GetService("StarterGui"):WaitForChild("UI")
 local Theme = require(uiRoot:WaitForChild("Theme"))
 local components = uiRoot:WaitForChild("Components")
 local Panel = require(components:WaitForChild("Panel"))
@@ -291,3 +290,4 @@ selectEvent.OnClientEvent:Connect(function(payload)
 		statusLabel.Text = "Mapa bloqueado"
 	end
 end)
+
