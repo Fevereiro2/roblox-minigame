@@ -520,6 +520,9 @@ buyButton.MouseButton1Click:Connect(function()
 	if not selected then
 		return
 	end
+	if not buyButton.Active then
+		return
+	end
 	playClick()
 	buyEvent:FireServer({ itemType = selected.itemType, itemId = selected.itemId })
 end)
