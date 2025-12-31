@@ -10,6 +10,10 @@ local playerGui = player:WaitForChild("PlayerGui")
 local getFishRequest = require(ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("FishRequest"))
 local fishEvent = getFishRequest()
 
+local uiRoot = playerGui:WaitForChild("UI")
+local Theme = require(uiRoot:WaitForChild("Theme"))
+local Colors = Theme.Colors
+
 local UIBus = require(script.Parent:WaitForChild("UIBus"))
 local uiBus = UIBus.Get()
 local menuOpen = false
@@ -89,8 +93,8 @@ mobileGui.Parent = playerGui
 local menuButton = Instance.new("TextButton")
 menuButton.Size = UDim2.new(0, 120, 0, 44)
 menuButton.Position = UDim2.new(1, -136, 1, -70)
-menuButton.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
-menuButton.TextColor3 = Color3.fromRGB(240, 240, 240)
+menuButton.BackgroundColor3 = Colors.Button
+menuButton.TextColor3 = Colors.Text
 menuButton.Font = Enum.Font.GothamSemibold
 menuButton.TextSize = 16
 menuButton.Text = "Menu"
@@ -103,15 +107,15 @@ menuCorner.CornerRadius = UDim.new(0, 12)
 menuCorner.Parent = menuButton
 
 local menuStroke = Instance.new("UIStroke")
-menuStroke.Color = Color3.fromRGB(70, 120, 140)
+menuStroke.Color = Colors.PanelStroke
 menuStroke.Thickness = 1
 menuStroke.Parent = menuButton
 
 menuButton.MouseEnter:Connect(function()
-	TweenService:Create(menuButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(20, 52, 66) }):Play()
+	TweenService:Create(menuButton, TweenInfo.new(0.12), { BackgroundColor3 = Colors.ButtonHover }):Play()
 end)
 menuButton.MouseLeave:Connect(function()
-	TweenService:Create(menuButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(16, 40, 52) }):Play()
+	TweenService:Create(menuButton, TweenInfo.new(0.12), { BackgroundColor3 = Colors.Button }):Play()
 end)
 menuButton.MouseButton1Click:Connect(function()
 	toggleMenu()
