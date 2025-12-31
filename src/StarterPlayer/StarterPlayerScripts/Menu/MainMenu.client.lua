@@ -179,36 +179,42 @@ local icons = {
 local playButton = MenuButton.Create(buttons, "Jogar", icons.Jogar, { primary = true, height = 54 })
 playButton.MouseButton1Click:Connect(function()
 	playClick()
+	playerGui:SetAttribute("PanelTarget", "Play")
 	uiBus:Fire("OpenPanel", "Play")
 	gui.Enabled = false
 end)
 
 MenuButton.Create(buttons, "Shop", icons.Shop, { height = 44 }).MouseButton1Click:Connect(function()
 	playClick()
+	playerGui:SetAttribute("PanelTarget", "Shop")
 	uiBus:Fire("OpenPanel", "Shop")
 	gui.Enabled = false
 end)
 
 MenuButton.Create(buttons, "Peixes", icons.Peixes, { height = 44 }).MouseButton1Click:Connect(function()
 	playClick()
+	playerGui:SetAttribute("PanelTarget", "Pokedex")
 	uiBus:Fire("OpenPanel", "Pokedex")
 	gui.Enabled = false
 end)
 
 MenuButton.Create(buttons, "Personagem", icons.Personagem, { height = 44 }).MouseButton1Click:Connect(function()
 	playClick()
+	playerGui:SetAttribute("PanelTarget", "Character")
 	uiBus:Fire("OpenPanel", "Character")
 	gui.Enabled = false
 end)
 
 MenuButton.Create(buttons, "Canas", icons.Canas, { height = 44 }).MouseButton1Click:Connect(function()
 	playClick()
+	playerGui:SetAttribute("PanelTarget", "Rods")
 	uiBus:Fire("OpenPanel", "Rods")
 	gui.Enabled = false
 end)
 
 MenuButton.Create(buttons, "Mapas", icons.Mapas, { height = 44 }).MouseButton1Click:Connect(function()
 	playClick()
+	playerGui:SetAttribute("PanelTarget", "Maps")
 	uiBus:Fire("OpenPanel", "Maps")
 	gui.Enabled = false
 end)
