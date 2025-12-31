@@ -16,7 +16,8 @@ local RodDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChi
 local MapDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("MapDatabase"))
 local ProductDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("ProductDatabase"))
 
-local BACKGROUND_IMAGE = "rbxassetid://88755976907991"
+local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("UIConfig"))
+local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
 
 local categoryIcons = {
 	Rods = "rbxassetid://0",
