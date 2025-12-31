@@ -20,6 +20,8 @@ local cachedUnlocked = {}
 
 local uiRoot = playerGui:WaitForChild("UI")
 local Theme = require(uiRoot:WaitForChild("Theme"))
+local components = uiRoot:WaitForChild("Components")
+local Panel = require(components:WaitForChild("Panel"))
 local Colors = Theme.Colors
 local Fonts = Theme.Fonts
 
@@ -100,24 +102,9 @@ gradient.Parent = background
 
 local fade = addFade(background)
 
-local frame = Instance.new("Frame")
-frame.AnchorPoint = Vector2.new(0.5, 0.5)
-frame.Size = UDim2.fromScale(0.74, 0.76)
-frame.Position = UDim2.fromScale(0.5, 0.52)
-frame.BackgroundColor3 = Colors.Panel
+local frame = Panel.Create(background, UDim2.fromScale(0.74, 0.76), UDim2.fromScale(0.5, 0.52))
 frame.BackgroundTransparency = 0.15
-frame.BorderSizePixel = 0
 frame.ZIndex = 5
-frame.Parent = background
-
-local frameCorner = Instance.new("UICorner")
-frameCorner.CornerRadius = UDim.new(0.05, 0)
-frameCorner.Parent = frame
-
-local frameStroke = Instance.new("UIStroke")
-frameStroke.Color = Colors.PanelStroke
-frameStroke.Thickness = 1
-frameStroke.Parent = frame
 
 local frameSize = Instance.new("UISizeConstraint")
 frameSize.MinSize = Vector2.new(420, 300)
