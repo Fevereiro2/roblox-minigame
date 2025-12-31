@@ -19,5 +19,5 @@ local function getRemote(name)
 end
 
 return function()
-	return getRemote("BuyItem")
+	return getRemote("ShopAction")
 end
