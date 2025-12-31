@@ -15,6 +15,11 @@ local MapDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChi
 local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("UIConfig"))
 local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
 
+local uiRoot = playerGui:WaitForChild("UI")
+local Theme = require(uiRoot:WaitForChild("Theme"))
+local Colors = Theme.Colors
+local Fonts = Theme.Fonts
+
 local root = script:FindFirstAncestor("StarterPlayerScripts") or script.Parent.Parent.Parent
 local UIBus = require(root:WaitForChild("Systems"):WaitForChild("UIBus"))
 local uiBus = UIBus.Get()
@@ -73,7 +78,7 @@ end
 local function buildBackground(parent)
 	local background = Instance.new("Frame")
 	background.Size = UDim2.fromScale(1, 1)
-	background.BackgroundColor3 = Color3.fromRGB(8, 30, 38)
+	background.BackgroundColor3 = Colors.Background
 	background.BorderSizePixel = 0
 	background.Parent = parent
 
