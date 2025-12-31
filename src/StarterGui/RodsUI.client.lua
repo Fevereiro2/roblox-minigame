@@ -249,15 +249,20 @@ local function addSection(text)
 	label.Parent = list
 end
 
+local RARITY_COLORS = {
+	{ min = 6, color = Color3.fromRGB(220, 90, 255) },
+	{ min = 4, color = Color3.fromRGB(255, 190, 80) },
+	{ min = 2, color = Color3.fromRGB(90, 170, 255) },
+	{ min = 0, color = Color3.fromRGB(170, 210, 220) },
+}
+
 local function getRarityColor(rod)
-	if rod.rarityBonus >= 6 then
-		return Color3.fromRGB(220, 90, 255)
-	elseif rod.rarityBonus >= 4 then
-		return Color3.fromRGB(255, 190, 80)
-	elseif rod.rarityBonus >= 2 then
-		return Color3.fromRGB(90, 170, 255)
+	for _, tier in ipairs(RARITY_COLORS) do
+		if rod.rarityBonus >= tier.min then
+			return tier.color
+		end
 	end
-	return Color3.fromRGB(170, 210, 220)
+	return RARITY_COLORS[#RARITY_COLORS].color
 end
 
 local function addRodCard(rod, tag, equipped, locked)
@@ -322,17 +327,19 @@ local function addRodCard(rod, tag, equipped, locked)
 	stats.ZIndex = 7
 	stats.Parent = row
 
-	local priceLabel = Instance.new("TextLabel")
-	priceLabel.Size = UDim2.fromScale(1, 0)
-	priceLabel.AutomaticSize = Enum.AutomaticSize.Y
-	priceLabel.BackgroundTransparency = 1
-	priceLabel.Font = Enum.Font.Gotham
-	priceLabel.TextSize = 12
-	priceLabel.TextColor3 = Color3.fromRGB(190, 220, 235)
-	priceLabel.TextXAlignment = Enum.TextXAlignment.Left
-	priceLabel.Text = string.format("Preco: %d %s", rod.price, rod.currency)
-	priceLabel.ZIndex = 7
-	priceLabel.Parent = row
+	if locked then
+		local priceLabel = Instance.new("TextLabel")
+		priceLabel.Size = UDim2.fromScale(1, 0)
+		priceLabel.AutomaticSize = Enum.AutomaticSize.Y
+		priceLabel.BackgroundTransparency = 1
+		priceLabel.Font = Enum.Font.Gotham
+		priceLabel.TextSize = 12
+		priceLabel.TextColor3 = Color3.fromRGB(190, 220, 235)
+		priceLabel.TextXAlignment = Enum.TextXAlignment.Left
+		priceLabel.Text = string.format("Preco: %d %s", rod.price, rod.currency)
+		priceLabel.ZIndex = 7
+		priceLabel.Parent = row
+	end
 
 	local equipButton = Instance.new("TextButton")
 	equipButton.Size = UDim2.fromScale(1, 0)
@@ -379,13 +386,13 @@ local function addRodCard(rod, tag, equipped, locked)
 		TweenService:Create(equipButton, TweenInfo.new(0.12), { BackgroundColor3 = base }):Play()
 	end)
 
-	equipButton.MouseButton1Click:Connect(function()
-		if locked or equipped then
-			return
-		end
-		playClick()
-		equipEvent:FireServer(rod.id)
-	end)
+		equipButton.MouseButton1Click:Connect(function()
+			if locked or equipped then
+				return
+			end
+			playClick()
+			equipEvent:FireServer(rod.id)
+		end)
 
 	if locked then
 		local buyButton = Instance.new("TextButton")
@@ -420,6 +427,33 @@ local function addRodCard(rod, tag, equipped, locked)
 			uiBus:Fire("CloseAll")
 			uiBus:Fire("OpenPanel", "Shop")
 		end)
+	end
+
+	if equipped then
+		local badge = Instance.new("TextLabel")
+		badge.Size = UDim2.fromScale(0.32, 0)
+		badge.AutomaticSize = Enum.AutomaticSize.Y
+		badge.AnchorPoint = Vector2.new(1, 0)
+		badge.Position = UDim2.fromScale(1, 0)
+		badge.BackgroundColor3 = Color3.fromRGB(30, 90, 70)
+		badge.TextColor3 = Color3.fromRGB(235, 255, 245)
+		badge.Font = Enum.Font.GothamSemibold
+		badge.TextSize = 12
+		badge.Text = "EQUIPADA"
+		badge.TextXAlignment = Enum.TextXAlignment.Center
+		badge.ZIndex = 8
+		badge.Parent = row
+
+		local badgeCorner = Instance.new("UICorner")
+		badgeCorner.CornerRadius = UDim.new(0.3, 0)
+		badgeCorner.Parent = badge
+
+		local badgePad = Instance.new("UIPadding")
+		badgePad.PaddingLeft = UDim.new(0.08, 0)
+		badgePad.PaddingRight = UDim.new(0.08, 0)
+		badgePad.PaddingTop = UDim.new(0.02, 0)
+		badgePad.PaddingBottom = UDim.new(0.02, 0)
+		badgePad.Parent = badge
 	end
 end
 
