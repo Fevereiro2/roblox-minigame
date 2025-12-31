@@ -62,7 +62,7 @@ local function addFade(parent)
 	local fade = Instance.new("Frame")
 	fade.Name = "Fade"
 	fade.Size = UDim2.fromScale(1, 1)
-	fade.BackgroundColor3 = Color3.fromRGB(4, 12, 16)
+	fade.BackgroundColor3 = Colors.Fade
 	fade.BackgroundTransparency = 1
 	fade.BorderSizePixel = 0
 	fade.ZIndex = 20
@@ -86,10 +86,7 @@ wallpaper.ImageTransparency = 0.2
 wallpaper.Parent = background
 
 local gradient = Instance.new("UIGradient")
-gradient.Color = ColorSequence.new({
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 40, 54)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(4, 92, 114)),
-})
+gradient.Color = ColorSequence.new(Theme.Gradients.Primary)
 gradient.Rotation = 120
 gradient.Parent = background
 
