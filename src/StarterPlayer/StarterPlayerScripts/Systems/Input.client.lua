@@ -10,7 +10,7 @@ local playerGui = player:WaitForChild("PlayerGui")
 local getFishRequest = require(ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("FishRequest"))
 local fishEvent = getFishRequest()
 
-local uiRoot = playerGui:WaitForChild("UI")
+local uiRoot = game:GetService("StarterGui"):WaitForChild("UI")
 local Theme = require(uiRoot:WaitForChild("Theme"))
 local Colors = Theme.Colors
 
@@ -120,3 +120,4 @@ end)
 menuButton.MouseButton1Click:Connect(function()
 	toggleMenu()
 end)
+
