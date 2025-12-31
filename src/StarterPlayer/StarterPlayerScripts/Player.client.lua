@@ -33,6 +33,9 @@ local uiBus = getUiBus()
 local camera = Workspace.CurrentCamera or Workspace:WaitForChild("Camera")
 local menuCameraCFrame = CFrame.new(0, 12, 32) * CFrame.Angles(0, math.rad(180), 0)
 local menuOpen = false
+local defaultWalkSpeed
+local defaultJumpPower
+local defaultJumpHeight
 
 local function sinkAction()
 	return Enum.ContextActionResult.Sink
@@ -54,6 +57,36 @@ end
 local function unlockControls()
 	ContextActionService:UnbindAction("BlockMovement")
 	ContextActionService:UnbindAction("BlockThumbstick")
+end
+
+local function applyMovementLock(locked)
+	local character = player.Character
+	if not character then
+		return
+	end
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	if not humanoid then
+		return
+	end
+
+	if locked then
+		defaultWalkSpeed = defaultWalkSpeed or humanoid.WalkSpeed
+		defaultJumpPower = defaultJumpPower or humanoid.JumpPower
+		defaultJumpHeight = defaultJumpHeight or humanoid.JumpHeight
+		humanoid.WalkSpeed = 0
+		humanoid.JumpPower = 0
+		humanoid.JumpHeight = 0
+	else
+		if defaultWalkSpeed then
+			humanoid.WalkSpeed = defaultWalkSpeed
+		end
+		if defaultJumpPower then
+			humanoid.JumpPower = defaultJumpPower
+		end
+		if defaultJumpHeight then
+			humanoid.JumpHeight = defaultJumpHeight
+		end
+	end
 end
 
 local function setMenuCamera()
@@ -85,6 +118,7 @@ ensureSound("UIClick", "rbxassetid://0", 0.6, false)
 
 lockControls()
 setMenuCamera()
+applyMovementLock(true)
 
 local hud = Instance.new("ScreenGui")
 hud.Name = "FishingHud"
@@ -175,13 +209,21 @@ uiBus.Event:Connect(function(action)
 	elseif action == "OpenPanel" then
 		lockControls()
 		setMenuCamera()
+		applyMovementLock(true)
 		menuOpen = true
 	elseif action == "CloseAll" then
 		unlockControls()
 		if camera then
 			camera.CameraType = Enum.CameraType.Custom
 		end
+		applyMovementLock(false)
 		menuOpen = false
+	end
+end)
+
+player.CharacterAdded:Connect(function()
+	if menuOpen then
+		applyMovementLock(true)
 	end
 end)
 
