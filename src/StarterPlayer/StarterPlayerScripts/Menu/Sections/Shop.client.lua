@@ -162,9 +162,10 @@ titleRow.Parent = header
 
 local titleRowLayout = Instance.new("UIListLayout")
 titleRowLayout.FillDirection = Enum.FillDirection.Horizontal
-titleRowLayout.HorizontalAlignment = Enum.HorizontalAlignment.SpaceBetween
+titleRowLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
 titleRowLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 titleRowLayout.SortOrder = Enum.SortOrder.LayoutOrder
+titleRowLayout.Padding = UDim.new(0.02, 0)
 titleRowLayout.Parent = titleRow
 
 local title = Instance.new("TextLabel")
@@ -397,8 +398,19 @@ grid.CellSize = UDim2.new(0.24, 0, 0.22, 0)
 grid.SortOrder = Enum.SortOrder.LayoutOrder
 grid.Parent = list
 
+local updatingCanvas = false
 grid:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-	list.CanvasSize = UDim2.new(0, 0, 0, grid.AbsoluteContentSize.Y + 8)
+	if updatingCanvas then
+		return
+	end
+	updatingCanvas = true
+	task.defer(function()
+		local target = UDim2.new(0, 0, 0, grid.AbsoluteContentSize.Y + 8)
+		if list.CanvasSize ~= target then
+			list.CanvasSize = target
+		end
+		updatingCanvas = false
+	end)
 end)
 
 local backButton = Instance.new("TextButton")
