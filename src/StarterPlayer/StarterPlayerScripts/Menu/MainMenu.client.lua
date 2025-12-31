@@ -11,25 +11,17 @@ local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild(
 local LOGO_IMAGE = UIConfig.Assets.Logo
 local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
 
-local function getUiBus()
-	local folder = playerGui:FindFirstChild("UIEvents")
-	if not folder then
-		folder = Instance.new("Folder")
-		folder.Name = "UIEvents"
-		folder.Parent = playerGui
-	end
+local uiRoot = playerGui:WaitForChild("UI")
+local Theme = require(uiRoot:WaitForChild("Theme"))
+local components = uiRoot:WaitForChild("Components")
+local Button = require(components:WaitForChild("Button"))
+local Panel = require(components:WaitForChild("Panel"))
+local Colors = Theme.Colors
+local Fonts = Theme.Fonts
 
-	local bus = folder:FindFirstChild("UIBus")
-	if not bus then
-		bus = Instance.new("BindableEvent")
-		bus.Name = "UIBus"
-		bus.Parent = folder
-	end
-
-	return bus
-end
-
-local uiBus = getUiBus()
+local root = script:FindFirstAncestor("StarterPlayerScripts") or script.Parent.Parent
+local UIBus = require(root:WaitForChild("Systems"):WaitForChild("UIBus"))
+local uiBus = UIBus.Get()
 
 local function playClick()
 	local sound = SoundService:FindFirstChild("UIClick")
@@ -84,7 +76,7 @@ end
 local function buildBackground(parent)
 	local background = Instance.new("Frame")
 	background.Size = UDim2.fromScale(1, 1)
-	background.BackgroundColor3 = Color3.fromRGB(8, 30, 38)
+	background.BackgroundColor3 = Colors.Background
 	background.BorderSizePixel = 0
 	background.Parent = parent
 
@@ -130,24 +122,9 @@ end
 local background = buildBackground(gui)
 local fade = addFade(background)
 
-local content = Instance.new("Frame")
-content.AnchorPoint = Vector2.new(0.5, 0.5)
-content.Position = UDim2.new(0.5, 0, 0.5, 0)
-content.Size = UDim2.new(0.62, 0, 0.7, 0)
-content.BackgroundColor3 = Color3.fromRGB(10, 26, 34)
+local content = Panel.Create(background, UDim2.new(0.62, 0, 0.7, 0), UDim2.new(0.5, 0, 0.5, 0))
 content.BackgroundTransparency = 0.15
-content.BorderSizePixel = 0
 content.ZIndex = 5
-content.Parent = background
-
-local contentCorner = Instance.new("UICorner")
-contentCorner.CornerRadius = UDim.new(0, 18)
-contentCorner.Parent = content
-
-local contentStroke = Instance.new("UIStroke")
-contentStroke.Color = Color3.fromRGB(90, 150, 170)
-contentStroke.Thickness = 1
-contentStroke.Parent = content
 
 local sizeConstraint = Instance.new("UISizeConstraint")
 sizeConstraint.MinSize = Vector2.new(320, 360)
@@ -158,9 +135,9 @@ local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, -40, 0, 64)
 title.Position = UDim2.new(0, 20, 0, 18)
 title.BackgroundTransparency = 1
-title.Font = Enum.Font.GothamBlack
+title.Font = Fonts.Title
 title.TextSize = 36
-title.TextColor3 = Color3.fromRGB(245, 250, 255)
+title.TextColor3 = Colors.Text
 title.Text = "Fishing Game"
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.ZIndex = 6
@@ -180,9 +157,9 @@ local subtitle = Instance.new("TextLabel")
 subtitle.Size = UDim2.new(1, -40, 0, 32)
 subtitle.Position = UDim2.new(0, 20, 0, 100)
 subtitle.BackgroundTransparency = 1
-subtitle.Font = Enum.Font.Gotham
+subtitle.Font = Fonts.Body
 subtitle.TextSize = 15
-subtitle.TextColor3 = Color3.fromRGB(190, 230, 235)
+subtitle.TextColor3 = Colors.TextMuted
 subtitle.Text = "Escolha um mapa e comece sua pescaria"
 subtitle.TextXAlignment = Enum.TextXAlignment.Left
 subtitle.ZIndex = 6
@@ -219,12 +196,12 @@ end
 
 local function styleButton(button, isPrimary)
 	button.AutoButtonColor = false
-	button.TextColor3 = Color3.fromRGB(245, 245, 245)
-	button.Font = Enum.Font.GothamSemibold
+	button.TextColor3 = Colors.Text
+	button.Font = Fonts.BodyBold
 	button.TextSize = 18
 	button.TextXAlignment = Enum.TextXAlignment.Left
 	button.Size = UDim2.new(1, 0, 0, isPrimary and 54 or 44)
-	button.BackgroundColor3 = isPrimary and Color3.fromRGB(18, 150, 170) or Color3.fromRGB(16, 40, 52)
+	button.BackgroundColor3 = isPrimary and Colors.Accent or Colors.Button
 	button.ZIndex = 6
 
 	local padding = Instance.new("UIPadding")
@@ -236,18 +213,16 @@ local function styleButton(button, isPrimary)
 	corner.Parent = button
 
 	local stroke = Instance.new("UIStroke")
-	stroke.Color = isPrimary and Color3.fromRGB(140, 230, 245) or Color3.fromRGB(70, 120, 140)
+	stroke.Color = isPrimary and Colors.AccentHover or Colors.PanelStroke
 	stroke.Thickness = 1
 	stroke.Parent = button
 
-	local hoverColor = isPrimary and Color3.fromRGB(26, 170, 190) or Color3.fromRGB(20, 52, 66)
+	local hoverColor = isPrimary and Colors.AccentHover or Colors.ButtonHover
 	applyHover(button, button.BackgroundColor3, hoverColor)
 end
 
 local function makeButton(label, isPrimary, iconId)
-	local button = Instance.new("TextButton")
-	button.Text = label
-	button.Parent = buttons
+	local button = Button.Create(buttons, label, { primary = isPrimary, textSize = 18 })
 	styleButton(button, isPrimary)
 
 	local icon = Instance.new("ImageLabel")
