@@ -187,8 +187,15 @@ titleRow.BackgroundTransparency = 1
 titleRow.ZIndex = 6
 titleRow.Parent = header
 
+local titleRowLayout = Instance.new("UIListLayout")
+titleRowLayout.FillDirection = Enum.FillDirection.Horizontal
+titleRowLayout.HorizontalAlignment = Enum.HorizontalAlignment.SpaceBetween
+titleRowLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+titleRowLayout.SortOrder = Enum.SortOrder.LayoutOrder
+titleRowLayout.Parent = titleRow
+
 local title = Instance.new("TextLabel")
-title.Size = UDim2.fromScale(0.6, 1)
+title.Size = UDim2.fromScale(0.5, 1)
 title.BackgroundTransparency = 1
 title.Font = Enum.Font.GothamBold
 title.TextSize = 18
@@ -198,13 +205,25 @@ title.TextXAlignment = Enum.TextXAlignment.Left
 title.ZIndex = 6
 title.Parent = titleRow
 
+local rightTop = Instance.new("Frame")
+rightTop.Size = UDim2.fromScale(0.5, 1)
+rightTop.BackgroundTransparency = 1
+rightTop.ZIndex = 6
+rightTop.Parent = titleRow
+
+local rightTopLayout = Instance.new("UIListLayout")
+rightTopLayout.FillDirection = Enum.FillDirection.Horizontal
+rightTopLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+rightTopLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+rightTopLayout.SortOrder = Enum.SortOrder.LayoutOrder
+rightTopLayout.Padding = UDim.new(0.02, 0)
+rightTopLayout.Parent = rightTop
+
 local coinsPanel = Instance.new("Frame")
-coinsPanel.Size = UDim2.fromScale(0.4, 1)
-coinsPanel.AnchorPoint = Vector2.new(1, 0)
-coinsPanel.Position = UDim2.fromScale(1, 0)
+coinsPanel.Size = UDim2.fromScale(0.65, 1)
 coinsPanel.BackgroundTransparency = 1
 coinsPanel.ZIndex = 6
-coinsPanel.Parent = titleRow
+coinsPanel.Parent = rightTop
 
 local coinsLayout = Instance.new("UIListLayout")
 coinsLayout.FillDirection = Enum.FillDirection.Vertical
@@ -410,9 +429,7 @@ grid:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
 end)
 
 local backButton = Instance.new("TextButton")
-backButton.Size = UDim2.fromScale(0.12, 0.36)
-backButton.AnchorPoint = Vector2.new(1, 0)
-backButton.Position = UDim2.fromScale(1, 0)
+backButton.Size = UDim2.fromScale(0.28, 0.75)
 backButton.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
 backButton.TextColor3 = Color3.fromRGB(220, 230, 240)
 backButton.Font = Enum.Font.GothamSemibold
@@ -420,7 +437,7 @@ backButton.TextSize = 14
 backButton.Text = "Voltar"
 backButton.AutoButtonColor = false
 backButton.ZIndex = 6
-backButton.Parent = titleRow
+backButton.Parent = rightTop
 
 local backCorner = Instance.new("UICorner")
 backCorner.CornerRadius = UDim.new(0.2, 0)
@@ -758,7 +775,7 @@ local function layoutPanels()
 		leftPanel.Size = UDim2.fromScale(1, 0.62)
 		rightPanel.Size = UDim2.fromScale(1, 0.38)
 		grid.CellSize = UDim2.new(0.48, 0, 0.3, 0)
-		backButton.Size = UDim2.fromScale(0.2, 0.7)
+		backButton.Size = UDim2.fromScale(0.34, 0.8)
 		for _, tab in ipairs(tabsRow:GetChildren()) do
 			if tab:IsA("TextButton") then
 				tab.Size = UDim2.fromScale(0.22, 1)
@@ -769,7 +786,7 @@ local function layoutPanels()
 		leftPanel.Size = UDim2.fromScale(0.64, 1)
 		rightPanel.Size = UDim2.fromScale(0.34, 1)
 		grid.CellSize = UDim2.new(0.24, 0, 0.22, 0)
-		backButton.Size = UDim2.fromScale(0.12, 0.9)
+		backButton.Size = UDim2.fromScale(0.28, 0.75)
 		for _, tab in ipairs(tabsRow:GetChildren()) do
 			if tab:IsA("TextButton") then
 				tab.Size = UDim2.fromScale(0.16, 1)
