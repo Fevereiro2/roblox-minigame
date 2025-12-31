@@ -18,6 +18,11 @@ local UIConfig = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild(
 local BACKGROUND_IMAGE = UIConfig.Assets.Wallpaper
 local cachedUnlocked = {}
 
+local uiRoot = playerGui:WaitForChild("UI")
+local Theme = require(uiRoot:WaitForChild("Theme"))
+local Colors = Theme.Colors
+local Fonts = Theme.Fonts
+
 local root = script:FindFirstAncestor("StarterPlayerScripts") or script.Parent.Parent.Parent
 local UIBus = require(root:WaitForChild("Systems"):WaitForChild("UIBus"))
 local uiBus = UIBus.Get()
@@ -75,7 +80,7 @@ end
 
 local background = Instance.new("Frame")
 background.Size = UDim2.fromScale(1, 1)
-background.BackgroundColor3 = Color3.fromRGB(8, 30, 38)
+background.BackgroundColor3 = Colors.Background
 background.BorderSizePixel = 0
 background.Parent = gui
 
@@ -102,7 +107,7 @@ local frame = Instance.new("Frame")
 frame.AnchorPoint = Vector2.new(0.5, 0.5)
 frame.Size = UDim2.fromScale(0.74, 0.76)
 frame.Position = UDim2.fromScale(0.5, 0.52)
-frame.BackgroundColor3 = Color3.fromRGB(10, 26, 34)
+frame.BackgroundColor3 = Colors.Panel
 frame.BackgroundTransparency = 0.15
 frame.BorderSizePixel = 0
 frame.ZIndex = 5
@@ -113,7 +118,7 @@ frameCorner.CornerRadius = UDim.new(0.05, 0)
 frameCorner.Parent = frame
 
 local frameStroke = Instance.new("UIStroke")
-frameStroke.Color = Color3.fromRGB(90, 150, 170)
+frameStroke.Color = Colors.PanelStroke
 frameStroke.Thickness = 1
 frameStroke.Parent = frame
 
@@ -145,9 +150,9 @@ headerLayout.Parent = header
 local title = Instance.new("TextLabel")
 title.Size = UDim2.fromScale(0.7, 1)
 title.BackgroundTransparency = 1
-title.Font = Enum.Font.GothamBold
+title.Font = Fonts.Heading
 title.TextSize = 18
-title.TextColor3 = Color3.fromRGB(240, 240, 240)
+title.TextColor3 = Colors.Text
 title.Text = "Canas"
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.ZIndex = 6
@@ -155,9 +160,9 @@ title.Parent = header
 
 local backButton = Instance.new("TextButton")
 backButton.Size = UDim2.fromScale(0.25, 0.8)
-backButton.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
-backButton.TextColor3 = Color3.fromRGB(220, 230, 240)
-backButton.Font = Enum.Font.GothamSemibold
+backButton.BackgroundColor3 = Colors.Button
+backButton.TextColor3 = Colors.Text
+backButton.Font = Fonts.BodyBold
 backButton.TextSize = 14
 backButton.Text = "< Voltar"
 backButton.AutoButtonColor = false
@@ -169,15 +174,15 @@ backCorner.CornerRadius = UDim.new(0.25, 0)
 backCorner.Parent = backButton
 
 local backStroke = Instance.new("UIStroke")
-backStroke.Color = Color3.fromRGB(70, 120, 140)
+backStroke.Color = Colors.PanelStroke
 backStroke.Thickness = 1
 backStroke.Parent = backButton
 
 backButton.MouseEnter:Connect(function()
-	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(20, 52, 66) }):Play()
+	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Colors.ButtonHover }):Play()
 end)
 backButton.MouseLeave:Connect(function()
-	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(16, 40, 52) }):Play()
+	TweenService:Create(backButton, TweenInfo.new(0.12), { BackgroundColor3 = Colors.Button }):Play()
 end)
 backButton.MouseButton1Click:Connect(function()
 	playClick()
