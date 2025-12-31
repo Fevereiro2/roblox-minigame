@@ -65,7 +65,7 @@ local function addFade(parent)
 	local fade = Instance.new("Frame")
 	fade.Name = "Fade"
 	fade.Size = UDim2.fromScale(1, 1)
-	fade.BackgroundColor3 = Color3.fromRGB(4, 12, 16)
+	fade.BackgroundColor3 = Colors.Fade
 	fade.BackgroundTransparency = 1
 	fade.BorderSizePixel = 0
 	fade.ZIndex = 20
@@ -90,18 +90,15 @@ local function buildBackground(parent)
 	wallpaper.Parent = background
 
 	local gradient = Instance.new("UIGradient")
-	gradient.Color = ColorSequence.new({
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 40, 54)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(4, 92, 114)),
-	})
+	gradient.Color = ColorSequence.new(Theme.Gradients.Primary)
 	gradient.Rotation = 120
 	gradient.Parent = background
 
 	local sun = Instance.new("Frame")
 	sun.Size = UDim2.new(0, 340, 0, 340)
 	sun.Position = UDim2.new(0, -140, 0, -140)
-	sun.BackgroundColor3 = Color3.fromRGB(255, 210, 140)
-	sun.BackgroundTransparency = 0.35
+	sun.BackgroundColor3 = Theme.Sun.Fill
+	sun.BackgroundTransparency = Theme.Sun.Transparency
 	sun.BorderSizePixel = 0
 	sun.Parent = background
 	local sunCorner = Instance.new("UICorner")
@@ -109,10 +106,7 @@ local function buildBackground(parent)
 	sunCorner.Parent = sun
 
 	local sunGlow = Instance.new("UIGradient")
-	sunGlow.Color = ColorSequence.new({
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 230, 180)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 180, 90)),
-	})
+	sunGlow.Color = ColorSequence.new(Theme.Gradients.Sun)
 	sunGlow.Rotation = 90
 	sunGlow.Parent = sun
 
@@ -285,7 +279,7 @@ footer.Position = UDim2.new(0, 20, 1, -28)
 footer.BackgroundTransparency = 1
 footer.Font = Enum.Font.Gotham
 footer.TextSize = 12
-footer.TextColor3 = Color3.fromRGB(170, 210, 220)
+footer.TextColor3 = Colors.TextMuted
 footer.Text = "Colecione peixes raros e explore aguas novas"
 footer.TextXAlignment = Enum.TextXAlignment.Left
 footer.ZIndex = 6
