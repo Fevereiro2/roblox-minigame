@@ -4,7 +4,6 @@ local Services = ServerScriptService:WaitForChild("Services")
 local PlayerDataService = require(Services:WaitForChild("PlayerDataService"))
 local FishingService = require(Services:WaitForChild("FishingService"))
 local ShopService = require(Services:WaitForChild("ShopService"))
-local RewardsService = require(Services:WaitForChild("RewardsService"))
 
 PlayerDataService.GetRemote("FishRequest")
 PlayerDataService.GetRemote("ShopAction")
@@ -41,4 +40,3 @@ end
 PlayerDataService.Init()
 FishingService.Init(PlayerDataService)
 ShopService.Init(PlayerDataService)
-RewardsService.Init(PlayerDataService)
