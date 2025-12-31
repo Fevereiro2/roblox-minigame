@@ -1,4 +1,6 @@
 local DataStoreService = game:GetService("DataStoreService")
+local MarketplaceService = game:GetService("MarketplaceService")
+local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local FishDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("FishDatabase"))
@@ -6,19 +8,20 @@ local MapDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChi
 local RodDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("RodDatabase"))
 local ProductDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("ProductDatabase"))
 
-local State = {}
+local PlayerDataService = {}
+local initialized = false
 
-State.Databases = {
+PlayerDataService.Databases = {
 	Fish = FishDatabase,
 	Maps = MapDatabase,
 	Rods = RodDatabase,
 	Products = ProductDatabase,
 }
 
-State.PlayerData = {}
-State.Store = DataStoreService:GetDataStore("FishingGameData_v1")
+PlayerDataService.PlayerData = {}
+PlayerDataService.Store = DataStoreService:GetDataStore("FishingGameData_v1")
 
-function State.DefaultData()
+function PlayerDataService.DefaultData()
 	return {
 		Coins = 0,
 		PurchasedCoins = 0,
@@ -45,7 +48,7 @@ local function cloneTable(source)
 	return copy
 end
 
-function State.MergeDefaults(defaults, loaded)
+function PlayerDataService.MergeDefaults(defaults, loaded)
 	local data = cloneTable(defaults)
 	if type(loaded) ~= "table" then
 		return data
@@ -64,7 +67,7 @@ function State.MergeDefaults(defaults, loaded)
 	return data
 end
 
-function State.MergeData(base, incoming)
+function PlayerDataService.MergeData(base, incoming)
 	local data = cloneTable(base or {})
 	if type(incoming) ~= "table" then
 		return data
@@ -83,35 +86,35 @@ function State.MergeData(base, incoming)
 	return data
 end
 
-function State.GetData(player)
-	return State.PlayerData[player.UserId]
+function PlayerDataService.GetData(player)
+	return PlayerDataService.PlayerData[player.UserId]
 end
 
-function State.InitPlayer(player)
-	local data = State.DefaultData()
-	State.PlayerData[player.UserId] = data
+function PlayerDataService.InitPlayer(player)
+	local data = PlayerDataService.DefaultData()
+	PlayerDataService.PlayerData[player.UserId] = data
 	return data
 end
 
-function State.LoadPlayer(player)
+function PlayerDataService.LoadPlayer(player)
 	local key = "player_" .. player.UserId
-	local data = State.DefaultData()
+	local data = PlayerDataService.DefaultData()
 
 	local ok, saved = pcall(function()
-		return State.Store:GetAsync(key)
+		return PlayerDataService.Store:GetAsync(key)
 	end)
 
 	if ok then
-		data = State.MergeDefaults(data, saved)
+		data = PlayerDataService.MergeDefaults(data, saved)
 	end
 
-	State.CleanExpiredBoosts(data)
-	State.PlayerData[player.UserId] = data
+	PlayerDataService.CleanExpiredBoosts(data)
+	PlayerDataService.PlayerData[player.UserId] = data
 	return data
 end
 
-function State.SavePlayer(player)
-	local data = State.PlayerData[player.UserId]
+function PlayerDataService.SavePlayer(player)
+	local data = PlayerDataService.PlayerData[player.UserId]
 	if not data then
 		return
 	end
@@ -120,18 +123,18 @@ function State.SavePlayer(player)
 	local payload = cloneTable(data)
 
 	pcall(function()
-		State.Store:UpdateAsync(key, function(old)
-			local base = State.MergeDefaults(State.DefaultData(), old)
-			return State.MergeData(base, payload)
+		PlayerDataService.Store:UpdateAsync(key, function(old)
+			local base = PlayerDataService.MergeDefaults(PlayerDataService.DefaultData(), old)
+			return PlayerDataService.MergeData(base, payload)
 		end)
 	end)
 end
 
-function State.RemovePlayer(player)
-	State.PlayerData[player.UserId] = nil
+function PlayerDataService.RemovePlayer(player)
+	PlayerDataService.PlayerData[player.UserId] = nil
 end
 
-function State.CleanExpiredBoosts(data)
+function PlayerDataService.CleanExpiredBoosts(data)
 	local now = os.time()
 	for boostId, boostData in pairs(data.ActiveBoosts) do
 		if type(boostData) ~= "table" or boostData.expiresAt <= now then
@@ -140,7 +143,7 @@ function State.CleanExpiredBoosts(data)
 	end
 end
 
-function State.ApplyBoost(data, boostDef)
+function PlayerDataService.ApplyBoost(data, boostDef)
 	if not boostDef or not boostDef.id then
 		return
 	end
@@ -151,7 +154,7 @@ function State.ApplyBoost(data, boostDef)
 	}
 end
 
-function State.GetActiveBoostMultiplier(data, category)
+function PlayerDataService.GetActiveBoostMultiplier(data, category)
 	local multiplier = 1
 	local now = os.time()
 	for boostId, boostData in pairs(data.ActiveBoosts) do
@@ -167,21 +170,21 @@ function State.GetActiveBoostMultiplier(data, category)
 	return multiplier
 end
 
-function State.MarkReceipt(data, receiptId)
+function PlayerDataService.MarkReceipt(data, receiptId)
 	if not data.ProcessedReceipts then
 		data.ProcessedReceipts = {}
 	end
 	data.ProcessedReceipts[receiptId] = true
 end
 
-function State.IsReceiptProcessed(data, receiptId)
+function PlayerDataService.IsReceiptProcessed(data, receiptId)
 	if not data.ProcessedReceipts then
 		return false
 	end
 	return data.ProcessedReceipts[receiptId] == true
 end
 
-function State.SetAttributes(player, data)
+function PlayerDataService.SetAttributes(player, data)
 	player:SetAttribute("Coins", data.Coins)
 	player:SetAttribute("PurchasedCoins", data.PurchasedCoins or 0)
 	player:SetAttribute("Level", data.Level)
@@ -189,7 +192,7 @@ function State.SetAttributes(player, data)
 	player:SetAttribute("EquippedRod", data.EquippedRod or "")
 end
 
-function State.GetRemote(name)
+function PlayerDataService.GetRemote(name)
 	local folder = ReplicatedStorage:FindFirstChild("RemoteEvents")
 	if not folder then
 		folder = Instance.new("Folder")
@@ -207,7 +210,7 @@ function State.GetRemote(name)
 	return remote
 end
 
-function State.GetRemoteFunction(name)
+function PlayerDataService.GetRemoteFunction(name)
 	local folder = ReplicatedStorage:FindFirstChild("RemoteFunctions")
 	if not folder then
 		folder = Instance.new("Folder")
@@ -225,4 +228,73 @@ function State.GetRemoteFunction(name)
 	return remote
 end
 
-return State
+local function unlockGamePasses(player, data)
+	local changed = false
+
+	for _, map in ipairs(MapDatabase.Maps) do
+		if map.currency == "Robux" and map.gamePassId and map.gamePassId > 0 then
+			local ok, owns = pcall(function()
+				return MarketplaceService:UserOwnsGamePassAsync(player.UserId, map.gamePassId)
+			end)
+			if ok and owns and not data.UnlockedMaps[map.id] then
+				data.UnlockedMaps[map.id] = true
+				changed = true
+			end
+		end
+	end
+
+	for _, rod in ipairs(RodDatabase.Rods) do
+		if rod.currency == "Robux" and rod.gamePassId and rod.gamePassId > 0 then
+			local ok, owns = pcall(function()
+				return MarketplaceService:UserOwnsGamePassAsync(player.UserId, rod.gamePassId)
+			end)
+			if ok and owns and not data.UnlockedRods[rod.id] then
+				data.UnlockedRods[rod.id] = true
+				changed = true
+			end
+		end
+	end
+
+	if changed then
+		PlayerDataService.SetAttributes(player, data)
+		PlayerDataService.SavePlayer(player)
+	end
+end
+
+function PlayerDataService.Init()
+	if initialized then
+		return
+	end
+	initialized = true
+
+	Players.PlayerAdded:Connect(function(player)
+		local data = PlayerDataService.LoadPlayer(player)
+		PlayerDataService.SetAttributes(player, data)
+
+		task.spawn(function()
+			unlockGamePasses(player, data)
+		end)
+	end)
+
+	Players.PlayerRemoving:Connect(function(player)
+		PlayerDataService.SavePlayer(player)
+		PlayerDataService.RemovePlayer(player)
+	end)
+
+	game:BindToClose(function()
+		for _, player in ipairs(Players:GetPlayers()) do
+			PlayerDataService.SavePlayer(player)
+		end
+	end)
+
+	for _, player in ipairs(Players:GetPlayers()) do
+		local data = PlayerDataService.LoadPlayer(player)
+		PlayerDataService.SetAttributes(player, data)
+
+		task.spawn(function()
+			unlockGamePasses(player, data)
+		end)
+	end
+end
+
+return PlayerDataService
