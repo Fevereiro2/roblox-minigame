@@ -7,7 +7,7 @@ local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
-local getSelectMap = require(ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("SelectMap"))
+local getSelectMap = require(ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("MenuAction"))
 local selectEvent = getSelectMap()
 
 local MapDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("MapDatabase"))
