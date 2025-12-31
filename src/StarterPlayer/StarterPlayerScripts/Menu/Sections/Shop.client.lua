@@ -16,14 +16,13 @@ local RodDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChi
 local MapDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("MapDatabase"))
 local ProductDatabase = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("ProductDatabase"))
 
-local BACKGROUND_IMAGE = Theme.Assets.Wallpaper
-
 local uiRoot = game:GetService("StarterGui"):WaitForChild("UI")
 local Theme = require(uiRoot:WaitForChild("Theme"))
 local components = uiRoot:WaitForChild("Components")
 local Panel = require(components:WaitForChild("Panel"))
 local Colors = Theme.Colors
 local Fonts = Theme.Fonts
+local BACKGROUND_IMAGE = Theme.Assets.Wallpaper
 
 local root = script:FindFirstAncestor("StarterPlayerScripts") or script.Parent.Parent.Parent
 local UIBus = require(root:WaitForChild("Systems"):WaitForChild("UIBus"))
