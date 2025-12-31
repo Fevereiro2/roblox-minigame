@@ -111,6 +111,16 @@ end
 
 ensureSound("UIClick", "rbxassetid://0", 0.6, false)
 
+local function syncMenuState()
+	local flag = playerGui:GetAttribute("MenuOpen")
+	if typeof(flag) == "boolean" then
+		menuOpen = flag
+	end
+end
+
+playerGui:GetAttributeChangedSignal("MenuOpen"):Connect(syncMenuState)
+syncMenuState()
+
 lockControls()
 setMenuCamera()
 applyMovementLock(true)
