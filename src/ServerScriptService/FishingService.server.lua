@@ -7,6 +7,7 @@ local RodDatabase = State.Databases.Rods
 
 local fishEvent = State.GetRemote("FishRequest")
 local rng = Random.new()
+local lastFishTimes = {}
 
 local function buildWeights(mapId, rodId)
 	local weights = {
@@ -85,6 +86,19 @@ fishEvent.OnServerEvent:Connect(function(player)
 		fishEvent:FireClient(player, { ok = false, reason = "NO_MAP" })
 		return
 	end
+
+	local now = os.clock()
+	local last = lastFishTimes[player.UserId] or 0
+	local rod = RodDatabase.GetById(data.EquippedRod)
+	local cooldown = 2.5
+	if rod and rod.speed then
+		cooldown = math.max(0.6, rod.speed)
+	end
+	if now - last < cooldown then
+		fishEvent:FireClient(player, { ok = false, reason = "COOLDOWN" })
+		return
+	end
+	lastFishTimes[player.UserId] = now
 
 	local fish, rarity = pickFish(data.SelectedMap, data.EquippedRod)
 	if not fish then
