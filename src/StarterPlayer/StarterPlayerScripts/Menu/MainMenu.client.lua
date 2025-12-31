@@ -9,8 +9,8 @@ local playerGui = player:WaitForChild("PlayerGui")
 local uiRoot = game:GetService("StarterGui"):WaitForChild("UI")
 local Theme = require(uiRoot:WaitForChild("Theme"))
 local components = uiRoot:WaitForChild("Components")
-local Button = require(components:WaitForChild("Button"))
 local Panel = require(components:WaitForChild("Panel"))
+local MenuButton = require(components:WaitForChild("MenuButton"))
 local Colors = Theme.Colors
 local Fonts = Theme.Fonts
 local LOGO_IMAGE = Theme.Assets.Logo
@@ -176,95 +176,50 @@ local icons = {
 	Mapas = "rbxassetid://0",
 }
 
-local function applyHover(button, baseColor, hoverColor)
-	button.MouseEnter:Connect(function()
-		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = hoverColor }):Play()
-	end)
-	button.MouseLeave:Connect(function()
-		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = baseColor }):Play()
-	end)
-end
-
-local function styleButton(button, isPrimary)
-	button.AutoButtonColor = false
-	button.TextColor3 = Colors.Text
-	button.Font = Fonts.BodyBold
-	button.TextSize = 18
-	button.TextXAlignment = Enum.TextXAlignment.Left
-	button.Size = UDim2.new(1, 0, 0, isPrimary and 54 or 44)
-	button.BackgroundColor3 = isPrimary and Colors.Accent or Colors.Button
-	button.ZIndex = 6
-
-	local padding = Instance.new("UIPadding")
-	padding.PaddingLeft = UDim.new(0, 50)
-	padding.Parent = button
-
-	local corner = Instance.new("UICorner")
-	corner.CornerRadius = UDim.new(0, 12)
-	corner.Parent = button
-
-	local stroke = Instance.new("UIStroke")
-	stroke.Color = isPrimary and Colors.AccentHover or Colors.PanelStroke
-	stroke.Thickness = 1
-	stroke.Parent = button
-
-	local hoverColor = isPrimary and Colors.AccentHover or Colors.ButtonHover
-	applyHover(button, button.BackgroundColor3, hoverColor)
-end
-
-local function makeButton(label, isPrimary, iconId)
-	local button = Button.Create(buttons, label, { primary = isPrimary, textSize = 18 })
-	styleButton(button, isPrimary)
-
-	local icon = Instance.new("ImageLabel")
-	icon.Size = UDim2.new(0, 22, 0, 22)
-	icon.Position = UDim2.new(0, 18, 0.5, -11)
-	icon.BackgroundTransparency = 1
-	icon.Image = iconId
-	icon.ZIndex = 7
-	icon.Parent = button
-
-	return button
-end
-
-local playButton = makeButton("Jogar", true, icons.Jogar)
+local playButton = MenuButton.Create(buttons, "Jogar", icons.Jogar, { primary = true, height = 54 })
 playButton.MouseButton1Click:Connect(function()
 	playClick()
+	playerGui:SetAttribute("PanelTarget", "Play")
 	uiBus:Fire("CloseAll")
 	uiBus:Fire("OpenPanel", "Play")
 	gui.Enabled = false
 end)
 
-makeButton("Shop", false, icons.Shop).MouseButton1Click:Connect(function()
+MenuButton.Create(buttons, "Shop", icons.Shop, { height = 44 }).MouseButton1Click:Connect(function()
 	playClick()
+	playerGui:SetAttribute("PanelTarget", "Shop")
 	uiBus:Fire("CloseAll")
 	uiBus:Fire("OpenPanel", "Shop")
 	gui.Enabled = false
 end)
 
-makeButton("Peixes", false, icons.Peixes).MouseButton1Click:Connect(function()
+MenuButton.Create(buttons, "Peixes", icons.Peixes, { height = 44 }).MouseButton1Click:Connect(function()
 	playClick()
+	playerGui:SetAttribute("PanelTarget", "Pokedex")
 	uiBus:Fire("CloseAll")
 	uiBus:Fire("OpenPanel", "Pokedex")
 	gui.Enabled = false
 end)
 
-makeButton("Personagem", false, icons.Personagem).MouseButton1Click:Connect(function()
+MenuButton.Create(buttons, "Personagem", icons.Personagem, { height = 44 }).MouseButton1Click:Connect(function()
 	playClick()
+	playerGui:SetAttribute("PanelTarget", "Character")
 	uiBus:Fire("CloseAll")
 	uiBus:Fire("OpenPanel", "Character")
 	gui.Enabled = false
 end)
 
-makeButton("Canas", false, icons.Canas).MouseButton1Click:Connect(function()
+MenuButton.Create(buttons, "Canas", icons.Canas, { height = 44 }).MouseButton1Click:Connect(function()
 	playClick()
+	playerGui:SetAttribute("PanelTarget", "Rods")
 	uiBus:Fire("CloseAll")
 	uiBus:Fire("OpenPanel", "Rods")
 	gui.Enabled = false
 end)
 
-makeButton("Mapas", false, icons.Mapas).MouseButton1Click:Connect(function()
+MenuButton.Create(buttons, "Mapas", icons.Mapas, { height = 44 }).MouseButton1Click:Connect(function()
 	playClick()
+	playerGui:SetAttribute("PanelTarget", "Maps")
 	uiBus:Fire("CloseAll")
 	uiBus:Fire("OpenPanel", "Maps")
 	gui.Enabled = false
