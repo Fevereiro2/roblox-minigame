@@ -31,6 +31,16 @@ end
 local uiBus = getUiBus()
 local menuOpen = false
 
+local function syncMenuState()
+	local flag = playerGui:GetAttribute("MenuOpen")
+	if typeof(flag) == "boolean" then
+		menuOpen = flag
+	end
+end
+
+playerGui:GetAttributeChangedSignal("MenuOpen"):Connect(syncMenuState)
+syncMenuState()
+
 local lastRequest = 0
 local requestCooldown = 1.0
 
