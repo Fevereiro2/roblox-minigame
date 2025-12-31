@@ -3,6 +3,10 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
+local uiRoot = playerGui:WaitForChild("UI")
+local Theme = require(uiRoot:WaitForChild("Theme"))
+local Colors = Theme.Colors
+
 local function getHud()
 	local hud = playerGui:FindFirstChild("FishingHud")
 	if not hud then
@@ -21,8 +25,8 @@ local function getCoinsLabel(hud)
 		label.Name = "CoinsLabel"
 		label.Size = UDim2.new(0, 200, 0, 32)
 		label.Position = UDim2.new(1, -216, 0, 16)
-		label.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-		label.TextColor3 = Color3.fromRGB(240, 240, 240)
+		label.BackgroundColor3 = Colors.HudBackground
+		label.TextColor3 = Colors.Text
 		label.Font = Enum.Font.GothamSemibold
 		label.TextSize = 14
 		label.TextXAlignment = Enum.TextXAlignment.Left
