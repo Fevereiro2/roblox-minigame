@@ -227,9 +227,9 @@ local function addSection(text)
 	label.Size = UDim2.fromScale(1, 0)
 	label.AutomaticSize = Enum.AutomaticSize.Y
 	label.BackgroundTransparency = 1
-	label.Font = Enum.Font.GothamBold
+	label.Font = Fonts.Heading
 	label.TextSize = 14
-	label.TextColor3 = Color3.fromRGB(200, 230, 235)
+	label.TextColor3 = Colors.TextSoft
 	label.TextXAlignment = Enum.TextXAlignment.Left
 	label.Text = text
 	label.ZIndex = 6
@@ -237,10 +237,10 @@ local function addSection(text)
 end
 
 local RARITY_COLORS = {
-	{ min = 6, color = Color3.fromRGB(220, 90, 255) },
-	{ min = 4, color = Color3.fromRGB(255, 190, 80) },
-	{ min = 2, color = Color3.fromRGB(90, 170, 255) },
-	{ min = 0, color = Color3.fromRGB(170, 210, 220) },
+	{ min = 6, color = Colors.RarityLegendary },
+	{ min = 4, color = Colors.Warning },
+	{ min = 2, color = Colors.RarityEpic },
+	{ min = 0, color = Colors.TextMuted },
 }
 
 local function getRarityColor(rod)
@@ -256,7 +256,7 @@ local function addRodCard(rod, tag, equipped, locked)
 	local row = Instance.new("Frame")
 	row.Size = UDim2.fromScale(1, 0)
 	row.AutomaticSize = Enum.AutomaticSize.Y
-	row.BackgroundColor3 = Color3.fromRGB(16, 40, 52)
+	row.BackgroundColor3 = Colors.Button
 	row.BackgroundTransparency = 0.05
 	row.BorderSizePixel = 0
 	row.ZIndex = 6
@@ -267,7 +267,7 @@ local function addRodCard(rod, tag, equipped, locked)
 	rowCorner.Parent = row
 
 	local rowStroke = Instance.new("UIStroke")
-	rowStroke.Color = Color3.fromRGB(70, 120, 140)
+	rowStroke.Color = Colors.PanelStroke
 	rowStroke.Thickness = 1
 	rowStroke.Parent = row
 
@@ -288,9 +288,9 @@ local function addRodCard(rod, tag, equipped, locked)
 	nameRow.Size = UDim2.fromScale(1, 0)
 	nameRow.AutomaticSize = Enum.AutomaticSize.Y
 	nameRow.BackgroundTransparency = 1
-	nameRow.Font = Enum.Font.GothamSemibold
+	nameRow.Font = Fonts.BodyBold
 	nameRow.TextSize = 14
-	nameRow.TextColor3 = Color3.fromRGB(240, 240, 240)
+	nameRow.TextColor3 = Colors.Text
 	nameRow.TextXAlignment = Enum.TextXAlignment.Left
 	if locked then
 		nameRow.Text = rod.name .. " (Bloqueada)"
@@ -321,7 +321,7 @@ local function addRodCard(rod, tag, equipped, locked)
 		priceLabel.BackgroundTransparency = 1
 		priceLabel.Font = Enum.Font.Gotham
 		priceLabel.TextSize = 12
-		priceLabel.TextColor3 = Color3.fromRGB(190, 220, 235)
+		priceLabel.TextColor3 = Colors.TextSoft
 		priceLabel.TextXAlignment = Enum.TextXAlignment.Left
 		priceLabel.Text = string.format("Preco: %d %s", rod.price, rod.currency)
 		priceLabel.ZIndex = 7
@@ -332,12 +332,12 @@ local function addRodCard(rod, tag, equipped, locked)
 	equipButton.Size = UDim2.fromScale(1, 0)
 	equipButton.AutomaticSize = Enum.AutomaticSize.Y
 	if locked then
-		equipButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+		equipButton.BackgroundColor3 = Colors.Disabled
 	else
-		equipButton.BackgroundColor3 = equipped and Color3.fromRGB(30, 90, 70) or Color3.fromRGB(18, 150, 170)
+		equipButton.BackgroundColor3 = equipped and Colors.Success or Colors.Accent
 	end
-	equipButton.TextColor3 = Color3.fromRGB(245, 245, 245)
-	equipButton.Font = Enum.Font.GothamSemibold
+	equipButton.TextColor3 = Colors.Text
+	equipButton.Font = Fonts.BodyBold
 	equipButton.TextSize = 14
 	if locked then
 		equipButton.Text = "Bloqueada"
@@ -355,7 +355,7 @@ local function addRodCard(rod, tag, equipped, locked)
 	equipCorner.Parent = equipButton
 
 	local equipStroke = Instance.new("UIStroke")
-	equipStroke.Color = Color3.fromRGB(140, 230, 245)
+	equipStroke.Color = Colors.AccentHover
 	equipStroke.Thickness = 1
 	equipStroke.Parent = equipButton
 
@@ -363,13 +363,13 @@ local function addRodCard(rod, tag, equipped, locked)
 		if locked then
 			return
 		end
-		TweenService:Create(equipButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(26, 170, 190) }):Play()
+		TweenService:Create(equipButton, TweenInfo.new(0.12), { BackgroundColor3 = Colors.AccentHover }):Play()
 	end)
 	equipButton.MouseLeave:Connect(function()
 		if locked then
 			return
 		end
-		local base = equipped and Color3.fromRGB(30, 90, 70) or Color3.fromRGB(18, 150, 170)
+		local base = equipped and Colors.Success or Colors.Accent
 		TweenService:Create(equipButton, TweenInfo.new(0.12), { BackgroundColor3 = base }):Play()
 	end)
 
@@ -385,9 +385,9 @@ local function addRodCard(rod, tag, equipped, locked)
 		local buyButton = Instance.new("TextButton")
 		buyButton.Size = UDim2.fromScale(1, 0)
 		buyButton.AutomaticSize = Enum.AutomaticSize.Y
-		buyButton.BackgroundColor3 = Color3.fromRGB(18, 120, 140)
-		buyButton.TextColor3 = Color3.fromRGB(245, 245, 245)
-		buyButton.Font = Enum.Font.GothamSemibold
+		buyButton.BackgroundColor3 = Colors.AccentAlt
+		buyButton.TextColor3 = Colors.Text
+		buyButton.Font = Fonts.BodyBold
 		buyButton.TextSize = 13
 		buyButton.Text = "Comprar na loja"
 		buyButton.AutoButtonColor = false
@@ -399,15 +399,15 @@ local function addRodCard(rod, tag, equipped, locked)
 		buyCorner.Parent = buyButton
 
 		local buyStroke = Instance.new("UIStroke")
-		buyStroke.Color = Color3.fromRGB(140, 230, 245)
+		buyStroke.Color = Colors.AccentHover
 		buyStroke.Thickness = 1
 		buyStroke.Parent = buyButton
 
 		buyButton.MouseEnter:Connect(function()
-			TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(22, 140, 160) }):Play()
+			TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Colors.AccentAltHover }):Play()
 		end)
 		buyButton.MouseLeave:Connect(function()
-			TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(18, 120, 140) }):Play()
+			TweenService:Create(buyButton, TweenInfo.new(0.12), { BackgroundColor3 = Colors.AccentAlt }):Play()
 		end)
 		buyButton.MouseButton1Click:Connect(function()
 			playClick()
@@ -422,9 +422,9 @@ local function addRodCard(rod, tag, equipped, locked)
 		badge.AutomaticSize = Enum.AutomaticSize.Y
 		badge.AnchorPoint = Vector2.new(1, 0)
 		badge.Position = UDim2.fromScale(1, 0)
-		badge.BackgroundColor3 = Color3.fromRGB(30, 90, 70)
-		badge.TextColor3 = Color3.fromRGB(235, 255, 245)
-		badge.Font = Enum.Font.GothamSemibold
+		badge.BackgroundColor3 = Colors.Success
+		badge.TextColor3 = Colors.SuccessText
+		badge.Font = Fonts.BodyBold
 		badge.TextSize = 12
 		badge.Text = "EQUIPADA"
 		badge.TextXAlignment = Enum.TextXAlignment.Center
@@ -474,7 +474,7 @@ local function rebuildList(profile)
 		empty.BackgroundTransparency = 1
 		empty.Font = Enum.Font.Gotham
 		empty.TextSize = 12
-		empty.TextColor3 = Color3.fromRGB(170, 210, 220)
+		empty.TextColor3 = Colors.TextMuted
 		empty.TextXAlignment = Enum.TextXAlignment.Left
 		empty.Text = "Sem canas compradas ainda."
 		empty.ZIndex = 7
