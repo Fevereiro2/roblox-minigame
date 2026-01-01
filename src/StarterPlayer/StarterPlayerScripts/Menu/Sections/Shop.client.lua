@@ -405,10 +405,7 @@ grid:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
 	end
 	updatingCanvas = true
 	task.defer(function()
-		local target = UDim2.new(0, 0, 0, grid.AbsoluteContentSize.Y + 8)
-		if list.CanvasSize ~= target then
-			list.CanvasSize = target
-		end
+		list.AutomaticCanvasSize = Enum.AutomaticSize.Y
 		updatingCanvas = false
 	end)
 end)
