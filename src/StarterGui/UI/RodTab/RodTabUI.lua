@@ -331,7 +331,7 @@ function RodTabUI.Create(parent)
 	viewport.Name = "RodViewport"
 	viewport.Size = UDim2.fromScale(1, 1)
 	viewport.BackgroundColor3 = Theme.Colors.Panel
-	viewport.BackgroundTransparency = 0.12
+	viewport.BackgroundTransparency = 0.2
 	viewport.BorderSizePixel = 0
 	viewport.Ambient = Color3.new(1, 1, 1)
 	viewport.LightColor = Color3.new(1, 1, 1)
