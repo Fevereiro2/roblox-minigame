@@ -236,6 +236,9 @@ local function attachComponent(slotKey, item)
 		existing:Destroy()
 		slotVisuals[slotKey] = nil
 	end
+	if slotKey == "Rod" and rodBodyPart then
+		rodBodyPart.Transparency = item and 1 or 0
+	end
 	if not item or not item.modelName or not rodPartsFolder then
 		return
 	end
