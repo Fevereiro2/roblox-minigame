@@ -1,6 +1,7 @@
 local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
 local SoundService = game:GetService("SoundService")
 local TweenService = game:GetService("TweenService")
 
@@ -76,6 +77,9 @@ local rodModel
 local slotAttachments = {}
 local slotVisuals = {}
 local corePart
+local basePivot
+local rotateConnection
+local rotateAngle = 0
 
 local SLOT_ATTACHMENT_MAP = {
 	Rod = "Slot_Vara",
@@ -85,10 +89,10 @@ local SLOT_ATTACHMENT_MAP = {
 }
 
 local SLOT_OFFSETS = {
-	Rod = Vector3.new(-0.7, 0.4, 0),
-	Reel = Vector3.new(0.7, -0.2, -0.2),
-	Line = Vector3.new(-0.6, 0.6, 0.2),
-	Hook = Vector3.new(0.7, 0.4, 0.4),
+	Rod = Vector3.new(-0.85, 0.5, 0),
+	Reel = Vector3.new(0.85, -0.3, -0.35),
+	Line = Vector3.new(-0.75, 0.75, 0.35),
+	Hook = Vector3.new(0.85, 0.6, 0.6),
 }
 
 local function getPrimaryPart(model)
@@ -105,19 +109,22 @@ local function getPrimaryPart(model)
 end
 
 local function setupViewport()
-	if rodModel then
-		rodModel:Destroy()
-		rodModel = nil
+	for _, child in ipairs(viewportWorld:GetChildren()) do
+		child:Destroy()
 	end
+	rodModel = nil
 	slotAttachments = {}
+	slotVisuals = {}
 	corePart = nil
+	basePivot = nil
 
 	rodModel = rodModelTemplate:Clone()
 	rodModel.Parent = viewportWorld
 
 	corePart = getPrimaryPart(rodModel)
 	if corePart then
-		corePart.CFrame = CFrame.new(0, 0, 0) * CFrame.Angles(0, math.rad(-20), 0)
+		rodModel.PrimaryPart = corePart
+		corePart.CFrame = CFrame.new(0, 0, 0)
 		corePart.Anchored = true
 	end
 
@@ -128,9 +135,34 @@ local function setupViewport()
 		end
 	end
 
+	local lightRig = Instance.new("Part")
+	lightRig.Name = "LightRig"
+	lightRig.Size = Vector3.new(0.2, 0.2, 0.2)
+	lightRig.Transparency = 1
+	lightRig.Anchored = true
+	lightRig.CanCollide = false
+	lightRig.CFrame = CFrame.new(0, 3, 4)
+	lightRig.Parent = viewportWorld
+
+	local keyLight = Instance.new("PointLight")
+	keyLight.Name = "KeyLight"
+	keyLight.Brightness = 1.6
+	keyLight.Range = 20
+	keyLight.Color = Color3.fromRGB(255, 244, 230)
+	keyLight.Parent = lightRig
+
 	local cf, size = rodModel:GetBoundingBox()
+	basePivot = cf
 	local distance = math.max(size.Z, size.X) + 6
 	viewportCamera.CFrame = CFrame.new(cf.Position + Vector3.new(0, 2.4, distance), cf.Position)
+end
+
+local function rebuildVisuals()
+	for slotKey, item in pairs(equipped) do
+		if item then
+			attachComponent(slotKey, item)
+		end
+	end
 end
 
 local function attachComponent(slotKey, item)
@@ -149,7 +181,7 @@ local function attachComponent(slotKey, item)
 	end
 
 	local clone = template:Clone()
-	clone.Parent = viewportWorld
+	clone.Parent = rodModel
 
 	local primary = getPrimaryPart(clone)
 	if not (primary and corePart) then
@@ -159,7 +191,7 @@ local function attachComponent(slotKey, item)
 
 	for _, part in ipairs(clone:GetDescendants()) do
 		if part:IsA("BasePart") then
-			part.Anchored = true
+			part.Anchored = false
 			part.CanCollide = false
 		end
 	end
@@ -176,6 +208,27 @@ local function attachComponent(slotKey, item)
 	end
 
 	slotVisuals[slotKey] = clone
+end
+
+local function startRotate()
+	if rotateConnection then
+		rotateConnection:Disconnect()
+	end
+	rotateConnection = RunService.RenderStepped:Connect(function(dt)
+		if not rodModel or not basePivot then
+			return
+		end
+		rotateAngle = (rotateAngle + dt * 0.6) % (math.pi * 2)
+		local pivot = basePivot * CFrame.Angles(0, rotateAngle, 0)
+		rodModel:PivotTo(pivot)
+	end)
+end
+
+local function stopRotate()
+	if rotateConnection then
+		rotateConnection:Disconnect()
+		rotateConnection = nil
+	end
 end
 
 ui.ItemsLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
@@ -376,6 +429,7 @@ end
 
 setSelectedSlot(selectedSlot)
 setupViewport()
+rebuildVisuals()
 updatePreview()
 
 ui.EquipButton.MouseEnter:Connect(function()
@@ -468,6 +522,8 @@ local function openPanel()
 	}):Play()
 	rebuildItemList()
 	setupViewport()
+	rebuildVisuals()
+	startRotate()
 end
 
 local function closePanel()
@@ -495,6 +551,7 @@ local function closePanel()
 		ui.Frame.Position = defaultPos
 		ui.Fade.BackgroundTransparency = 1
 		isOpen = false
+		stopRotate()
 	end)
 end
 
