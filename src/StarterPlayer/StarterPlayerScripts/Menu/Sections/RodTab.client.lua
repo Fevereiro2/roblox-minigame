@@ -251,6 +251,10 @@ local function attachComponent(slotKey, item)
 	end
 
 	local attachment = slotAttachments[slotKey]
+	local function getAttachmentPosition(key, attachmentRef)
+		local offset = SLOT_OFFSETS[key] or Vector3.new()
+		return attachmentRef.WorldPosition + offset
+	end
 	if attachment then
 		local offset = SLOT_OFFSETS[slotKey] or Vector3.new()
 		primary.CFrame = attachment.WorldCFrame * CFrame.new(offset)
@@ -262,8 +266,8 @@ local function attachComponent(slotKey, item)
 		local lineAttachment = slotAttachments.Line
 		local hookAttachment = slotAttachments.Hook
 		if lineAttachment and hookAttachment then
-			local startPos = lineAttachment.WorldPosition
-			local endPos = hookAttachment.WorldPosition
+			local startPos = getAttachmentPosition("Line", lineAttachment)
+			local endPos = getAttachmentPosition("Hook", hookAttachment)
 			local mid = (startPos + endPos) * 0.5
 			local dir = (endPos - startPos)
 			local distance = dir.Magnitude
