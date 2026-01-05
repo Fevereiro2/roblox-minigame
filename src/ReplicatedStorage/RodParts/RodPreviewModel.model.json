@@ -33,6 +33,20 @@
 					"properties": { "Position": [0, 0, 5.2] }
 				}
 			]
+		},
+		{
+			"className": "Part",
+			"name": "Root",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Transparency": 1,
+				"Shape": "Cylinder",
+				"Size": [0.1, 0.1, 0.1],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, 0]
+			}
 		}
 	]
 }
