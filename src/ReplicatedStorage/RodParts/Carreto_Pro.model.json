@@ -18,6 +18,11 @@
 			}
 		},
 		{
+			"className": "Attachment",
+			"name": "Attach_Reel",
+			"properties": { "Position": [0, 0, 0] }
+		},
+		{
 			"className": "Part",
 			"name": "Handle",
 			"properties": {
