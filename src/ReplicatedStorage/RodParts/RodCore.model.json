@@ -12,7 +12,7 @@
 				"Material": "Metal",
 				"Color": [0.2, 0.2, 0.22],
 				"Shape": "Cylinder",
-				"Size": [0.24, 10.5, 0.24],
+				"Size": [0.22, 10.5, 0.22],
 				"Orientation": [90, 0, 0],
 				"Position": [0, 0, 0]
 			},
@@ -33,6 +33,95 @@
 					"properties": { "Position": [0, 0, 5.2] }
 				}
 			]
+		},
+		{
+			"className": "Part",
+			"name": "Handle",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Wood",
+				"Color": [0.28, 0.18, 0.1],
+				"Shape": "Cylinder",
+				"Size": [0.45, 2.0, 0.45],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, -4.3]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "Grip",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Plastic",
+				"Color": [0.1, 0.1, 0.12],
+				"Shape": "Cylinder",
+				"Size": [0.38, 1.2, 0.38],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, -3.1]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "Segment1",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.3, 0.3, 0.34],
+				"Shape": "Cylinder",
+				"Size": [0.2, 3.6, 0.2],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, -1.1]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "Segment2",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.22, 0.22, 0.26],
+				"Shape": "Cylinder",
+				"Size": [0.16, 3.6, 0.16],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, 1.2]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "Tip",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.5, 0.5, 0.55],
+				"Shape": "Cylinder",
+				"Size": [0.12, 2.2, 0.12],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, 3.8]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "TipBall",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Neon",
+				"Color": [0.95, 0.45, 0.2],
+				"Shape": "Ball",
+				"Size": [0.2, 0.2, 0.2],
+				"Position": [0, 0, 5.0]
+			}
 		}
 	]
 }
