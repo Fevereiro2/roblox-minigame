@@ -1,0 +1,18 @@
+{
+	"className": "Model",
+	"name": "Anzol_Pequeno",
+	"children": [
+		{
+			"className": "Part",
+			"name": "Piece",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.8, 0.8, 0.85],
+				"Size": [0.15, 0.15, 0.3]
+			}
+		}
+	]
+}
