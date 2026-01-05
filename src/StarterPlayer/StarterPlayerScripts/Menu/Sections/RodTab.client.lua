@@ -125,7 +125,9 @@ local function setupViewport()
 
 		local core = Instance.new("Part")
 		core.Name = "Core"
-		core.Size = Vector3.new(0.3, 0.3, 8)
+		core.Shape = Enum.PartType.Cylinder
+		core.Size = Vector3.new(0.2, 10, 0.2)
+		core.Orientation = Vector3.new(90, 0, 0)
 		core.Color = Color3.fromRGB(110, 80, 55)
 		core.Material = Enum.Material.Wood
 		core.Anchored = true
