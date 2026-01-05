@@ -16,8 +16,8 @@ local Slots = require(rodTabRoot:WaitForChild("Slots"))
 local PreviewStats = require(rodTabRoot:WaitForChild("PreviewStats"))
 
 local sampleItems = require(ReplicatedStorage:WaitForChild("Items"):WaitForChild("SampleItems"))
-local rodPartsFolder = ReplicatedStorage:WaitForChild("RodParts")
-local rodModelTemplate = rodPartsFolder:WaitForChild("RodModel")
+local rodPartsFolder = ReplicatedStorage:FindFirstChild("RodParts")
+local rodModelTemplate = rodPartsFolder and rodPartsFolder:FindFirstChild("RodModel")
 
 local root = script:FindFirstAncestor("StarterPlayerScripts") or script.Parent.Parent.Parent
 local UIBus = require(root:WaitForChild("Systems"):WaitForChild("UIBus"))
@@ -118,8 +118,43 @@ local function setupViewport()
 	corePart = nil
 	basePivot = nil
 
-	rodModel = rodModelTemplate:Clone()
-	rodModel.Parent = viewportWorld
+	if not rodModelTemplate then
+		rodModel = Instance.new("Model")
+		rodModel.Name = "RodModelFallback"
+		rodModel.Parent = viewportWorld
+
+		local core = Instance.new("Part")
+		core.Name = "Core"
+		core.Size = Vector3.new(0.3, 0.3, 8)
+		core.Color = Color3.fromRGB(110, 80, 55)
+		core.Material = Enum.Material.Wood
+		core.Anchored = true
+		core.CanCollide = false
+		core.Parent = rodModel
+
+		local slotVara = Instance.new("Attachment")
+		slotVara.Name = "Slot_Vara"
+		slotVara.Position = Vector3.new(0, 0, 0)
+		slotVara.Parent = core
+
+		local slotCarreto = Instance.new("Attachment")
+		slotCarreto.Name = "Slot_Carreto"
+		slotCarreto.Position = Vector3.new(0, -0.3, -2.2)
+		slotCarreto.Parent = core
+
+		local slotLinha = Instance.new("Attachment")
+		slotLinha.Name = "Slot_Linha"
+		slotLinha.Position = Vector3.new(0, 0, 2.4)
+		slotLinha.Parent = core
+
+		local slotAnzol = Instance.new("Attachment")
+		slotAnzol.Name = "Slot_Anzol"
+		slotAnzol.Position = Vector3.new(0, 0, 3.6)
+		slotAnzol.Parent = core
+	else
+		rodModel = rodModelTemplate:Clone()
+		rodModel.Parent = viewportWorld
+	end
 
 	corePart = getPrimaryPart(rodModel)
 	if corePart then
@@ -171,7 +206,7 @@ local function attachComponent(slotKey, item)
 		existing:Destroy()
 		slotVisuals[slotKey] = nil
 	end
-	if not item or not item.modelName then
+	if not item or not item.modelName or not rodPartsFolder then
 		return
 	end
 
