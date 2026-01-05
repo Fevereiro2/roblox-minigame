@@ -316,7 +316,7 @@ function RodTabUI.Create(parent)
 	viewportTitle.Font = Theme.Fonts.BodyBold
 	viewportTitle.TextSize = 14
 	viewportTitle.TextColor3 = Theme.Colors.Text
-	viewportTitle.Text = "Exploded view"
+	viewportTitle.Text = "Vista explodida"
 	viewportTitle.TextXAlignment = Enum.TextXAlignment.Left
 	viewportTitle.ZIndex = 7
 	viewportTitle.Parent = centerPanel
