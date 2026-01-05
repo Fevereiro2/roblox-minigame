@@ -4,14 +4,32 @@
 	"children": [
 		{
 			"className": "Part",
-			"name": "Piece",
+			"name": "Stem",
 			"properties": {
 				"Anchored": true,
 				"CanCollide": false,
 				"CastShadow": false,
 				"Material": "Metal",
-				"Color": [0.7, 0.75, 0.8],
-				"Size": [0.2, 0.2, 0.35]
+				"Color": [0.65, 0.68, 0.72],
+				"Shape": "Cylinder",
+				"Size": [0.1, 0.6, 0.1],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, 0]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "Point",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.65, 0.68, 0.72],
+				"Shape": "Cylinder",
+				"Size": [0.08, 0.3, 0.08],
+				"Orientation": [0, 0, 90],
+				"Position": [0.1, -0.12, 0.25]
 			}
 		}
 	]
