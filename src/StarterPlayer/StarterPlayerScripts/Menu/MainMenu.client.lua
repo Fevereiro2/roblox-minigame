@@ -173,6 +173,7 @@ local icons = {
 	Peixes = "rbxassetid://0",
 	Personagem = "rbxassetid://0",
 	Canas = "rbxassetid://0",
+	Cana = "rbxassetid://0",
 	Mapas = "rbxassetid://0",
 }
 
@@ -209,6 +210,13 @@ MenuButton.Create(buttons, "Canas", icons.Canas, { height = 44 }).MouseButton1Cl
 	playClick()
 	playerGui:SetAttribute("PanelTarget", "Rods")
 	uiBus:Fire("OpenPanel", "Rods")
+	gui.Enabled = false
+end)
+
+MenuButton.Create(buttons, "Cana", icons.Cana, { height = 44 }).MouseButton1Click:Connect(function()
+	playClick()
+	playerGui:SetAttribute("PanelTarget", "RodTab")
+	uiBus:Fire("OpenPanel", "RodTab")
 	gui.Enabled = false
 end)
 
