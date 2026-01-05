@@ -598,9 +598,7 @@ ui.RemoveButton.MouseButton1Click:Connect(function()
 		equipped[selectedSlot] = nil
 		updateSlotUI(selectedSlot)
 		attachComponent(selectedSlot, nil)
-		if selectedSlot == "Hook" and equipped.Line then
-			attachComponent("Line", equipped.Line)
-		elseif selectedSlot == "Line" and equipped.Line then
+		if selectedSlot == "Hook" or selectedSlot == "Line" then
 			attachComponent("Line", equipped.Line)
 		end
 		updatePreview()
