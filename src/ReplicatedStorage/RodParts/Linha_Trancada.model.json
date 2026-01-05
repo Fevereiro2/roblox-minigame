@@ -12,9 +12,9 @@
 				"Material": "Plastic",
 				"Color": [0.75, 0.8, 0.85],
 				"Shape": "Cylinder",
-				"Size": [0.05, 2.7, 0.05],
+				"Size": [0.04, 1, 0.04],
 				"Orientation": [90, 0, 0],
-				"Position": [0, 0, 0.2]
+				"Position": [0, 0, 0]
 			}
 		}
 	]
