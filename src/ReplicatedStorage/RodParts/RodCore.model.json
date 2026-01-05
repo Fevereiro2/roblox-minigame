@@ -1,0 +1,38 @@
+{
+	"className": "Model",
+	"name": "RodCore",
+	"children": [
+		{
+			"className": "Part",
+			"name": "Core",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.2, 0.2, 0.22],
+				"Shape": "Cylinder",
+				"Size": [0.24, 10.5, 0.24],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, 0]
+			},
+			"children": [
+				{
+					"className": "Attachment",
+					"name": "Attach_Reel",
+					"properties": { "Position": [0, -0.25, -3.2] }
+				},
+				{
+					"className": "Attachment",
+					"name": "Attach_LineStart",
+					"properties": { "Position": [0, 0, 2.6] }
+				},
+				{
+					"className": "Attachment",
+					"name": "Attach_HookEnd",
+					"properties": { "Position": [0, 0, 5.2] }
+				}
+			]
+		}
+	]
+}
