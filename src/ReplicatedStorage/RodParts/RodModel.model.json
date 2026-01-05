@@ -4,14 +4,14 @@
 	"children": [
 		{
 			"className": "Part",
-			"name": "Core",
+			"name": "Root",
 			"properties": {
 				"Anchored": true,
 				"CanCollide": false,
 				"CastShadow": false,
-				"Material": "Wood",
-				"Color": [0.36, 0.23, 0.14],
-				"Size": [0.3, 0.3, 8.0]
+				"Transparency": 1,
+				"Size": [0.2, 0.2, 0.2],
+				"Position": [0, 0, 0]
 			},
 			"children": [
 				{
@@ -22,7 +22,7 @@
 				{
 					"className": "Attachment",
 					"name": "Slot_Carreto",
-					"properties": { "Position": [0, -0.3, -2.2] }
+					"properties": { "Position": [0, -0.2, -2.1] }
 				},
 				{
 					"className": "Attachment",
@@ -32,9 +32,98 @@
 				{
 					"className": "Attachment",
 					"name": "Slot_Anzol",
-					"properties": { "Position": [0, 0.0, 3.6] }
+					"properties": { "Position": [0, 0.0, 3.8] }
 				}
 			]
+		},
+		{
+			"className": "Part",
+			"name": "Handle",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Wood",
+				"Color": [0.28, 0.18, 0.1],
+				"Shape": "Cylinder",
+				"Size": [0.5, 1.8, 0.5],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, -3.2]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "Grip",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Plastic",
+				"Color": [0.08, 0.08, 0.1],
+				"Shape": "Cylinder",
+				"Size": [0.4, 1.1, 0.4],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, -2.2]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "RodSegment1",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.35, 0.35, 0.38],
+				"Shape": "Cylinder",
+				"Size": [0.22, 3.2, 0.22],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, -0.6]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "RodSegment2",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.25, 0.25, 0.28],
+				"Shape": "Cylinder",
+				"Size": [0.18, 3.2, 0.18],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, 1.6]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "RodTip",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.55, 0.55, 0.6],
+				"Shape": "Cylinder",
+				"Size": [0.12, 1.4, 0.12],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, 3.4]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "TipBall",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Neon",
+				"Color": [0.95, 0.4, 0.2],
+				"Shape": "Ball",
+				"Size": [0.2, 0.2, 0.2],
+				"Position": [0, 0, 4.2]
+			}
 		}
 	]
 }
