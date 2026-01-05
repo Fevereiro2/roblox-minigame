@@ -206,14 +206,6 @@ local equipped = {
 	Hook = nil,
 }
 
-local function rebuildVisuals()
-	for slotKey, item in pairs(equipped) do
-		if item then
-			attachComponent(slotKey, item)
-		end
-	end
-end
-
 local function attachComponent(slotKey, item)
 	local existing = slotVisuals[slotKey]
 	if existing then
@@ -298,6 +290,14 @@ local function attachComponent(slotKey, item)
 	end
 
 	slotVisuals[slotKey] = clone
+end
+
+local function rebuildVisuals()
+	for slotKey, item in pairs(equipped) do
+		if item then
+			attachComponent(slotKey, item)
+		end
+	end
 end
 
 local function startRotate()
