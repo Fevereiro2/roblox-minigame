@@ -238,6 +238,15 @@ local function attachComponent(slotKey, item)
 		end
 	end
 
+	for _, part in ipairs(clone:GetChildren()) do
+		if part:IsA("BasePart") and part ~= primary then
+			local weld = Instance.new("WeldConstraint")
+			weld.Part0 = primary
+			weld.Part1 = part
+			weld.Parent = primary
+		end
+	end
+
 	local attachment = slotAttachments[slotKey]
 	if attachment then
 		local offset = SLOT_OFFSETS[slotKey] or Vector3.new()
