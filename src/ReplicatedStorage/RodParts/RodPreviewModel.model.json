@@ -1,0 +1,85 @@
+{
+	"className": "Model",
+	"name": "RodPreviewModel",
+	"children": [
+		{
+			"className": "Part",
+			"name": "Handle",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Wood",
+				"Color": [0.28, 0.18, 0.1],
+				"Shape": "Cylinder",
+				"Size": [1.2, 0.5, 0.5],
+				"Orientation": [0, 0, 90],
+				"Position": [-4.2, 0, 0]
+			},
+			"children": [
+				{
+					"className": "Attachment",
+					"name": "Attach_Reel",
+					"properties": { "Position": [0.2, -0.3, 0] }
+				}
+			]
+		},
+		{
+			"className": "Part",
+			"name": "Shaft_1",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.3, 0.3, 0.34],
+				"Shape": "Cylinder",
+				"Size": [3.6, 0.28, 0.28],
+				"Orientation": [0, 0, 90],
+				"Position": [-1.4, 0, 0]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "Shaft_2",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.22, 0.22, 0.26],
+				"Shape": "Cylinder",
+				"Size": [3.6, 0.2, 0.2],
+				"Orientation": [0, 0, 90],
+				"Position": [1.4, 0, 0]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "Tip",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.5, 0.5, 0.55],
+				"Shape": "Cylinder",
+				"Size": [2.4, 0.12, 0.12],
+				"Orientation": [0, 0, 90],
+				"Position": [4.0, 0, 0]
+			},
+			"children": [
+				{
+					"className": "Attachment",
+					"name": "Attach_LineStart",
+					"properties": { "Position": [1.2, 0, 0] }
+				},
+				{
+					"className": "Attachment",
+					"name": "Attach_HookEnd",
+					"properties": { "Position": [2.2, 0, 0] }
+				}
+			]
+		}
+	]
+}
