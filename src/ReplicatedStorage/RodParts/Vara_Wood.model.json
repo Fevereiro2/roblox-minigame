@@ -12,9 +12,9 @@
 				"Material": "Wood",
 				"Color": [0.45, 0.3, 0.18],
 				"Shape": "Cylinder",
-				"Size": [0.2, 2.6, 0.2],
+				"Size": [0.22, 6.4, 0.22],
 				"Orientation": [90, 0, 0],
-				"Position": [0, 0, 0.4]
+				"Position": [0, 0, 0]
 			}
 		},
 		{
@@ -27,9 +27,9 @@
 				"Material": "Metal",
 				"Color": [0.6, 0.6, 0.65],
 				"Shape": "Cylinder",
-				"Size": [0.14, 1.2, 0.14],
+				"Size": [0.14, 2.2, 0.14],
 				"Orientation": [90, 0, 0],
-				"Position": [0, 0, 1.8]
+				"Position": [0, 0, 4.2]
 			}
 		}
 	]
