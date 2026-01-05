@@ -1,0 +1,18 @@
+{
+	"className": "Model",
+	"name": "Vara_Carbon",
+	"children": [
+		{
+			"className": "Part",
+			"name": "Piece",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.2, 0.2, 0.22],
+				"Size": [0.22, 0.22, 7.2]
+			}
+		}
+	]
+}
