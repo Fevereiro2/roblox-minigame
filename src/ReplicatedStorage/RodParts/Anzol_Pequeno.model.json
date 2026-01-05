@@ -27,9 +27,24 @@
 				"Material": "Metal",
 				"Color": [0.75, 0.78, 0.82],
 				"Shape": "Cylinder",
-				"Size": [0.06, 0.25, 0.06],
+				"Size": [0.06, 0.28, 0.06],
 				"Orientation": [0, 0, 90],
-				"Position": [0.08, -0.1, 0.2]
+				"Position": [0.1, -0.12, 0.22]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "Curve",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.75, 0.78, 0.82],
+				"Shape": "Cylinder",
+				"Size": [0.06, 0.3, 0.06],
+				"Orientation": [0, 45, 90],
+				"Position": [0.12, 0.05, 0.15]
 			}
 		}
 	]
