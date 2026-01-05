@@ -78,6 +78,9 @@ local slotAttachments = {}
 local slotVisuals = {}
 local corePart
 local rodBodyPart
+local lineBeam
+local lineAttachment0
+local lineAttachment1
 local basePivot
 local rotateConnection
 local rotateAngle = 0
@@ -118,6 +121,9 @@ local function setupViewport()
 	slotVisuals = {}
 	corePart = nil
 	rodBodyPart = nil
+	lineBeam = nil
+	lineAttachment0 = nil
+	lineAttachment1 = nil
 	basePivot = nil
 
 	if not rodModelTemplate then
@@ -199,6 +205,21 @@ local function setupViewport()
 		end
 	end
 
+	lineAttachment0 = slotAttachments.Line
+	lineAttachment1 = slotAttachments.Hook
+	if lineAttachment0 and lineAttachment1 then
+		lineBeam = Instance.new("Beam")
+		lineBeam.Name = "RodLine"
+		lineBeam.Attachment0 = lineAttachment0
+		lineBeam.Attachment1 = lineAttachment1
+		lineBeam.Width0 = 0.03
+		lineBeam.Width1 = 0.02
+		lineBeam.Transparency = NumberSequence.new(0.15)
+		lineBeam.Color = ColorSequence.new(Color3.fromRGB(220, 230, 240))
+		lineBeam.FaceCamera = true
+		lineBeam.Parent = lineAttachment0.Parent
+	end
+
 	local lightRig = Instance.new("Part")
 	lightRig.Name = "LightRig"
 	lightRig.Size = Vector3.new(0.2, 0.2, 0.2)
@@ -236,8 +257,11 @@ local function attachComponent(slotKey, item)
 		existing:Destroy()
 		slotVisuals[slotKey] = nil
 	end
-	if slotKey == "Rod" and rodBodyPart then
-		rodBodyPart.Transparency = item and 1 or 0
+	if slotKey == "Line" then
+		if lineBeam then
+			lineBeam.Enabled = item ~= nil
+		end
+		return
 	end
 	if not item or not item.modelName or not rodPartsFolder then
 		return
@@ -274,39 +298,11 @@ local function attachComponent(slotKey, item)
 	end
 
 	local attachment = slotAttachments[slotKey]
-	local function getAttachmentPosition(key, attachmentRef)
-		local offset = SLOT_OFFSETS[key] or Vector3.new()
-		return attachmentRef.WorldPosition + offset
-	end
 	if attachment then
 		local offset = SLOT_OFFSETS[slotKey] or Vector3.new()
 		primary.CFrame = attachment.WorldCFrame * CFrame.new(offset)
 	elseif slotKey == "Rod" and corePart then
 		primary.CFrame = corePart.CFrame
-	end
-
-	if slotKey == "Line" then
-		local lineAttachment = slotAttachments.Line
-		local hookAttachment = slotAttachments.Hook
-		if lineAttachment and hookAttachment then
-			local startPos = getAttachmentPosition("Line", lineAttachment)
-			local endPos = getAttachmentPosition("Hook", hookAttachment)
-			local mid = (startPos + endPos) * 0.5
-			local dir = (endPos - startPos)
-			local distance = dir.Magnitude
-			if distance > 0.01 then
-				dir = dir.Unit
-				local up = dir
-				local right = up:Cross(Vector3.new(0, 1, 0))
-				if right.Magnitude < 0.01 then
-					right = up:Cross(Vector3.new(1, 0, 0))
-				end
-				right = right.Unit
-				local back = right:Cross(up)
-				primary.CFrame = CFrame.fromMatrix(mid, right, up, back)
-				primary.Size = Vector3.new(primary.Size.X, distance, primary.Size.Z)
-			end
-		end
 	end
 
 	if corePart then
@@ -413,10 +409,8 @@ local function equipItem(item)
 	equipped[selectedSlot] = item
 	updateSlotUI(selectedSlot)
 	attachComponent(selectedSlot, item)
-	if selectedSlot == "Hook" and equipped.Line then
+	if selectedSlot == "Hook" or selectedSlot == "Line" then
 		attachComponent("Line", equipped.Line)
-	elseif selectedSlot == "Line" and equipped.Hook then
-		attachComponent("Line", item)
 	end
 	updatePreview()
 	uiBus:Fire("Notify", "Peca equipada")
@@ -552,6 +546,9 @@ local function ensureDefaultEquipped()
 				changed = true
 			end
 		end
+	end
+	if lineBeam then
+		lineBeam.Enabled = equipped.Line ~= nil
 	end
 	if changed then
 		updatePreview()
