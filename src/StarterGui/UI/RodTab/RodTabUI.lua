@@ -129,7 +129,7 @@ function RodTabUI.Create(parent)
 	bodyLayout.Parent = body
 
 	local leftPanel = Instance.new("Frame")
-	leftPanel.Size = UDim2.fromScale(0.42, 1)
+	leftPanel.Size = UDim2.fromScale(0.3, 1)
 	leftPanel.BackgroundTransparency = 1
 	leftPanel.ZIndex = 6
 	leftPanel.Parent = body
@@ -280,8 +280,119 @@ function RodTabUI.Create(parent)
 	removeStroke.Thickness = 1
 	removeStroke.Parent = removeButton
 
+	local centerPanel = Instance.new("Frame")
+	centerPanel.Size = UDim2.fromScale(0.36, 1)
+	centerPanel.BackgroundColor3 = Theme.Colors.Button
+	centerPanel.BackgroundTransparency = 0.08
+	centerPanel.BorderSizePixel = 0
+	centerPanel.ZIndex = 6
+	centerPanel.Parent = body
+
+	local centerCorner = Instance.new("UICorner")
+	centerCorner.CornerRadius = UDim.new(0.08, 0)
+	centerCorner.Parent = centerPanel
+
+	local centerStroke = Instance.new("UIStroke")
+	centerStroke.Color = Theme.Colors.PanelStroke
+	centerStroke.Thickness = 1
+	centerStroke.Parent = centerPanel
+
+	local centerPadding = Instance.new("UIPadding")
+	centerPadding.PaddingLeft = UDim.new(0.05, 0)
+	centerPadding.PaddingRight = UDim.new(0.05, 0)
+	centerPadding.PaddingTop = UDim.new(0.05, 0)
+	centerPadding.PaddingBottom = UDim.new(0.05, 0)
+	centerPadding.Parent = centerPanel
+
+	local centerLayout = Instance.new("UIListLayout")
+	centerLayout.FillDirection = Enum.FillDirection.Vertical
+	centerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	centerLayout.Padding = UDim.new(0.02, 0)
+	centerLayout.Parent = centerPanel
+
+	local viewportTitle = Instance.new("TextLabel")
+	viewportTitle.Size = UDim2.fromScale(1, 0.08)
+	viewportTitle.BackgroundTransparency = 1
+	viewportTitle.Font = Theme.Fonts.BodyBold
+	viewportTitle.TextSize = 14
+	viewportTitle.TextColor3 = Theme.Colors.Text
+	viewportTitle.Text = "Exploded view"
+	viewportTitle.TextXAlignment = Enum.TextXAlignment.Left
+	viewportTitle.ZIndex = 7
+	viewportTitle.Parent = centerPanel
+
+	local viewportContainer = Instance.new("Frame")
+	viewportContainer.Size = UDim2.fromScale(1, 0.92)
+	viewportContainer.BackgroundTransparency = 1
+	viewportContainer.ZIndex = 7
+	viewportContainer.Parent = centerPanel
+
+	local viewport = Instance.new("ViewportFrame")
+	viewport.Name = "RodViewport"
+	viewport.Size = UDim2.fromScale(1, 1)
+	viewport.BackgroundColor3 = Theme.Colors.Panel
+	viewport.BackgroundTransparency = 0.12
+	viewport.BorderSizePixel = 0
+	viewport.Ambient = Color3.new(1, 1, 1)
+	viewport.LightColor = Color3.new(1, 1, 1)
+	viewport.LightDirection = Vector3.new(-1, -1, -1)
+	viewport.ZIndex = 7
+	viewport.Parent = viewportContainer
+
+	local viewportCorner = Instance.new("UICorner")
+	viewportCorner.CornerRadius = UDim.new(0.08, 0)
+	viewportCorner.Parent = viewport
+
+	local viewportStroke = Instance.new("UIStroke")
+	viewportStroke.Color = Theme.Colors.PanelStroke
+	viewportStroke.Thickness = 1
+	viewportStroke.Parent = viewport
+
+	local labelsOverlay = Instance.new("Frame")
+	labelsOverlay.Size = UDim2.fromScale(1, 1)
+	labelsOverlay.BackgroundTransparency = 1
+	labelsOverlay.ZIndex = 8
+	labelsOverlay.Parent = viewportContainer
+
+	local function makeLabel(text, position, size, linePosition, lineSize)
+		local line = Instance.new("Frame")
+		line.Size = lineSize
+		line.Position = linePosition
+		line.BackgroundColor3 = Theme.Colors.PanelStroke
+		line.BorderSizePixel = 0
+		line.ZIndex = 8
+		line.Parent = labelsOverlay
+
+		local label = Instance.new("TextLabel")
+		label.Size = size
+		label.Position = position
+		label.BackgroundColor3 = Theme.Colors.Panel
+		label.BackgroundTransparency = 0.2
+		label.Font = Theme.Fonts.BodyBold
+		label.TextSize = 12
+		label.TextColor3 = Theme.Colors.Text
+		label.Text = text
+		label.TextXAlignment = Enum.TextXAlignment.Center
+		label.ZIndex = 9
+		label.Parent = labelsOverlay
+
+		local labelCorner = Instance.new("UICorner")
+		labelCorner.CornerRadius = UDim.new(0.4, 0)
+		labelCorner.Parent = label
+
+		local labelStroke = Instance.new("UIStroke")
+		labelStroke.Color = Theme.Colors.PanelStroke
+		labelStroke.Thickness = 1
+		labelStroke.Parent = label
+	end
+
+	makeLabel("Vara", UDim2.fromScale(0.02, 0.12), UDim2.fromScale(0.26, 0.08), UDim2.fromScale(0.16, 0.18), UDim2.fromScale(0.2, 0.005))
+	makeLabel("Carreto", UDim2.fromScale(0.68, 0.18), UDim2.fromScale(0.3, 0.08), UDim2.fromScale(0.6, 0.22), UDim2.fromScale(0.18, 0.005))
+	makeLabel("Linha", UDim2.fromScale(0.05, 0.7), UDim2.fromScale(0.24, 0.08), UDim2.fromScale(0.18, 0.66), UDim2.fromScale(0.2, 0.005))
+	makeLabel("Anzol", UDim2.fromScale(0.7, 0.72), UDim2.fromScale(0.26, 0.08), UDim2.fromScale(0.6, 0.68), UDim2.fromScale(0.2, 0.005))
+
 	local rightPanel = Instance.new("Frame")
-	rightPanel.Size = UDim2.fromScale(0.55, 1)
+	rightPanel.Size = UDim2.fromScale(0.32, 1)
 	rightPanel.BackgroundColor3 = Theme.Colors.Button
 	rightPanel.BackgroundTransparency = 0.08
 	rightPanel.BorderSizePixel = 0
@@ -355,6 +466,10 @@ function RodTabUI.Create(parent)
 		ItemsList = list,
 		ItemsLayout = listLayout,
 		BodyLayout = bodyLayout,
+		LeftPanel = leftPanel,
+		CenterPanel = centerPanel,
+		RightPanel = rightPanel,
+		Viewport = viewport,
 	}
 end
 

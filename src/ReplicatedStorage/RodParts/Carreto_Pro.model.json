@@ -1,0 +1,18 @@
+{
+	"className": "Model",
+	"name": "Carreto_Pro",
+	"children": [
+		{
+			"className": "Part",
+			"name": "Piece",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.25, 0.55, 0.7],
+				"Size": [0.7, 0.45, 0.45]
+			}
+		}
+	]
+}
