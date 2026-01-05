@@ -4,14 +4,32 @@
 	"children": [
 		{
 			"className": "Part",
-			"name": "Piece",
+			"name": "Body",
 			"properties": {
 				"Anchored": true,
 				"CanCollide": false,
 				"CastShadow": false,
 				"Material": "Metal",
-				"Color": [0.2, 0.2, 0.22],
-				"Size": [0.22, 0.22, 7.2]
+				"Color": [0.18, 0.18, 0.2],
+				"Shape": "Cylinder",
+				"Size": [0.18, 2.8, 0.18],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, 0.45]
+			}
+		},
+		{
+			"className": "Part",
+			"name": "Tip",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Metal",
+				"Color": [0.5, 0.55, 0.6],
+				"Shape": "Cylinder",
+				"Size": [0.12, 1.4, 0.12],
+				"Orientation": [90, 0, 0],
+				"Position": [0, 0, 1.9]
 			}
 		}
 	]
