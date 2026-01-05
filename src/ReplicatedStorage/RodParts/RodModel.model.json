@@ -1,0 +1,40 @@
+{
+	"className": "Model",
+	"name": "RodModel",
+	"children": [
+		{
+			"className": "Part",
+			"name": "Core",
+			"properties": {
+				"Anchored": true,
+				"CanCollide": false,
+				"CastShadow": false,
+				"Material": "Wood",
+				"Color": [0.36, 0.23, 0.14],
+				"Size": [0.3, 0.3, 8.0]
+			},
+			"children": [
+				{
+					"className": "Attachment",
+					"name": "Slot_Vara",
+					"properties": { "Position": [0, 0, 0] }
+				},
+				{
+					"className": "Attachment",
+					"name": "Slot_Carreto",
+					"properties": { "Position": [0, -0.3, -2.2] }
+				},
+				{
+					"className": "Attachment",
+					"name": "Slot_Linha",
+					"properties": { "Position": [0, 0.0, 2.4] }
+				},
+				{
+					"className": "Attachment",
+					"name": "Slot_Anzol",
+					"properties": { "Position": [0, 0.0, 3.6] }
+				}
+			]
+		}
+	]
+}
