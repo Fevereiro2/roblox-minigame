@@ -1,0 +1,10 @@
+{
+	"className": "Model",
+	"name": "RodLine",
+	"children": [
+		{
+			"className": "Folder",
+			"name": "BeamContainer"
+		}
+	]
+}
