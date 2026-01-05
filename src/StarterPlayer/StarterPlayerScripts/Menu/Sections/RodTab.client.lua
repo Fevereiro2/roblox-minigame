@@ -375,6 +375,7 @@ for _, definition in ipairs(slotDefinitions) do
 end
 
 setSelectedSlot(selectedSlot)
+setupViewport()
 updatePreview()
 
 ui.EquipButton.MouseEnter:Connect(function()
@@ -403,6 +404,7 @@ ui.RemoveButton.MouseButton1Click:Connect(function()
 	if selectedSlot then
 		equipped[selectedSlot] = nil
 		updateSlotUI(selectedSlot)
+		attachComponent(selectedSlot, nil)
 		updatePreview()
 		uiBus:Fire("Notify", "Peca removida")
 	end
@@ -422,10 +424,16 @@ end)
 
 local function layoutPanels()
 	local width = ui.Frame.AbsoluteSize.X
-	if width < 780 then
+	if width < 900 then
 		ui.BodyLayout.FillDirection = Enum.FillDirection.Vertical
+		ui.LeftPanel.Size = UDim2.fromScale(1, 0.38)
+		ui.CenterPanel.Size = UDim2.fromScale(1, 0.32)
+		ui.RightPanel.Size = UDim2.fromScale(1, 0.3)
 	else
 		ui.BodyLayout.FillDirection = Enum.FillDirection.Horizontal
+		ui.LeftPanel.Size = UDim2.fromScale(0.3, 1)
+		ui.CenterPanel.Size = UDim2.fromScale(0.36, 1)
+		ui.RightPanel.Size = UDim2.fromScale(0.32, 1)
 	end
 end
 
@@ -459,6 +467,7 @@ local function openPanel()
 		NearIntensity = 0.15,
 	}):Play()
 	rebuildItemList()
+	setupViewport()
 end
 
 local function closePanel()
