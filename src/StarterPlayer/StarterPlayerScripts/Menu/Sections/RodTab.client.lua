@@ -17,7 +17,8 @@ local PreviewStats = require(rodTabRoot:WaitForChild("PreviewStats"))
 
 local sampleItems = require(ReplicatedStorage:WaitForChild("Items"):WaitForChild("SampleItems"))
 local rodPartsFolder = ReplicatedStorage:FindFirstChild("RodParts")
-local rodModelTemplate = rodPartsFolder and (rodPartsFolder:FindFirstChild("RodCore") or rodPartsFolder:FindFirstChild("RodModel"))
+local rodModelTemplate = rodPartsFolder
+	and (rodPartsFolder:FindFirstChild("RodPreviewModel") or rodPartsFolder:FindFirstChild("RodCore") or rodPartsFolder:FindFirstChild("RodModel"))
 
 local root = script:FindFirstAncestor("StarterPlayerScripts") or script.Parent.Parent.Parent
 local UIBus = require(root:WaitForChild("Systems"):WaitForChild("UIBus"))
@@ -69,7 +70,7 @@ local viewportWorld = Instance.new("WorldModel")
 viewportWorld.Parent = viewport
 
 local viewportCamera = Instance.new("Camera")
-viewportCamera.FieldOfView = 32
+viewportCamera.FieldOfView = 38
 viewport.CurrentCamera = viewportCamera
 viewportCamera.Parent = viewport
 
@@ -94,9 +95,9 @@ local SLOT_ATTACHMENT_MAP = {
 
 local SLOT_OFFSETS = {
 	Rod = Vector3.new(0, 0, 0),
-	Reel = Vector3.new(0, -0.5, 0),
+	Reel = Vector3.new(0, -0.3, 0),
 	Line = Vector3.new(0, 0, 0),
-	Hook = Vector3.new(0.3, 0, 0),
+	Hook = Vector3.new(0.2, 0, 0),
 }
 
 local function getPrimaryPart(model)
@@ -166,7 +167,7 @@ local function setupViewport()
 		rodModel.Parent = viewportWorld
 	end
 
-	rodBodyPart = rodModel:FindFirstChild("RodBody") or rodModel:FindFirstChild("Core")
+	rodBodyPart = rodModel:FindFirstChild("RodBody") or rodModel:FindFirstChild("Core") or rodModel:FindFirstChild("Handle")
 	corePart = rodBodyPart or getPrimaryPart(rodModel)
 	if corePart then
 		rodModel.PrimaryPart = corePart
@@ -212,8 +213,8 @@ local function setupViewport()
 		lineBeam.Name = "RodLine"
 		lineBeam.Attachment0 = lineAttachment0
 		lineBeam.Attachment1 = lineAttachment1
-		lineBeam.Width0 = 0.03
-		lineBeam.Width1 = 0.02
+		lineBeam.Width0 = 0.05
+		lineBeam.Width1 = 0.04
 		lineBeam.Transparency = NumberSequence.new(0.15)
 		lineBeam.Color = ColorSequence.new(Color3.fromRGB(220, 230, 240))
 		lineBeam.FaceCamera = true
@@ -240,7 +241,7 @@ local function setupViewport()
 	basePivot = corePart and corePart.CFrame or cf
 	local maxDim = math.max(size.X, size.Y, size.Z)
 	local fov = math.rad(viewportCamera.FieldOfView)
-	local distance = (maxDim * 0.6) / math.tan(fov / 2) + 2
+	local distance = (maxDim * 0.75) / math.tan(fov / 2) + 2.5
 	local focus = corePart and corePart.Position or cf.Position
 	viewportCamera.CFrame = CFrame.new(focus + Vector3.new(0, 1.6, distance), focus)
 end
