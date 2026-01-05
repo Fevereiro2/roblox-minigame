@@ -15,6 +15,8 @@ local Slots = require(rodTabRoot:WaitForChild("Slots"))
 local PreviewStats = require(rodTabRoot:WaitForChild("PreviewStats"))
 
 local sampleItems = require(ReplicatedStorage:WaitForChild("Items"):WaitForChild("SampleItems"))
+local rodPartsFolder = ReplicatedStorage:WaitForChild("RodParts")
+local rodModelTemplate = rodPartsFolder:WaitForChild("RodModel")
 
 local root = script:FindFirstAncestor("StarterPlayerScripts") or script.Parent.Parent.Parent
 local UIBus = require(root:WaitForChild("Systems"):WaitForChild("UIBus"))
@@ -60,6 +62,121 @@ gui.Enabled = false
 gui.Parent = playerGui
 
 local ui = RodTabUI.Create(gui)
+
+local viewport = ui.Viewport
+local viewportWorld = Instance.new("WorldModel")
+viewportWorld.Parent = viewport
+
+local viewportCamera = Instance.new("Camera")
+viewportCamera.FieldOfView = 40
+viewport.CurrentCamera = viewportCamera
+viewportCamera.Parent = viewport
+
+local rodModel
+local slotAttachments = {}
+local slotVisuals = {}
+local corePart
+
+local SLOT_ATTACHMENT_MAP = {
+	Rod = "Slot_Vara",
+	Reel = "Slot_Carreto",
+	Line = "Slot_Linha",
+	Hook = "Slot_Anzol",
+}
+
+local SLOT_OFFSETS = {
+	Rod = Vector3.new(-0.7, 0.4, 0),
+	Reel = Vector3.new(0.7, -0.2, -0.2),
+	Line = Vector3.new(-0.6, 0.6, 0.2),
+	Hook = Vector3.new(0.7, 0.4, 0.4),
+}
+
+local function getPrimaryPart(model)
+	if model.PrimaryPart then
+		return model.PrimaryPart
+	end
+	for _, child in ipairs(model:GetChildren()) do
+		if child:IsA("BasePart") then
+			model.PrimaryPart = child
+			return child
+		end
+	end
+	return nil
+end
+
+local function setupViewport()
+	if rodModel then
+		rodModel:Destroy()
+		rodModel = nil
+	end
+	slotAttachments = {}
+	corePart = nil
+
+	rodModel = rodModelTemplate:Clone()
+	rodModel.Parent = viewportWorld
+
+	corePart = getPrimaryPart(rodModel)
+	if corePart then
+		corePart.CFrame = CFrame.new(0, 0, 0) * CFrame.Angles(0, math.rad(-20), 0)
+		corePart.Anchored = true
+	end
+
+	for slotKey, attachmentName in pairs(SLOT_ATTACHMENT_MAP) do
+		local attachment = rodModel:FindFirstChild(attachmentName, true)
+		if attachment and attachment:IsA("Attachment") then
+			slotAttachments[slotKey] = attachment
+		end
+	end
+
+	local cf, size = rodModel:GetBoundingBox()
+	local distance = math.max(size.Z, size.X) + 6
+	viewportCamera.CFrame = CFrame.new(cf.Position + Vector3.new(0, 2.4, distance), cf.Position)
+end
+
+local function attachComponent(slotKey, item)
+	local existing = slotVisuals[slotKey]
+	if existing then
+		existing:Destroy()
+		slotVisuals[slotKey] = nil
+	end
+	if not item or not item.modelName then
+		return
+	end
+
+	local template = rodPartsFolder:FindFirstChild(item.modelName)
+	if not template then
+		return
+	end
+
+	local clone = template:Clone()
+	clone.Parent = viewportWorld
+
+	local primary = getPrimaryPart(clone)
+	if not (primary and corePart) then
+		clone:Destroy()
+		return
+	end
+
+	for _, part in ipairs(clone:GetDescendants()) do
+		if part:IsA("BasePart") then
+			part.Anchored = true
+			part.CanCollide = false
+		end
+	end
+
+	local attachment = slotAttachments[slotKey]
+	if attachment then
+		local offset = SLOT_OFFSETS[slotKey] or Vector3.new()
+		primary.CFrame = attachment.WorldCFrame * CFrame.new(offset)
+
+		local weld = Instance.new("WeldConstraint")
+		weld.Part0 = primary
+		weld.Part1 = corePart
+		weld.Parent = primary
+	end
+
+	slotVisuals[slotKey] = clone
+end
 
 ui.ItemsLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
 	ui.ItemsList.CanvasSize = UDim2.new(0, 0, 0, ui.ItemsLayout.AbsoluteContentSize.Y + 6)
