@@ -89,10 +89,10 @@ local SLOT_ATTACHMENT_MAP = {
 }
 
 local SLOT_OFFSETS = {
-	Rod = Vector3.new(-0.85, 0.5, 0),
-	Reel = Vector3.new(0.85, -0.3, -0.35),
-	Line = Vector3.new(-0.75, 0.75, 0.35),
-	Hook = Vector3.new(0.85, 0.6, 0.6),
+	Rod = Vector3.new(0, 0, 0),
+	Reel = Vector3.new(0, -0.5, -0.2),
+	Line = Vector3.new(0, 0.2, 0.25),
+	Hook = Vector3.new(0, 0.1, 0.6),
 }
 
 local function getPrimaryPart(model)
