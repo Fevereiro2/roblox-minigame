@@ -160,8 +160,8 @@ local function setupViewport()
 		rodModel.Parent = viewportWorld
 	end
 
-	corePart = getPrimaryPart(rodModel)
-	rodBodyPart = rodModel:FindFirstChild("RodBody") or rodModel:FindFirstChild("Core") or corePart
+	rodBodyPart = rodModel:FindFirstChild("RodBody") or rodModel:FindFirstChild("Core")
+	corePart = rodBodyPart or getPrimaryPart(rodModel)
 	if corePart then
 		rodModel.PrimaryPart = corePart
 		corePart.CFrame = CFrame.new(0, 0, 0)
