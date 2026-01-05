@@ -192,6 +192,13 @@ local function setupViewport()
 	viewportCamera.CFrame = CFrame.new(cf.Position + Vector3.new(0, 2.4, distance), cf.Position)
 end
 
+local equipped = {
+	Rod = nil,
+	Reel = nil,
+	Line = nil,
+	Hook = nil,
+}
+
 local function rebuildVisuals()
 	for slotKey, item in pairs(equipped) do
 		if item then
@@ -275,13 +282,6 @@ local slotDefinitions = {
 	{ key = "Reel", label = "Slot Carreto" },
 	{ key = "Line", label = "Slot Linha" },
 	{ key = "Hook", label = "Slot Anzol" },
-}
-
-local equipped = {
-	Rod = nil,
-	Reel = nil,
-	Line = nil,
-	Hook = nil,
 }
 
 local slots = {}
