@@ -69,7 +69,7 @@ local viewportWorld = Instance.new("WorldModel")
 viewportWorld.Parent = viewport
 
 local viewportCamera = Instance.new("Camera")
-viewportCamera.FieldOfView = 40
+viewportCamera.FieldOfView = 32
 viewport.CurrentCamera = viewportCamera
 viewportCamera.Parent = viewport
 
@@ -191,8 +191,10 @@ local function setupViewport()
 
 	local cf, size = rodModel:GetBoundingBox()
 	basePivot = cf
-	local distance = math.max(size.Z, size.X) + 6
-	viewportCamera.CFrame = CFrame.new(cf.Position + Vector3.new(0, 2.4, distance), cf.Position)
+	local maxDim = math.max(size.X, size.Y, size.Z)
+	local fov = math.rad(viewportCamera.FieldOfView)
+	local distance = (maxDim * 0.6) / math.tan(fov / 2) + 2
+	viewportCamera.CFrame = CFrame.new(cf.Position + Vector3.new(0, 1.8, distance), cf.Position)
 end
 
 local equipped = {
