@@ -384,6 +384,11 @@ local function equipItem(item)
 	equipped[selectedSlot] = item
 	updateSlotUI(selectedSlot)
 	attachComponent(selectedSlot, item)
+	if selectedSlot == "Hook" and equipped.Line then
+		attachComponent("Line", equipped.Line)
+	elseif selectedSlot == "Line" and equipped.Hook then
+		attachComponent("Line", item)
+	end
 	updatePreview()
 	uiBus:Fire("Notify", "Peca equipada")
 end
@@ -540,6 +545,11 @@ ui.RemoveButton.MouseButton1Click:Connect(function()
 		equipped[selectedSlot] = nil
 		updateSlotUI(selectedSlot)
 		attachComponent(selectedSlot, nil)
+		if selectedSlot == "Hook" and equipped.Line then
+			attachComponent("Line", equipped.Line)
+		elseif selectedSlot == "Line" and equipped.Line then
+			attachComponent("Line", equipped.Line)
+		end
 		updatePreview()
 		uiBus:Fire("Notify", "Peca removida")
 	end
