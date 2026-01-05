@@ -17,7 +17,7 @@ local PreviewStats = require(rodTabRoot:WaitForChild("PreviewStats"))
 
 local sampleItems = require(ReplicatedStorage:WaitForChild("Items"):WaitForChild("SampleItems"))
 local rodPartsFolder = ReplicatedStorage:FindFirstChild("RodParts")
-local rodModelTemplate = rodPartsFolder and (rodPartsFolder:FindFirstChild("RodPreviewModel") or rodPartsFolder:FindFirstChild("RodModel"))
+local rodModelTemplate = rodPartsFolder and (rodPartsFolder:FindFirstChild("RodCore") or rodPartsFolder:FindFirstChild("RodModel"))
 
 local root = script:FindFirstAncestor("StarterPlayerScripts") or script.Parent.Parent.Parent
 local UIBus = require(root:WaitForChild("Systems"):WaitForChild("UIBus"))
@@ -83,10 +83,10 @@ local rotateConnection
 local rotateAngle = 0
 
 local SLOT_ATTACHMENT_MAP = {
-	Rod = { "Slot_Vara" },
-	Reel = { "Slot_Carreto", "ReelMount" },
-	Line = { "Slot_Linha", "LineStart" },
-	Hook = { "Slot_Anzol", "HookEnd" },
+	Rod = { "Slot_Vara", "Attach_Reel", "Attach_LineStart", "Attach_HookEnd" },
+	Reel = { "Attach_Reel", "Slot_Carreto", "ReelMount" },
+	Line = { "Attach_LineStart", "Slot_Linha", "LineStart" },
+	Hook = { "Attach_HookEnd", "Slot_Anzol", "HookEnd" },
 }
 
 local SLOT_OFFSETS = {
