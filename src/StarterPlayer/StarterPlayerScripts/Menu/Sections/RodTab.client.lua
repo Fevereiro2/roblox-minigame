@@ -94,9 +94,9 @@ local SLOT_ATTACHMENT_MAP = {
 
 local SLOT_OFFSETS = {
 	Rod = Vector3.new(0, 0, 0),
-	Reel = Vector3.new(0, -0.5, -0.2),
-	Line = Vector3.new(0, 0.2, 0.25),
-	Hook = Vector3.new(0, 0.1, 0.6),
+	Reel = Vector3.new(0, -0.5, 0),
+	Line = Vector3.new(0, 0, 0),
+	Hook = Vector3.new(0.3, 0, 0),
 }
 
 local function getPrimaryPart(model)
@@ -237,11 +237,12 @@ local function setupViewport()
 	keyLight.Parent = lightRig
 
 	local cf, size = rodModel:GetBoundingBox()
-	basePivot = cf
+	basePivot = corePart and corePart.CFrame or cf
 	local maxDim = math.max(size.X, size.Y, size.Z)
 	local fov = math.rad(viewportCamera.FieldOfView)
 	local distance = (maxDim * 0.6) / math.tan(fov / 2) + 2
-	viewportCamera.CFrame = CFrame.new(cf.Position + Vector3.new(0, 1.8, distance), cf.Position)
+	local focus = corePart and corePart.Position or cf.Position
+	viewportCamera.CFrame = CFrame.new(focus + Vector3.new(0, 1.6, distance), focus)
 end
 
 local equipped = {
@@ -256,6 +257,9 @@ local function attachComponent(slotKey, item)
 	if existing then
 		existing:Destroy()
 		slotVisuals[slotKey] = nil
+	end
+	if slotKey == "Rod" then
+		return
 	end
 	if slotKey == "Line" then
 		if lineBeam then
@@ -298,12 +302,11 @@ local function attachComponent(slotKey, item)
 	end
 
 	local attachment = slotAttachments[slotKey]
-	if attachment then
-		local offset = SLOT_OFFSETS[slotKey] or Vector3.new()
-		primary.CFrame = attachment.WorldCFrame * CFrame.new(offset)
-	elseif slotKey == "Rod" and corePart then
-		primary.CFrame = corePart.CFrame
+	if not corePart or not attachment then
+		return
 	end
+	local offset = SLOT_OFFSETS[slotKey] or Vector3.new()
+	primary.CFrame = corePart.CFrame * attachment.CFrame * CFrame.new(offset)
 
 	if corePart then
 		local weld = Instance.new("WeldConstraint")
