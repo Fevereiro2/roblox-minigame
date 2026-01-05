@@ -77,6 +77,7 @@ local rodModel
 local slotAttachments = {}
 local slotVisuals = {}
 local corePart
+local rodBodyPart
 local basePivot
 local rotateConnection
 local rotateAngle = 0
@@ -116,6 +117,7 @@ local function setupViewport()
 	slotAttachments = {}
 	slotVisuals = {}
 	corePart = nil
+	rodBodyPart = nil
 	basePivot = nil
 
 	if not rodModelTemplate then
@@ -159,10 +161,32 @@ local function setupViewport()
 	end
 
 	corePart = getPrimaryPart(rodModel)
+	rodBodyPart = rodModel:FindFirstChild("RodBody") or rodModel:FindFirstChild("Core") or corePart
 	if corePart then
 		rodModel.PrimaryPart = corePart
 		corePart.CFrame = CFrame.new(0, 0, 0)
 		corePart.Anchored = true
+	end
+
+	if rodBodyPart and rodBodyPart ~= corePart then
+		rodBodyPart.Anchored = false
+		local weld = Instance.new("WeldConstraint")
+		weld.Part0 = corePart
+		weld.Part1 = rodBodyPart
+		weld.Parent = corePart
+	end
+
+	for _, part in ipairs(rodModel:GetDescendants()) do
+		if part:IsA("BasePart") then
+			part.CanCollide = false
+			if part ~= corePart then
+				part.Anchored = false
+				local weld = Instance.new("WeldConstraint")
+				weld.Part0 = corePart
+				weld.Part1 = part
+				weld.Parent = corePart
+			end
+		end
 	end
 
 	for slotKey, attachmentNames in pairs(SLOT_ATTACHMENT_MAP) do
@@ -505,6 +529,32 @@ local function setSelectedSlot(slotKey)
 	rebuildItemList()
 end
 
+local function getFirstItemForSlot(slotKey)
+	for _, item in ipairs(sampleItems.Items or {}) do
+		if item.slotType == slotKey then
+			return item
+		end
+	end
+	return nil
+end
+
+local function ensureDefaultEquipped()
+	local changed = false
+	for _, definition in ipairs(slotDefinitions) do
+		if not equipped[definition.key] then
+			local defaultItem = getFirstItemForSlot(definition.key)
+			if defaultItem then
+				equipped[definition.key] = defaultItem
+				updateSlotUI(definition.key)
+				changed = true
+			end
+		end
+	end
+	if changed then
+		updatePreview()
+	end
+end
+
 for _, definition in ipairs(slotDefinitions) do
 	local slot = Slots.Create(ui.SlotsContainer, definition)
 	slots[definition.key] = slot
@@ -517,6 +567,7 @@ end
 
 setSelectedSlot(selectedSlot)
 setupViewport()
+ensureDefaultEquipped()
 rebuildVisuals()
 updatePreview()
 
@@ -615,6 +666,7 @@ local function openPanel()
 	}):Play()
 	rebuildItemList()
 	setupViewport()
+	ensureDefaultEquipped()
 	rebuildVisuals()
 	startRotate()
 end
