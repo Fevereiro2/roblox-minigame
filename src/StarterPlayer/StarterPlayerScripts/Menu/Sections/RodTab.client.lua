@@ -249,6 +249,7 @@ local function equipItem(item)
 	end
 	equipped[selectedSlot] = item
 	updateSlotUI(selectedSlot)
+	attachComponent(selectedSlot, item)
 	updatePreview()
 	uiBus:Fire("Notify", "Peca equipada")
 end
