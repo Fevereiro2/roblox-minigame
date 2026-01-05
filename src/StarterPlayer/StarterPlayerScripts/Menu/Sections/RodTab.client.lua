@@ -17,7 +17,7 @@ local PreviewStats = require(rodTabRoot:WaitForChild("PreviewStats"))
 
 local sampleItems = require(ReplicatedStorage:WaitForChild("Items"):WaitForChild("SampleItems"))
 local rodPartsFolder = ReplicatedStorage:FindFirstChild("RodParts")
-local rodModelTemplate = rodPartsFolder and rodPartsFolder:FindFirstChild("RodModel")
+local rodModelTemplate = rodPartsFolder and (rodPartsFolder:FindFirstChild("RodPreviewModel") or rodPartsFolder:FindFirstChild("RodModel"))
 
 local root = script:FindFirstAncestor("StarterPlayerScripts") or script.Parent.Parent.Parent
 local UIBus = require(root:WaitForChild("Systems"):WaitForChild("UIBus"))
@@ -82,10 +82,10 @@ local rotateConnection
 local rotateAngle = 0
 
 local SLOT_ATTACHMENT_MAP = {
-	Rod = "Slot_Vara",
-	Reel = "Slot_Carreto",
-	Line = "Slot_Linha",
-	Hook = "Slot_Anzol",
+	Rod = { "Slot_Vara" },
+	Reel = { "Slot_Carreto", "ReelMount" },
+	Line = { "Slot_Linha", "LineStart" },
+	Hook = { "Slot_Anzol", "HookEnd" },
 }
 
 local SLOT_OFFSETS = {
@@ -163,10 +163,13 @@ local function setupViewport()
 		corePart.Anchored = true
 	end
 
-	for slotKey, attachmentName in pairs(SLOT_ATTACHMENT_MAP) do
-		local attachment = rodModel:FindFirstChild(attachmentName, true)
-		if attachment and attachment:IsA("Attachment") then
-			slotAttachments[slotKey] = attachment
+	for slotKey, attachmentNames in pairs(SLOT_ATTACHMENT_MAP) do
+		for _, attachmentName in ipairs(attachmentNames) do
+			local attachment = rodModel:FindFirstChild(attachmentName, true)
+			if attachment and attachment:IsA("Attachment") then
+				slotAttachments[slotKey] = attachment
+				break
+			end
 		end
 	end
 
@@ -251,7 +254,35 @@ local function attachComponent(slotKey, item)
 	if attachment then
 		local offset = SLOT_OFFSETS[slotKey] or Vector3.new()
 		primary.CFrame = attachment.WorldCFrame * CFrame.new(offset)
+	elseif slotKey == "Rod" and corePart then
+		primary.CFrame = corePart.CFrame
+	end
 
+	if slotKey == "Line" then
+		local lineAttachment = slotAttachments.Line
+		local hookAttachment = slotAttachments.Hook
+		if lineAttachment and hookAttachment then
+			local startPos = lineAttachment.WorldPosition
+			local endPos = hookAttachment.WorldPosition
+			local mid = (startPos + endPos) * 0.5
+			local dir = (endPos - startPos)
+			local distance = dir.Magnitude
+			if distance > 0.01 then
+				dir = dir.Unit
+				local up = dir
+				local right = up:Cross(Vector3.new(0, 1, 0))
+				if right.Magnitude < 0.01 then
+					right = up:Cross(Vector3.new(1, 0, 0))
+				end
+				right = right.Unit
+				local back = right:Cross(up)
+				primary.CFrame = CFrame.fromMatrix(mid, right, up, back)
+				primary.Size = Vector3.new(primary.Size.X, distance, primary.Size.Z)
+			end
+		end
+	end
+
+	if corePart then
 		local weld = Instance.new("WeldConstraint")
 		weld.Part0 = primary
 		weld.Part1 = corePart
