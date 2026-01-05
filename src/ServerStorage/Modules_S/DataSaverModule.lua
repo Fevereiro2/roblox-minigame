@@ -16,4 +16,8 @@ function DataSaverModule.Save_PlayerData()
 	return true
 end
 
+function DataSaverModule.GiveItemsToPlayerBackPack()
+	return true
+end
+
 return DataSaverModule
